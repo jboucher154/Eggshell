@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/11 10:44:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/11 11:11:24 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void	ht_destroy(t_hash_table **hash_table)
 ** This function allocates a new hash item
 ** It returns a pointer to the new hash item
 ** It returns NULL if an error occured
+** Value passed must be an allocated pointer
 */
 t_hash_item	*new_hash_item(const char *key, void *value)
 {
