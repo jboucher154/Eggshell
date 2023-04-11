@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/07 17:39:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/11 10:44:42 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 ** It is based on the djb2 algorithm.
 ** https://en.wikipedia.org/wiki/Djb2
 */
-static size_t	get_hash(const char *str)
+size_t	get_hash(const char *str)
 {
 	size_t	hash;
 	size_t	i;
@@ -42,24 +42,29 @@ static size_t	get_hash(const char *str)
 
 /*
 ** This function intialize a new hash table
+** It takes the size of the hash table as a parameter
 ** It returns a pointer to the new hash table
 ** It returns NULL if an error occured
 ** It allocates 16 slots for the hash table and 1 for the NULL pointer
 */
-t_hash_table	*ht_create(void)
+t_hash_table	*ht_create(int size)
 {
 	t_hash_table	*table;
+	int				i;
 
 	table = (t_hash_table *)malloc(sizeof(t_hash_table));
 	if (!table)
 		return (NULL);
-	table->table = (t_hash_item **)ft_calloc(16 + 1, sizeof(t_hash_item *));
+	table->table = (t_hash_item **)malloc(sizeof(t_hash_item *) * (size + 1));
 	if (!table->table)
 	{
 		free(table);
 		return (NULL);
 	}
-	table->size = 16;
+	i = 0;
+	while(i <= size)
+		table->table[i++] = NULL;
+	table->size = size;
 	table->filled = 0;
 	return (table);
 }
@@ -70,18 +75,18 @@ t_hash_table	*ht_create(void)
 ** It frees all the memory used by the hash table
 ** It sets the pointer to the hash table to NULL
 */
-void	ht_destroy(t_hash_table **table)
+void	ht_destroy(t_hash_table **hash_table)
 {
 	size_t	i;
-	t_hash_table	*tmp_tbl;
+	t_hash_item		**tmp_tbl;
 	t_hash_item		*item;
 	t_hash_item		*tmp;
 
 	i = 0;
-	tmp_tbl = *table;
-	while (i < tmp_tbl->size)
+	tmp_tbl = (*hash_table)->table;
+	while (tmp_tbl && (*hash_table)->size > 0 && i < (*hash_table)->size)
 	{
-		item = tmp_tbl->table[i];
+		item = tmp_tbl[i];
 		while (item)
 		{
 			tmp = item;
@@ -93,10 +98,10 @@ void	ht_destroy(t_hash_table **table)
 		}
 		i++;
 	}
-	free(tmp_tbl->table);
-	tmp_tbl->table = NULL;
-	free(tmp_tbl);
-	tmp_tbl = NULL;
+	free((*hash_table)->table);
+	(*hash_table)->table = NULL;
+	free(*hash_table);
+	(*hash_table) = NULL;
 }
 
 /*
@@ -108,6 +113,8 @@ t_hash_item	*new_hash_item(const char *key, void *value)
 {
 	t_hash_item	*item;
 	
+	if (!value)
+		return (NULL);
 	item = (t_hash_item *)malloc(sizeof(t_hash_item));
 	if (!item)
 		return NULL;
@@ -175,7 +182,7 @@ int	ht_remove(t_hash_table *table, const char *key)
 	item = table->table[index];
 	while (item)
 	{
-		if (ft_strcmp(item->key, key) == 0)
+		if (ft_strncmp(item->key, key, ft_strlen(item->key)) == 0)
 		{
 			if (item->prev)
 				item->prev->next = item->next;
@@ -252,7 +259,7 @@ void	*ht_get(t_hash_table *table, const char *key)
 	item = table->table[index];
 	while (item)
 	{
-		if (ft_strcmp(item->key, key) == 0)
+		if (ft_strncmp(item->key, key, ft_strlen(item->key)) == 0)
 			return (item->value);
 		item = item->next;
 	}
