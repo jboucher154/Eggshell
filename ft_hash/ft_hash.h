@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:44:51 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/11 09:47:13 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:56:33 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct	s_hash_table
 size_t			get_hash(const char *str);
 t_hash_table	*ht_create(int size);
 void 			ht_destroy(t_hash_table **table);
-t_hash_item		*ht_new_item(const char *key, void *value);
+t_hash_item		*new_hash_item(const char *key, void *value);
 int				ht_add(t_hash_table *table, const char *key, void *value);
 int				ht_remove(t_hash_table *table, const char *key);
 size_t 			ht_rehash(t_hash_table *table);
