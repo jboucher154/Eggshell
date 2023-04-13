@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:54:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/12 16:31:46 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/13 10:13:57 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	count_args(char *arg_start)
 	return (count);
 }
 
+//need to skip entry that is realted to a redirection
 int	find_args(char *cmd_start, char *cmd_end, char ***args, char ***arg_ends)
 {
 	int		index;
@@ -228,8 +229,7 @@ t_block	*new_block(t_cmd *left, t_cmd *right, char token_id)
 	if (new == NULL)
 		return (NULL);
 	new->type = BLOCK;
-	new->left = (t_cmd *) left;
-	new->right = (t_cmd *) right;
+	new->child_node = (t_cmd *) left;
 	new->block_id = token_id;
 	return (new);
 }
