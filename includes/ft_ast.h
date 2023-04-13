@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:42:32 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/12 15:26:02 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/13 10:13:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,8 @@ typedef struct s_line
 typedef struct s_block
 {
 	int				type;
-	struct s_cmd	*left;
-	struct s_cmd	*right;
-	char			block_id;
+	struct s_cmd	*child_node;
+	char			block_id;// if we need to track if its open or close
 }	t_block;
 
 //not sure about this one, not writing any code for it
