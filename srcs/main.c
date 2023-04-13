@@ -1,7 +1,5 @@
 #include "../includes/minishell.h"
 
-#define TOKENS "|&<>/();"
-
 /* Iterate string and identify tokens, add to linked list, return head of list */
 void tonkenizer(char *input_str)
 {
