@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 14:42:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/14 15:43:21 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:20:38 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,21 @@ t_cmd	*new_redirection(t_cmd *cmd, char **file_start, char token_id) //should th
 {
 	t_redirection	*new;
 
-
 	new = (t_redirection *)malloc(sizeof(t_redirection));
 	if (new == NULL)
 		return (NULL);
 	new->type = REDIRECTION_CMD;
 	new->cmd = (t_cmd *) cmd;
 	new->filename = find_filename(*file_start);
+	new->token_id = token_id;
 	(*file_start) += ft_strlen(new->filename);
+	if (token_id == REDIRECT_IN)
+		new->fd = STDIN_FILENO;
+	else if (token_id == REDIRECT_OUT)
+		new->fd = STDOUT_FILENO;
+	else if (token_id == REDIRECT_OUT_APPEND)
+		new->fd = STDOUT_FILENO;
+//didn't assess the from_fd might need to add something here related to --> 2>outfile -directs only stderror to the outfile
 	return ((t_cmd *) new);
 }
 
