@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/14 15:30:34 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:13:17 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,6 @@ int	validate_semicolon(char *token_start)
 	return (TRUE);
 }
 
-// int	validate_or(char *token_start)
-// {
-// 	return (TRUE);
-// }
-
-// int	validate_and(char *token_start)
-// {
-// 	return (TRUE);
-// }
-// int	validate_open_parenthesis(char *token_start)
-// {
-// 	return (TRUE);
-// }
-
-// int	validate_close_parenthesis(char *token_start)
-// {
-// 	return (TRUE);
-// }
-
-
 //maybe this driver isn't needed? can call a validation everytime we ID a token in the parser?
 int	validate_syntax(char *token_start, char token_id)
 {
@@ -81,13 +61,5 @@ int	validate_syntax(char *token_start, char token_id)
 		valid = validate_redirect_out_append(token_start);	//validate redirect out append syntax
 	else if (token_id == SEMICOLON)
 		valid = validate_semicolon(token_start);	//validate semicolon syntax
-	// else if (token_id = OR)
-	// 	valid = validate_or(token_start);	//validate or syntax
-	// else if (token_id = AND)
-		// valid = validate_and(token_start);	//validate and syntax
-	// else if (token_id = OPEN_PARENTHESIS)
-	// 	valid = validate_open_parenthesis(token_start);	//validate open parenthesis syntax
-	// else if (token_id = CLOSE_PARENTHESIS)
-	// 	valid = validate_close_parenthesis(token_start);	//validate close parenthesis syntax
 	return (valid);
 }

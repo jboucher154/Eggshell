@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 10:51:35 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/14 16:54:06 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:13:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,3 @@ int	peek_next_token(char *current_index, char *look_for)
 	printf("result of peek: %i\n", (*token != '\0' && ft_strchr(look_for, *token)));//
 	return (*token != '\0' && ft_strchr(look_for, *token)); //if not null and in the token string should return true
 }
-
-	// else if (*token_start == '&')
-	// {
-	// 	if (token_start + 1 && *(token_start + 1 ) == '&')
-	// 		token_id = AND;
-	// 	else
-	// 		token_id = ALPHA; //???
-	// }
-	// else if (*token_start == '(')
-	// 	token_id = OPEN_PARENTHESIS;
-	// else if (*token_start == ')')
-	// 	token_id = CLOSE_PARENTHESIS;

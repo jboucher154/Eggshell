@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:42:32 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/14 15:40:19 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:12:35 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ enum e_tokens
 	REDIRECT_OUT = '>',
 	REDIRECT_OUT_APPEND = '+',
 	SEMICOLON = ';',
-	// OPEN_PARENTHESIS = '(',
-	// CLOSE_PARENTHESIS = ')',
-	// AND = '&',
-	// OR = 'o',
-	// BACKGROUND = 'b' //not sure if we should care about this, not going to writie it into the code
 };
 
 //types of commands
@@ -43,9 +38,6 @@ enum e_type
 	PIPE_CMD,
 	REDIRECTION_CMD,
 	LINE,
-	// LOGICAL_OPERATOR,
-	// BLOCK,
-	// BACKGROUND
 };
 
 //this is the base struct for all the other structs
@@ -94,31 +86,6 @@ typedef struct s_line
 	struct s_cmd	*right;
 }	t_line;
 
-// // opperators = '&&' '||'
-// typedef struct s_logical_opperator
-// {
-// 	int				type;
-// 	struct s_cmd	*left;
-// 	struct s_cmd	*right;
-// 	int				opperator;
-// }	t_logical_opperator;
-//unsure if this is needed
-//it would be for the '(' ')'
-// typedef struct s_block
-// {
-// 	int				type;
-// 	struct s_cmd	*child_node;
-// 	char			block_id;// if we need to track if its open or close
-// }	t_block;
-
-// //not sure about this one, not writing any code for it
-// typedef struct s_background
-// {
-// 	int	type;
-// 	struct s_cmd	*cmd;
-// } t_background;
-
-
 //validate_syntax.c
 int	validate_syntax(char *token_start, char token_id);
 int	validate_alpha(char *token_start);
@@ -148,8 +115,6 @@ int		peek_next_token(char *current_index, char *look_for);
 //node_constructors.c
 t_cmd	*new_line(t_cmd *left, t_cmd *right);
 t_cmd	*new_pipe(t_cmd *left, t_cmd *right);
-// t_logical_opperator	*new_logical_opperator(t_cmd *left, t_cmd *right, char token_id);
-// t_block	*new_block(t_cmd *left, t_cmd *right, char token_id);
 
 //redirection_parse.c
 t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end);
