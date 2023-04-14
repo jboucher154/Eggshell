@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:42:32 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/14 17:12:35 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:23:26 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_redirection
 	int	type;
 	struct s_cmd	*cmd;
 	char			*filename;
-	int				direction;
+	int				token_id;
 	int				fd;
 	int				from_fd;
 }	t_redirection;
