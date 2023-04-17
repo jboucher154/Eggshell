@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/17 15:03:36 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:15:32 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,26 @@ void	*ht_get(t_hash_table *table, const char *key)
 	return (NULL);
 }
 
-
 //update value
+size_t	*ht_update_value(t_hash_table *table, const char *key, void *new_value)
+{
+	size_t		index;
+	t_hash_item	*item;
+
+	index = get_hash(key) % table->size;
+	item = table->table[index];
+	while (item)
+	{
+		if (ft_strncmp(item->key, key, ft_strlen(item->key)) == 0)
+		{
+			if (item->value)
+				free(item->value);
+			item->value = new_value;
+			return (SUCCESS);
+		}
+		item = item->next;
+	}
+	return (ERROR);
+}
 
 //print hash table
