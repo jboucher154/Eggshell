@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:54:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/14 17:12:50 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 11:50:18 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_cmd	*new_pipe(t_cmd *left, t_cmd *right)
 	new = (t_pipe *)malloc(sizeof(t_pipe));
 	if (new == NULL)
 		return (NULL);
-	new->type = PIPE;
+	new->type = PIPE_CMD;
 	new->left = (t_cmd *) left;
 	new->right = (t_cmd *) right;
 	return ((t_cmd *) new);

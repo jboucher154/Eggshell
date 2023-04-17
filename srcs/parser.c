@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 13:46:02 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/17 10:54:06 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 14:03:45 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,10 @@ t_cmd	*parser(char *input_string)
 
 int	main(void)
 {
-	t_cmd *cmd_tree = parser("< infile_me test 'this' | echo me");
-	printf("head node type: %i\n", cmd_tree->type);
-	if  (cmd_tree->type == 0)
-	{
-		printf("head node args: %s\n", ((t_executable_cmd *)cmd_tree)->args[0]);
-		printf("head node args: %s\n", ((t_executable_cmd *)cmd_tree)->args[1]);
-	}
-	if  (cmd_tree->type == 2)
-	{
-		printf("infile found: %s\n", ((t_redirection*)cmd_tree)->filename);
-	}
+	t_cmd *cmd_tree = parser("<infile_me test 'this'|echo me; echo should be new line!");
+	
+	printf("TO PRINT TREE\n");
+	print_tree(cmd_tree, 0);
+
 	return (0);
 }
