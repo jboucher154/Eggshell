@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:44:51 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/11 16:56:33 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:29:18 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,7 @@ int				ht_add(t_hash_table *table, const char *key, void *value);
 int				ht_remove(t_hash_table *table, const char *key);
 size_t 			ht_rehash(t_hash_table *table);
 void			*ht_get(t_hash_table *table, const char *key);
+void			ht_print(t_hash_table *table);
+size_t			ht_update_value(t_hash_table *table, const char *key, void *new_value);
 
 #endif

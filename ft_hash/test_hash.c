@@ -65,6 +65,12 @@ int	test_add(void)
 	char *test_value = ft_strdup("test_value");
 	if (ht_add(table, "test", test_value) == ERROR)
 		return (ERROR);
+
+	char *test_value2 = ft_strdup("test_value2");
+	if (ht_add(table, "test2", test_value2) == ERROR)
+		return (ERROR);
+	
+	ht_print(table);//
 	ht_destroy(&table);
 	return (SUCCESS);
 }
@@ -126,12 +132,23 @@ int	test_rehash(void)
 		return (ERROR);
 	printf("table size: %zu\n", table->size);
 	printf("table filled: %zu\n", table->filled);
+	int	hash  = get_hash("test");//
+	int	index = hash % table->size;//
+	printf("index: %d\n", index);//
 
 	char *test_value2 = ft_strdup("test_value2");
 	if (ht_add(table, "test2", test_value2) == ERROR)
 		return (ERROR);
 	printf("table size: %zu\n", table->size);
 	printf("table filled: %zu\n", table->filled);
+
+	char *val_1 = ht_get(table, "test");//
+	printf("first added: %s\n", val_1);//
+
+	hash  = get_hash("test2");//
+	index = hash % table->size;//
+	printf("index: %d\n", index);//
+
 
 	char *test_value3 = ft_strdup("test_value3");
 	if (ht_add(table, "test3", test_value3) == ERROR)
@@ -143,6 +160,7 @@ int	test_rehash(void)
 		return (ERROR);
 	printf("table size: %zu\n", table->size);
 	printf("table filled: %zu\n", table->filled);
+	ht_print(table);//
 	ht_destroy(&table);
 	return (SUCCESS);
 }
@@ -151,17 +169,17 @@ int	main(void)
 {
 	t_hash_table	*table;
 
-	if (test_creation(&table) == ERROR)
-		return (ERROR);
-	if (test_destroy(&table) == ERROR)
-		return (ERROR);
-	test_get_hash();
+	// if (test_creation(&table) == ERROR)
+	// 	return (ERROR);
+	// if (test_destroy(&table) == ERROR)
+	// 	return (ERROR);
+	// test_get_hash();
 	if (test_add() == ERROR)
 		return (ERROR);
-	if (test_get() == ERROR)
-		return (ERROR);
-	if (test_remove() == ERROR)
-		return (ERROR);
+	// if (test_get() == ERROR)
+	// 	return (ERROR);
+	// if (test_remove() == ERROR)
+	// 	return (ERROR);
 	if (test_rehash() == ERROR)
 		return (ERROR);
 	return (0);

@@ -6,12 +6,13 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/17 15:23:06 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:32:15 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_hash.h"
 #include "libft.h"
+#include "stdio.h"
 
 /*
 ** These functions have not been tested yet
@@ -207,44 +208,66 @@ int	ht_remove(t_hash_table *table, const char *key)
 ** It returns SUCCESS if the table was resized
 ** It returns ERROR if an error occured
 */
+void	rehash_add(t_hash_table *table , t_hash_item *to_add)
+{
+	size_t		index;
+	t_hash_item	*tmp;
+	int			rehash_res;
+
+	index = get_hash(to_add->key) % table->size;
+	to_add->prev = NULL;
+	to_add->next = NULL;
+	tmp = table->table[index];
+	if (tmp == NULL)
+		table->table[index] = to_add;
+	else
+	{
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = to_add;
+		to_add->prev = tmp;
+	}
+}
+
 size_t	ht_rehash(t_hash_table *table)
 {
-	size_t		new_size;
 	t_hash_item	**new_table;
 	t_hash_item	*item;
 	t_hash_item	*tmp;
 	size_t		i;
 	t_hash_item **old_table;
 
-	new_size = table->size * 2;
-	new_table = (t_hash_item **)ft_calloc(new_size + 1, sizeof(t_hash_item *));
+	table->size = table->size * 2;
+	new_table = (t_hash_item **)ft_calloc(table->size + 1, sizeof(t_hash_item *));
 	if (!new_table)
 		return (ERROR);
 	old_table = table->table;
 	table->table = new_table;
 	i = 0;
-	while (i < table->size)
+	while (i < table->size / 2)//
 	{
-		item = table->table[i];
+		item = old_table[i];
 		while (item)
 		{
 			tmp = item;
 			item = item->next;
-			tmp->next = NULL;
-			tmp->prev = NULL;
-			ht_add(table, tmp->key, tmp->value);
-			free(tmp->key);
-			free(tmp->value);
-			free(tmp);
-			tmp = NULL;
+			rehash_add(table, tmp);
 		}
 		i++;
 	}
 	free(old_table);
 	table->table = new_table;
-	table->size = new_size;
 	return (SUCCESS);
 }
+			// tmp = item;
+			// item = item->next;
+			// tmp->next = NULL;
+			// tmp->prev = NULL;
+			// ht_add(table, tmp->key, tmp->value);
+			// free(tmp->key);
+			// // free(tmp->value);
+			// free(tmp);
+			// tmp = NULL;
 
 /*
 ** This function is used to get an item from the hash table
@@ -268,7 +291,7 @@ void	*ht_get(t_hash_table *table, const char *key)
 }
 
 //update value
-size_t	*ht_update_value(t_hash_table *table, const char *key, void *new_value)
+size_t	ht_update_value(t_hash_table *table, const char *key, void *new_value)
 {
 	size_t		index;
 	t_hash_item	*item;
@@ -297,12 +320,15 @@ void	ht_print(t_hash_table *table)
 	int			printed;
 	
 	index = 0;
+	printed = 0;
 	while (index < table->size && printed < table->filled)
 	{
+		// printf("print index: %i\n", index);
 		to_print = table->table[index];
-		while (to_print)
+		while (to_print != NULL)
 		{
-			printf("%s=%s\n", to_print->key, to_print->value);
+			printf("NOT NULL!");
+			printf("%s=%s\n", to_print->key, (char *)to_print->value);
 			to_print = to_print->next;
 			printed++; //may not be needed
 		}
