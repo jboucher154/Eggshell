@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 13:46:02 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/14 17:28:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 10:54:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_cmd	*handle_pipe(char **parsed_string, char *end)
 	if (peek_next_token(*parsed_string, "|"))
 	{
 		move_to_token(parsed_string, end);
+		//validate syntax
 		(*parsed_string)++; //move past the token so new command can process
 		cmd = new_pipe(cmd, handle_pipe(parsed_string, end));
 	}
@@ -33,11 +34,12 @@ t_cmd	*parse_line(char **parsed_string, char *end)
 {
 	t_cmd	*cmd;
 
-	printf("IN PARSE LINE\n");
+	printf("IN PARSE LINE\n");//
 	cmd = handle_pipe(parsed_string, end);
 	if (peek_next_token(*parsed_string, ";")) //should I peek the next token?
 	{
 		move_to_token(parsed_string, end);
+		//validate syntax
 		(*parsed_string)++; //move past the token so new command can process
 		cmd = new_line(cmd, parse_line(parsed_string, end));
 	}

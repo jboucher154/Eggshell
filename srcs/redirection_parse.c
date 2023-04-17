@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 14:42:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/14 17:20:38 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 10:55:18 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end)
 	while (*parsed_string < end && peek_next_token(*parsed_string, "<>")) //check if there is a redirection coming
 	{
 		token_id = move_to_token(parsed_string, end); //move to redirection
+		//validate syntax
 		if (token_id == REDIRECT_OUT_APPEND)
 			(*parsed_string) += 2;
 		else
