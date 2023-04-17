@@ -14,6 +14,7 @@
 # define FT_HASH_H
 
 # include "libft.h"
+#include <stdio.h>
 
 #define	SUCCESS	0
 #define	ERROR	1
@@ -41,5 +42,7 @@ int				ht_add(t_hash_table *table, const char *key, void *value);
 int				ht_remove(t_hash_table *table, const char *key);
 size_t 			ht_rehash(t_hash_table *table);
 void			*ht_get(t_hash_table *table, const char *key);
+void			ht_print(t_hash_table *table);
+size_t	*ht_update_value(t_hash_table *table, const char *key, void *new_value);
 
 #endif
