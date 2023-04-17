@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/14 17:13:17 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 10:34:53 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	validate_redirect_out_append(char *token_start)
 	return (TRUE);
 }
 
+//might not be needed?
 int	validate_semicolon(char *token_start)
 {
 	return (TRUE);
