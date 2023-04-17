@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/17 15:15:32 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:23:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,3 +290,22 @@ size_t	*ht_update_value(t_hash_table *table, const char *key, void *new_value)
 }
 
 //print hash table
+void	ht_print(t_hash_table *table)
+{
+	t_hash_item	*to_print;
+	int			index;
+	int			printed;
+	
+	index = 0;
+	while (index < table->size && printed < table->filled)
+	{
+		to_print = table->table[index];
+		while (to_print)
+		{
+			printf("%s=%s\n", to_print->key, to_print->value);
+			to_print = to_print->next;
+			printed++; //may not be needed
+		}
+		index++;
+	}
+}
