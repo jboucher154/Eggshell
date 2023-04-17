@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:44:51 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/17 15:29:18 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:47:08 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_HASH_H
 
 # include "libft.h"
+#include <stdio.h>
 
 #define	SUCCESS	0
 #define	ERROR	1

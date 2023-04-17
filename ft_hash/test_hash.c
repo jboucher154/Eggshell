@@ -49,6 +49,38 @@ int	test_get_hash(void)
 	return (SUCCESS);
 }
 
+int	test_update(void)
+{
+	size_t			hash;
+	int				index;	
+	t_hash_table	*table;
+
+	table = ht_create(10);
+	if (!table)
+		return (ERROR);
+	hash  = get_hash("test");
+	index = hash % table->size;
+	
+	printf("index: %d\n", index);
+	char *test_value = ft_strdup("test_value");
+	char *new_value = ft_strdup("new_value");
+	if (ht_add(table, "test", test_value) == ERROR)
+		return (ERROR);
+	printf("------------");
+	printf("\n");
+	ht_print(table);
+	printf("\n");
+
+	ht_update_value(table, "test", new_value);
+	printf("\n");
+
+	ht_print(table);
+	printf("\n");
+
+	printf("------------");
+	return (SUCCESS);
+}
+
 int	test_add(void)
 {
 	size_t			hash;
@@ -175,6 +207,10 @@ int	main(void)
 	// 	return (ERROR);
 	// test_get_hash();
 	if (test_add() == ERROR)
+		return (ERROR);
+	if (test_update() == ERROR)
+		return (ERROR);
+	if (test_update() == ERROR)
 		return (ERROR);
 	// if (test_get() == ERROR)
 	// 	return (ERROR);
