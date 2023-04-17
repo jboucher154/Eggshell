@@ -69,6 +69,14 @@ int	test_add(void)
 	return (SUCCESS);
 }
 
+
+//key ->if allocated before ht_add, free it 
+	//substring to the first '=' - get len to it 
+	//free after
+//value -> needs t be allocated an dnot free'd unless we are destroying the table or entry
+	//strdup of env_var + len to the  '='
+	//don't free
+
 int	test_get(void)
 {
 	char *value;
