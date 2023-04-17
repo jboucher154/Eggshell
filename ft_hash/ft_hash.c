@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/11 11:11:24 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:03:36 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,3 +266,8 @@ void	*ht_get(t_hash_table *table, const char *key)
 	}
 	return (NULL);
 }
+
+
+//update value
+
+//print hash table
