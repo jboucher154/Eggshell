@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:42:32 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/17 10:48:28 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/17 11:47:01 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,9 @@ int					count_args(char *arg_start); //for the executable command
 // int				skip_redirection(char *redir_start);//for the executable command
 int					find_end_word(char *begin_word);//for the executable command
 int					find_endquote(char *begin_quote);//for the executable command
+
+//PRINT_TREE
+void	print_tree(t_cmd *cmd, int	depth);
+
 
 #endif
