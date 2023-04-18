@@ -8,6 +8,7 @@
 
 
 #include "libft.h"
+#include "ft_hash.h"
 
 // for printf, perror
 #include <stdio.h> 
@@ -60,6 +61,14 @@
 //for error codes
 #include <errno.h>
 
+//struct for program
+typedef	struct s_eggcarton
+{
+	struct s_hash_table	*environment;
+	struct s_hash_table *commands;
+
+	
+}	t_eggcarton;
 
 
 //functions for PARSER
