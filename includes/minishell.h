@@ -4,10 +4,12 @@
 // colours
 #define GREEN "\e[1;92m"
 #define KNRM  "\x1B[0m"
+#define RED     "\033[31m"
 #define PROMPT "\e[1;92m🐣[EggShell] % \x1B[0m"
 
 
 #include "libft.h"
+
 
 // for printf, perror
 #include <stdio.h> 

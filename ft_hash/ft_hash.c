@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_hash.h"
-#include "libft.h"
+#include "../includes/libft.h"
 #include "stdio.h"
 
 /*
@@ -327,7 +327,6 @@ void	ht_print(t_hash_table *table)
 		to_print = table->table[index];
 		while (to_print != NULL)
 		{
-			printf("NOT NULL!");
 			printf("%s=%s\n", to_print->key, (char *)to_print->value);
 			to_print = to_print->next;
 			printed++; //may not be needed

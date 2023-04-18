@@ -13,7 +13,7 @@
 #ifndef FT_HASH_H
 # define FT_HASH_H
 
-# include "libft.h"
+#include "../includes/libft.h"
 #include <stdio.h>
 
 #define	SUCCESS	0
