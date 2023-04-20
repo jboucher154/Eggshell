@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 10:51:35 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/17 12:59:20 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:18:36 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ char	identify_token(char *token_start)
 		else
 			token_id = REDIRECT_OUT;
 	}
-	else if (*token_start == ';')
-		token_id = SEMICOLON;
+	// else if (*token_start == ';')
+	// 	token_id = SEMICOLON;
 	return (token_id);
 }
 

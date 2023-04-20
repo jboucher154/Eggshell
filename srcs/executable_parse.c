@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/17 14:04:59 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:12:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	**resize_array(char **array, int *size)
 	return (new);
 }
 
-t_cmd	*handle_exec(char **parsed_string, char *end)
+t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count)
 {
 	t_executable_cmd	*cmd;
 	t_cmd				*head_cmd;
@@ -135,5 +135,6 @@ t_cmd	*handle_exec(char **parsed_string, char *end)
 			resize_array(cmd->args, &current_size);
 		head_cmd = handle_redirection(head_cmd, parsed_string, end);
 	}
+	(*cmd_count)++;
 	return (head_cmd);
 }

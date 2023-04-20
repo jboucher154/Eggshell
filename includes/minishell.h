@@ -63,13 +63,27 @@
 //for error codes
 #include <errno.h>
 
+//struct to send to child
+typedef struct s_child
+{
+	int		fd_in;
+	int		fd_out;
+	int		fd_to_close;
+	char 	*path;
+	char	**args;
+}	t_child;
+
 //struct for program
 typedef	struct s_eggcarton
 {
 	struct s_hash_table	*environment;
 	struct s_hash_table *commands;
-
-	
+	char				*og_env;
+	int					cmd_count;
+	int					pipe_count;
+	int					*pipes;
+	int					*pids;
+	struct s_child		**children;
 }	t_eggcarton;
 
 

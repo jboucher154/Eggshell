@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:35:22 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/18 11:16:34 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/19 11:50:19 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 	return (path); //might be null, just check for that later
 }
 
-int64_t	initalize_command_table(t_eggcarton *prog_info)
+int	initalize_command_table(t_eggcarton *prog_info)
 {
 	prog_info->commands = ht_create(30);
 	if (!prog_info->commands)

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:42:32 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/17 11:47:01 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:15:40 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ int	validate_semicolon(char *token_start);
 // int	validate_close_parenthesis(char *token_start);
 
 //parse.c
-t_cmd	*parser(char *input_string);
-t_cmd	*parse_line(char **parse_string, char *end);
-t_cmd	*handle_block(char **parse_string, char *end);
+t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
+// t_cmd	*parse_line(char **parse_string, char *end);
+// t_cmd	*handle_block(char **parse_string, char *end);
 t_cmd	*handle_redirection(t_cmd *cmd, char **parse_string, char *end);
-t_cmd	*handle_exec(char **parse_string, char *end);
-t_cmd	*handle_pipe(char **parse_string, char *end);
+t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count);
+t_cmd	*handle_pipe(char **parsed_string, char *end, int *cmd_count, int *pipe_count);
 
 //tokenize.c
 char	move_to_token(char **parse_string, char *end);
