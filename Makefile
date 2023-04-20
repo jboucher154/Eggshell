@@ -4,7 +4,7 @@ LIB = libft/libft.a
 
 CC := CC
 
-CFLAGS := -Wall -Wextra -Werror -I includes -g #-fsanitize=address
+CFLAGS := -Wall -Wextra -Werror -I includes -g -fsanitize=address
 
 INCS := includes/minishell.h
 #need to add handling for compling from srcs subdirs
@@ -12,7 +12,9 @@ SRC_DIR := srcs
 
 OBJ_DIR := objs
 
-SRCS := main.c 
+SRCS := main.c builtins.c executable_parse.c executer.c node_constructors.c parser.c \
+		pathfinding.c redirection_parse.c  tokenize.c validate_syntax.c \
+		ft_hash.c print_tree.c
 
 SRCS := $(SRCS:%=$(SRC_DIR)/%)
 

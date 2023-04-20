@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 10:51:35 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/19 16:18:36 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:52:31 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ char	identify_token(char *token_start)
 {
 	char	token_id;
 
+	token_id = '\0';
 	if (*token_start == '\0')
-		return (*token_start);
+		return (token_id);
 	else if (!ft_strchr(TOKENS, *token_start))
 		token_id = ALPHA;
 	else if (*token_start == '|')

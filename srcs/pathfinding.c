@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:35:22 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/19 11:50:19 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:49:52 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,15 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 	if (!path)
 	{
 		paths = get_paths(prog_info);
-		path = find_correct_path(fname, get_paths);
+		path = find_correct_path(fname, paths);
 		if (path)
 			ht_add(prog_info->commands, fname, path);
+		//free the paths
 	}
 	return (path); //might be null, just check for that later
 }
 
+//may need to destroy the table in event of error
 int	initalize_command_table(t_eggcarton *prog_info)
 {
 	prog_info->commands = ht_create(30);

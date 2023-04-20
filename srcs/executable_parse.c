@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/19 16:12:06 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:30:48 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ char	*get_arg(char **parsed_string)
 t_executable_cmd	*new_executable_cmd(void) //remember to change index
 {
 	t_executable_cmd	*new;
-	char				*args;
 	int					index;
 
 	new = (t_executable_cmd *) malloc(sizeof(t_executable_cmd));

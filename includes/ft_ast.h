@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:42:32 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/19 16:15:40 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:26:20 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 //boolean
 #define TRUE 1
 #define FALSE 0
+
+# include "minishell.h"
 
 enum e_tokens
 {
@@ -100,7 +102,7 @@ int	validate_semicolon(char *token_start);
 // int	validate_close_parenthesis(char *token_start);
 
 //parse.c
-t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
+// t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
 // t_cmd	*parse_line(char **parse_string, char *end);
 // t_cmd	*handle_block(char **parse_string, char *end);
 t_cmd	*handle_redirection(t_cmd *cmd, char **parse_string, char *end);

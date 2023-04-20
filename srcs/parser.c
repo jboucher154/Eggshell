@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 13:46:02 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/19 16:17:08 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:19:34 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ t_cmd	*parser(char *input_string, t_eggcarton *prog_info)
 ** return tree head √
 */
 
-int	main(void)
-{
-	t_cmd *cmd_tree = parser("<infile_me test 'this'|echo me");
+// int	main(void)
+// {
+// 	t_cmd *cmd_tree = parser("<infile_me test 'this'|echo me");
 	
-	printf("TO PRINT TREE\n");
-	print_tree(cmd_tree, 0);
+// 	printf("TO PRINT TREE\n");
+// 	print_tree(cmd_tree, 0);
 
-	return (0);
-}
+// 	return (0);
+// }
