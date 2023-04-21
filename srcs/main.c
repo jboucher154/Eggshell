@@ -8,7 +8,7 @@ static char *ft_gets (void)
 	line_read = (char *) 0;
 	if (line_read)
     {
-      free (line_read);
+      free(line_read);
       line_read = (char *) 0;
     }
 	line_read = readline (PROMPT);
@@ -40,23 +40,7 @@ static void initialize_env_table(t_hash_table *ht_env, char **envp)
 	}	
 }
 
-void reset_program(t_eggcarton *prog_info)
-{
-	//cleanup the cmd_tree and prog_info for next line
-	if (prog_info->commands)
-		free(prog_info->commands);
-	if (prog_info->pipes)
-		free(prog_info->pipes);
-	if (prog_info->pids)
-		free(prog_info->pids);
-	prog_info->cmd_count = 0;
-	prog_info->pipe_count = 0;
-	prog_info->pipes = NULL;
-	prog_info->pids = NULL;
-	prog_info->children = NULL;
-}
-
-static void eggshell(t_eggcarton *prog_info)
+static int eggshell(t_eggcarton *prog_info)
 {
 	int		status;
 	char	*line;
@@ -68,19 +52,24 @@ static void eggshell(t_eggcarton *prog_info)
 	{
 		line = ft_gets();
 		if (!ft_strncmp("EXIT", line, 4))
+		{
 			status = 1;
+			//clean program function needed
+		}
 		else
 		{
+			//validate syntax
 			cmd_tree = parser(line, prog_info);
 			print_tree(cmd_tree, 0);
 			if (cmd_tree)
 				executer(cmd_tree, prog_info);
-			reset_program(prog_info);
+			reset_program(prog_info, &cmd_tree);
 		}
 		if (line)
 			free(line);
 	}
-	exit (EXIT_SUCCESS);
+	return (0);
+	// exit(EXIT_SUCCESS);
 }
 
 int	set_shell_level(t_eggcarton *prog_info)
@@ -132,5 +121,8 @@ int main(int argc, char **argv, char **envp)
 	(void) argv;
 	initialize_eggcarton(&prog_info, envp);
 	eggshell(&prog_info);
-	exit(EXIT_SUCCESS);
+	ht_destroy(&(prog_info.environment));
+	ht_destroy(&(prog_info.command_table));
+	return (0);
+	// exit(EXIT_SUCCESS);
 }

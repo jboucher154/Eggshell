@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 11:28:46 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/20 15:44:02 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:16:14 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,7 @@ void	print_array(char **array)
 void	print_tree(t_cmd *cmd, int	depth)
 {
 	// printf("TYPE FOUND: %i\n", cmd->type);
-	
-	if (cmd->type == LINE)
-	{
-		print_tree((t_cmd *)(((t_line *)(cmd))->left), depth + 1);
-		print_tree((t_cmd *)(((t_line *)(cmd))->right), depth + 1);
-		printf("LINE found, depth: %i\n", depth);
-	}
-	else if (cmd->type == REDIRECTION_CMD)
+	if (cmd->type == REDIRECTION_CMD)
 	{
 		print_tree((t_cmd *)(((t_redirection *)cmd)->cmd), depth + 1);
 		printf("REDIRECTION found, depth: %i\n", depth);
