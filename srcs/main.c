@@ -17,7 +17,6 @@ static char *ft_gets (void)
 	return (line_read);
 }
 
-
 static void initialize_env_table(t_hash_table *ht_env, char **envp)
 {
 	int index;
@@ -41,6 +40,22 @@ static void initialize_env_table(t_hash_table *ht_env, char **envp)
 	}	
 }
 
+void reset_program(t_eggcarton *prog_info)
+{
+	//cleanup the cmd_tree and prog_info for next line
+	if (prog_info->commands)
+		free(prog_info->commands);
+	if (prog_info->pipes)
+		free(prog_info->pipes);
+	if (prog_info->pids)
+		free(prog_info->pids);
+	prog_info->cmd_count = 0;
+	prog_info->pipe_count = 0;
+	prog_info->pipes = NULL;
+	prog_info->pids = NULL;
+	prog_info->children = NULL;
+}
+
 static void eggshell(t_eggcarton *prog_info)
 {
 	int		status;
@@ -60,7 +75,7 @@ static void eggshell(t_eggcarton *prog_info)
 			print_tree(cmd_tree, 0);
 			if (cmd_tree)
 				executer(cmd_tree, prog_info);
-			//cleanup the cmd_tree and prog_info for nex line
+			reset_program(prog_info);
 		}
 		if (line)
 			free(line);

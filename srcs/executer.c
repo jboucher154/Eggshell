@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/20 15:44:31 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:49:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	run_system_executable(t_executable_cmd *cmd, t_eggcarton *prog_info)
 
 void do_command(t_executable_cmd *cmd, t_eggcarton *prog_info)
 {
- 	//expand variables here
 
 	if (cmd->cmd_path[0] == ':')
 		run_builtins(cmd, prog_info);
@@ -104,6 +103,25 @@ t_child	*new_child(void)
 	return (child);
 }
 
+void clean_up_children(t_child **children)
+{
+	int	index;
+	int arg_index;
+
+	index = 0;
+	while(children[index] && children[index]->args)
+	{
+		arg_index = 0;
+		while(children[index]->args[arg_index])
+		{
+			free(children[index]->args[arg_index]);
+			arg_index++;
+		}
+		free(children[index]->args);
+		index++;
+	}
+	free_children(children);
+}	
 void	free_children(t_child **children)
 {
 	int	index;
@@ -115,6 +133,7 @@ void	free_children(t_child **children)
 		index++;
 	}
 	free(children);
+	children = NULL;
 }
 
 int	create_child_array(t_eggcarton *prog_info)
@@ -145,7 +164,7 @@ void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int i
 {
 	int	fd;
 	char *error;
-	//check for expansion
+	check_for_expansions(prog_info, &(redirection->filename));
 	fd = -1;
 	if (redirection->token_id == REDIRECT_IN)
 	{
@@ -205,14 +224,47 @@ char	*quote_cut(char *to_check_str)
 {
 	char *new;
 	
-	new = malloc(sizeof(char) * ft_strlen(to_check_str));
+	new = ft_substr(to_check_str, 1, ft_strlen(to_check_str) - 1);
 	if (!new)
 	{
 		printf("%sEggShell🥚: malloc failed%s\n", RED, KNRM);
 		return (NULL);
 	}
-	new = ft_substr(to_check_str, to_check_str[1], ft_strlen(to_check_str) - 1);
 	return (new);
+}
+
+void	insert_new_value(char *str, char *new_str, char *variable, char *value)
+{
+	int		value_index;
+	int		new_index;
+	int		old_index;
+
+	value_index = 0;
+	new_index = 0;
+	old_index = 0;
+	while (str[old_index])// should this be new string ?
+	{
+		if (str[old_index] == '$') // should tigger copying of variable value to the new string
+		{
+			while (value && value[value_index])
+			{
+				new_str[new_index] = value[value_index];
+				value_index++;
+				new_index++;
+			}
+			old_index += ft_strlen(variable);
+			break ;
+		}
+		else
+			new_str[new_index++] = str[old_index++];
+	}
+	printf("CHECKING old str index content: %c\n", str[old_index]);//
+	while (str[old_index])//should pick up after the variable name, finnish copying
+	{
+		new_str[new_index++] = str[old_index++];
+	}
+	new_str[new_index] = '\0';
+	printf("CHECKING STRING AFTER VALUE INSERT: %s\n", new_str);//
 }
 
  //exands the variable
@@ -221,84 +273,75 @@ char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
 	char	*variable;
 	char	*value;
 	char	*new_str;
-	int		new_index;
-	int		value_index;
-	int		old_index;
 
+	printf("CHECKING STRING: %s\n", str);//
 	if (variable_start == NULL)
 		return (str);
 	variable =  ft_substr(variable_start, 0, find_end_word(variable_start));
 	value  = ht_get(prog_info->environment, variable + 1);
-	//allocate a new char * strlen - varaible len + value len make sure we count the $
 	new_str = (char *) malloc(sizeof(char) * (ft_strlen(str) - ft_strlen(variable) + ft_strlen(value) + 1));
-	new_index = 0;
-	value_index = 0;
-	old_index = 0;
 	if (!new_str)
 	{
-		//free and return NULL
+		free (variable);
+		printf("%sEggShell🥚: variable expansion failed%s\n", RED, KNRM);
+		return (str); //return the origional string incase of failure
 	}
-	if (new_str)
-	{
-		while (str[old_index])
-		{
-			if (str[old_index] == '$')
-			{
-				while (value[value_index])
-				{
-					new_str[new_index++] = value[value_index++];
-				}
-				old_index += ft_strlen(variable);
-				break ;
-			}
-			else
-				new_str[new_index++] = str[old_index++];
-		}
-		while (str[old_index])
-		{
-			new_str[new_index++] = str[old_index++];
-		}
-	}
+	printf("STR: %s , VARIABLE: %s, VALUE: %s\n", str, variable, value);
+	insert_new_value(str, new_str, variable, value);
+	printf("CHECKING STRING AFTER VALUE INSERT: %s\n", new_str);//
 	free (variable);
 	free (str);
 	return (expand_env_var(prog_info, new_str, ft_strchr(new_str, '$')));
 	//iterate and copy str & value
 	//return str
-	//check if $present if '$VAR' "$'VAR'" do not expand
+	//check if $present if '$VAR' '"$VAR"' do not expand
 
 }
+
 //search for needed expansions
-void	check_for_expansions(t_eggcarton *prog_info, char **to_check_arr)
+int	check_for_expansions(t_eggcarton *prog_info, char **to_check_arr)
 {
 	int		index;
 	char	*variable_start;
+	char	*temp;
 	//to_check = "file name, single string" OR arguments;
 	index = 0;
+	printf("CHECKING ARRAY: \n");//
+	print_array(to_check_arr);//
 	while (to_check_arr[index])
 	{
 		variable_start = ft_strchr(to_check_arr[index], '$');
-		if (variable_start && to_check_arr[index][0] != '"')
-			expand_env_var(prog_info, to_check_arr[index], variable_start);
+		printf("VARIABLE START ASSESSED\n");//
+		if (variable_start && to_check_arr[index][0] != '\'')
+		{
+			to_check_arr[index] = expand_env_var(prog_info, to_check_arr[index], variable_start);
+			if (to_check_arr[index] == NULL)
+				return (ERROR); //
+		}
+		if (ft_strchr(QUOTES, to_check_arr[index][0]))
+		{
+			temp = quote_cut(to_check_arr[index]);//
+			free(to_check_arr[index]);
+			to_check_arr[index] = temp; //shoudl we bail here if the malloc failed?
+		}
 		index++;
 	}
-	if (to_check_arr[index][0] == '"')
-		to_check_arr[index] = quote_cut(to_check_arr[index]);
-	
-	//eval quotes
-	//remove quotes
+	return (SUCCESS);
 }
 
 void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index)
 {
-	//if pipe, setup the pipe
 	if (prog_info->pipe_count != 0)
 	{
 		setup_pipes(prog_info, index);
 	}
-	//check expansions
-	prog_info->children[index]->args = cmd->args; //how to clean up
-	// print_array(prog_info->children[index]->args); //test
-	//pathfind // check if we already have the absolute path!
+	prog_info->children[index]->args = cmd->args; //clean in child not cmd tree
+	printf("ARRAY BEFORE EXPANSION\n");
+	print_array(prog_info->children[index]->args); //test
+	if (check_for_expansions(prog_info, prog_info->children[index]->args) == ERROR)
+		printf("%sEggShell🥚: expansion error%s\n", RED, KNRM); //continue??
+	printf("ARRAY AFTER EXPANSION\n");
+	print_array(prog_info->children[index]->args); //test
 	prog_info->children[index]->path = get_path(prog_info, cmd->args[0]);
 }
 
@@ -306,28 +349,27 @@ int	tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index)//index for all
 {
 	if (*index == prog_info->cmd_count)
 		return (SUCCESS);
-	// if (cmd->type == PIPE_CMD)
-	// {
-	// 	//left
-	// 	//increment index
-	// 	(*index)++;
-	// 	//right
-	// 	//return (tree_iterator(left) == SUCCESS && tree_iterator(right) == SUCCESS)?
-	// }
-	// else if (cmd->type == REDIRECTION_CMD)
-	// {
-	// 	//assign to current index in children?
-	// 	setup_redirection((t_redirection *)cmd, prog_info, *index);
-	// 	tree_iterator((t_cmd *)((t_redirection *)cmd)->cmd, prog_info, index);
-	// }
-	if (cmd == NULL)
-		printf("WTF?\n");
+	if (cmd->type == PIPE_CMD)
+	{
+		//left
+		tree_iterator((t_cmd *)((t_pipe *)cmd)->left, prog_info, index);
+		//increment index
+		(*index)++;
+		//right
+		tree_iterator((t_cmd *)((t_pipe *)cmd)->right, prog_info, index);
+		//return (tree_iterator(left) == SUCCESS && tree_iterator(right) == SUCCESS)?
+	}
+	else if (cmd->type == REDIRECTION_CMD)
+	{
+		//assign to current index in children?
+		setup_redirection((t_redirection *)cmd, prog_info, *index);
+		tree_iterator((t_cmd *)((t_redirection *)cmd)->cmd, prog_info, index);
+	}
 	if (cmd->type == EXECUTABLE_CMD)
 	{
 		//setup the command stuffs to current index
 		setup_child((t_executable_cmd *)cmd, prog_info, *index);
 	}
-	//return
 	return (SUCCESS);//?
 }
 
@@ -361,6 +403,7 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 	print_children(prog_info->children);
 	//iterate over array of commands, forking and sending to child processes
 	//parent process waits for all PIDs saved in array
+	clean_up_children(prog_info->children);
 }
 
 

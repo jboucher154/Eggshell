@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:35:22 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/20 14:49:52 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:30:13 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,13 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 	path = ht_get(prog_info->commands, fname);
 	if (!path)
 	{
-		paths = get_paths(prog_info);
-		path = find_correct_path(fname, paths);
+		if (access(fname, X_OK) == 0)
+			path = ft_strdup(fname);
+		else
+		{
+			paths = get_paths(prog_info);
+			path = find_correct_path(fname, paths);
+		}
 		if (path)
 			ht_add(prog_info->commands, fname, path);
 		//free the paths

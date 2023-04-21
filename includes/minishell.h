@@ -102,7 +102,7 @@ char	**get_paths(t_eggcarton *prog_info);
 void	executer(t_cmd *cmd, t_eggcarton *prog_info);
 int		tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index);
 void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index);
-void	check_for_expansions(t_eggcarton *prog_info, char **to_check_arr);
+int		check_for_expansions(t_eggcarton *prog_info, char **to_check_arr);
 char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start);
 char	*quote_cut(char *to_check_str);
 void	setup_pipes(t_eggcarton *prog_info, int index);
