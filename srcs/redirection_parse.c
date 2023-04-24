@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 14:42:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/17 10:55:18 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/24 13:31:46 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_cmd	*new_redirection(t_cmd *cmd, char **file_start, char token_id) //should th
 	new->filename = find_filename(*file_start);
 	new->token_id = token_id;
 	(*file_start) += ft_strlen(new->filename);
+	move_pointer_past_ws(file_start);
 	if (token_id == REDIRECT_IN)
 		new->fd = STDIN_FILENO;
 	else if (token_id == REDIRECT_OUT)
@@ -55,21 +56,22 @@ t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end)
 	int	token_id;
 
 	new_redir = cmd;
-	while (*parsed_string < end && peek_next_token(*parsed_string, "<>")) //check if there is a redirection coming
+	move_pointer_past_ws(parsed_string);
+	while (*parsed_string < end && (**parsed_string == '<' || **parsed_string == '>')) //check if there is a redirection coming
 	{
+		printf("CURRENT PARSED STRING IN REDIRECT: %s\n", *parsed_string);//
 		token_id = move_to_token(parsed_string, end); //move to redirection
-		//validate syntax
 		if (token_id == REDIRECT_OUT_APPEND)
 			(*parsed_string) += 2;
 		else
 			(*parsed_string)++;
-		while (ft_strchr(WHITESPACE, **parsed_string)) //move past redir and skip any whitespace
-			(*parsed_string)++;
+		move_pointer_past_ws(parsed_string);
 		if (identify_token(*parsed_string) != ALPHA)
 		{
 			printf("ERROR!!!!!!!\n");// print error and exit this process!!
 		}
 		new_redir = new_redirection(new_redir, parsed_string, token_id);
+		move_pointer_past_ws(parsed_string);
 	}
 	return (new_redir);
 }

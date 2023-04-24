@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/21 14:42:27 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/24 13:32:07 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 //return pointer to the endquote
 int	find_endquote(char *begin_quote)
 {
+	printf("FIND ENDQUOTE\n");
 	// char *temp;
 	int	 len_quote; //inclusive of quotes
 
@@ -45,6 +46,8 @@ char	*get_arg(char **parsed_string)
 	char	*arg;
 	int		len_to_copy;
 
+	if (!*parsed_string)
+		return (NULL);
 	if (ft_strchr(QUOTES, **parsed_string))
 	{
 		len_to_copy = find_endquote(*parsed_string) + 1;
@@ -123,8 +126,7 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count)
 		head_cmd = handle_redirection(head_cmd, parsed_string, end);
 	while (*parsed_string < end && !ft_strchr("|", **parsed_string))//took out ;from search
 	{
-		while (**parsed_string && ft_strchr(WHITESPACE, **parsed_string))
-			(*parsed_string)++;
+		printf("CURRENT PARSED STRING: %s\n", *parsed_string);//
 		cmd->args[arg_count] = get_arg(parsed_string);
 		if (!cmd->args[arg_count])
 		{
@@ -133,11 +135,12 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count)
 		arg_count++;
 		if (arg_count == current_size)
 			resize_array(cmd->args, &current_size);
+		move_pointer_past_ws(parsed_string);
+		if (!**parsed_string)
+			break ;
 		if (**parsed_string == '<' || **parsed_string == '>')
 			head_cmd = handle_redirection(head_cmd, parsed_string, end);
 	}
 	(*cmd_count)++;
 	return (head_cmd);
 }
-		// printf("CURRENT PARSED STRING: %s\n", *parsed_string);//
-		
