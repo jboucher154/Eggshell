@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:42:32 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/21 12:49:20 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:49:18 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	validate_pipe(char *token, char *str);
 int	validate_redirect_in(char *token_start);
 int	validate_redirect_out(char *token_start);
 int	validate_redirect_out_append(char *token_start);
+int  validate_quotes(char **token);
 // int	validate_or(char *token_start);
 // int	validate_and(char *token_start);
 // int	validate_open_parenthesis(char *token_start);
