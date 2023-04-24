@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 11:28:46 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/21 13:16:14 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:38:44 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	print_tree(t_cmd *cmd, int	depth)
 	{
 		print_tree((t_cmd *)(((t_redirection *)cmd)->cmd), depth + 1);
 		printf("REDIRECTION found, depth: %i\n", depth);
+		printf("FILENAME from redir: %s\n", ((t_redirection *)cmd)->filename);
 	}
 	else if (cmd->type == PIPE_CMD)
 	{
