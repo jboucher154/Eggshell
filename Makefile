@@ -13,7 +13,7 @@ SRC_DIR := srcs
 OBJ_DIR := objs
 
 SRCS := main.c builtins.c executable_parse.c executer.c node_constructors.c parser.c \
-		pathfinding.c redirection_parse.c  tokenize.c \
+		pathfinding.c redirection_parse.c  tokenize.c utilities.c\
 		ft_hash.c reset.c expansions.c children.c command_tree.c print_tree.c 
 		
 #validate_syntax.c

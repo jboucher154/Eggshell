@@ -147,4 +147,8 @@ char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start);
 void	insert_new_value(char *str, char *new_str, char *variable, char *value);
 char	*quote_cut(char *to_check_str);
 
+//untility.c
+void	move_pointer_past_ws(char **str_to_move);
+
+
 #endif
