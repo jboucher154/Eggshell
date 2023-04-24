@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smorphet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/24 10:55:14 by smorphet          #+#    #+#             */
+/*   Updated: 2023/04/24 10:55:16 by smorphet         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /* Read a string, and return a pointer to it. */
@@ -72,6 +84,7 @@ static int eggshell(t_eggcarton *prog_info)
 	// exit(EXIT_SUCCESS);
 }
 
+//should we update the shell program varaible $SHELL as well?
 int	set_shell_level(t_eggcarton *prog_info)
 {
 	char	*level;

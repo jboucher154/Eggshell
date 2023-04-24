@@ -46,26 +46,25 @@ void	clean_tree(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
-	printf("WHAT IS THE COMMAND TYPE WHEN IT BREAKS: %d\n",cmd->type);
 	if (cmd->type == PIPE_CMD)
 	{
 		clean_tree((t_cmd *)(((t_pipe *)(cmd))->left));
 		clean_tree((t_cmd *)(((t_pipe *)(cmd))->right));
 		free((t_pipe *)cmd);
-		printf("PIPE cleaned\n");//
+		// printf("PIPE cleaned\n");//
 	}
 	else if (cmd->type == REDIRECTION_CMD)
 	{
 		clean_tree((t_cmd *)(((t_redirection *)cmd)->cmd));
 		free(((t_redirection *) cmd)->filename);
 		free((t_redirection *) cmd);
-		printf("REDIRECTION CMD CLEANED:\n");//
+		// printf("REDIRECTION CMD CLEANED:\n");//
 	}
 	else if (cmd->type == EXECUTABLE_CMD)
 	{
 		clean_str_array(((t_executable_cmd *)cmd)->args);
 		free((t_executable_cmd *)cmd);	
-		printf("EXECUTABLE CMD CLEANED\n");//
+		// printf("EXECUTABLE CMD CLEANED\n");//
 	}
 }
 
