@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/20 14:30:48 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:42:27 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,9 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count)
 		return (NULL);
 	head_cmd = (t_cmd *) cmd;
 	head_cmd = handle_redirection(head_cmd, parsed_string, end);
-	while (*parsed_string < end && !ft_strchr("|;", **parsed_string))
+	while (*parsed_string < end && !ft_strchr("|", **parsed_string))//took out ;from search
 	{
-		while (ft_strchr(WHITESPACE, **parsed_string))
+		while (**parsed_string && ft_strchr(WHITESPACE, **parsed_string))
 			(*parsed_string)++;
 		cmd->args[arg_count] = get_arg(parsed_string);
 		if (!cmd->args[arg_count])

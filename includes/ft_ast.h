@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:42:32 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/20 14:26:20 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:49:20 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ enum e_tokens
 	REDIRECT_IN = '<',
 	REDIRECT_OUT = '>',
 	REDIRECT_OUT_APPEND = '+',
-	SEMICOLON = ';',
 };
 
 //types of commands
@@ -76,17 +75,6 @@ typedef struct s_redirection
 	int				fd;
 	int				from_fd;
 }	t_redirection;
-
-
-//one cmd struct links to next list
-//one cmd struct links to the beginning of the execution fo the list
-// list  = ';'
-typedef struct s_line
-{
-	int				type;
-	struct s_cmd	*left;
-	struct s_cmd	*right;
-}	t_line;
 
 //validate_syntax.c
 int	validate_syntax(char *token_start, char token_id);

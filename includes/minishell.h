@@ -79,7 +79,7 @@ typedef struct s_child
 typedef	struct s_eggcarton
 {
 	struct s_hash_table	*environment;
-	struct s_hash_table *commands;
+	struct s_hash_table *command_table;
 	char				**og_env;
 	int					cmd_count;
 	int					pipe_count;
@@ -100,22 +100,23 @@ char	**get_paths(t_eggcarton *prog_info);
 
 //executer.c
 void	executer(t_cmd *cmd, t_eggcarton *prog_info);
-int		tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index);
-void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index);
-void	check_for_expansions(t_eggcarton *prog_info, char **to_check_arr);
-char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start);
-char	*quote_cut(char *to_check_str);
-void	setup_pipes(t_eggcarton *prog_info, int index);
-void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int index);
-int		create_child_array(t_eggcarton *prog_info);
-void	free_children(t_child **children);
-t_child	*new_child(void);
-int		create_pipes(t_eggcarton *prog_info);
 void 	do_command(t_executable_cmd *cmd, t_eggcarton *prog_info);
 void	run_system_executable(t_executable_cmd *cmd, t_eggcarton *prog_info);
 void	run_builtins(t_executable_cmd *cmd, t_eggcarton *prog_info);
 void	exit_child(char *error_msg, char *arg, int exit_code);
 
+//command_tree.c
+int		create_pipes(t_eggcarton *prog_info);
+int		tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index);
+void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index);
+void	setup_pipes(t_eggcarton *prog_info, int index);
+void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int index);
+
+//reset.c
+void 	clean_str_array(char **array);
+void 	close_pipes(int *pipes, t_eggcarton *prog_info);
+void	clean_tree(t_cmd *cmd);
+void 	reset_program(t_eggcarton *prog_info, t_cmd **cmd);
 
 //parser.c
 t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
@@ -134,5 +135,16 @@ void	print_children(t_child **childs);
 void	print_tree(t_cmd *cmd, int	depth);
 void	print_array(char **array);
 
+
+//children.c
+int		create_child_array(t_eggcarton *prog_info);
+void	free_children(t_child **children);
+t_child	*new_child(void);
+
+//expansions.c
+int		check_for_expansions(t_eggcarton *prog_info, char **to_check_arr, int file_flag);
+char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start);
+void	insert_new_value(char *str, char *new_str, char *variable, char *value);
+char	*quote_cut(char *to_check_str);
 
 #endif

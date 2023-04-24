@@ -28,7 +28,7 @@ void	pwd_command(void)
 {
 	char	*current_wd;
 
-	current_wd = getcwd(NULL, 0);
+	current_wd = getcwd(NULL, 0);//check it it needs free
 	printf("%s\n", current_wd);
 	free(current_wd);
 }

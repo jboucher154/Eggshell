@@ -48,19 +48,17 @@
 // //maybe this driver isn't needed? can call a validation everytime we ID a token in the parser?
 // int	validate_syntax(char *token_start, char token_id)
 // {
-// 	int	valid;
-
-// 	if (token_id == ALPHA)
-// 		valid = validate_alpha(token_start); //validate alpha syntax
-// 	else if (token_id == PIPE)
-// 		valid = validate_pipe(token_start);	//validate pipe syntax
-// 	else if (token_id == REDIRECT_IN)
-// 		valid = validate_redirect_in(token_start);	//validate redirect in syntax
-// 	else if (token_id == REDIRECT_OUT)
-// 		valid = validate_redirect_out(token_start);	//validate redirect out syntax
-// 	else if (token_id == REDIRECT_OUT_APPEND)
-// 		valid = validate_redirect_out_append(token_start);	//validate redirect out append syntax
-// 	else if (token_id == SEMICOLON)
-// 		valid = validate_semicolon(token_start);	//validate semicolon syntax
-// 	return (valid);
+	// 	if (token_id == ALPHA)
+	// 		valid = validate_alpha(token_start); //validate alpha syntax
+	// 	else if (token_id == PIPE)
+	// 		valid = validate_pipe(token_start);	//validate pipe syntax
+	// 	else if (token_id == REDIRECT_IN)
+	// 		valid = validate_redirect_in(token_start);	//validate redirect in syntax
+	// 	else if (token_id == REDIRECT_OUT)
+	// 		valid = validate_redirect_out(token_start);	//validate redirect out syntax
+	// 	else if (token_id == REDIRECT_OUT_APPEND)
+	// 		valid = validate_redirect_out_append(token_start);	//validate redirect out append syntax
+	// 	else if (token_id == SEMICOLON)
+	// 		valid = validate_semicolon(token_start);	//validate semicolon syntax
+	// 	return (valid);
 // }

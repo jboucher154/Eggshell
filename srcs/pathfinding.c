@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:35:22 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/20 14:49:52 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:49:11 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,19 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 	char	*path;
 	char	**paths;
 
-	path = ht_get(prog_info->commands, fname);
+	path = ht_get(prog_info->command_table, fname);
 	if (!path)
 	{
-		paths = get_paths(prog_info);
-		path = find_correct_path(fname, paths);
+		if (access(fname, X_OK) == 0)
+			path = ft_strdup(fname);
+		else
+		{
+			paths = get_paths(prog_info);
+			path = find_correct_path(fname, paths);
+			clean_str_array(paths);
+		}
 		if (path)
-			ht_add(prog_info->commands, fname, path);
+			ht_add(prog_info->command_table, fname, path);
 		//free the paths
 	}
 	return (path); //might be null, just check for that later
@@ -84,22 +90,22 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 //may need to destroy the table in event of error
 int	initalize_command_table(t_eggcarton *prog_info)
 {
-	prog_info->commands = ht_create(30);
-	if (!prog_info->commands)
+	prog_info->command_table = ht_create(30);
+	if (!prog_info->command_table)
 		return (ERROR);
-	if (ht_add(prog_info->commands, "echo", ft_strdup(":")) == ERROR)
+	if (ht_add(prog_info->command_table, "echo", ft_strdup(":")) == ERROR)
 		return (ERROR);
-	if (ht_add(prog_info->commands, "cd", ft_strdup(":")) == ERROR)
+	if (ht_add(prog_info->command_table, "cd", ft_strdup(":")) == ERROR)
 		return (ERROR);
-	if (ht_add(prog_info->commands, "pwd", ft_strdup(":")) == ERROR)
+	if (ht_add(prog_info->command_table, "pwd", ft_strdup(":")) == ERROR)
 		return (ERROR);
-	if (ht_add(prog_info->commands, "export", ft_strdup(":")) == ERROR)
+	if (ht_add(prog_info->command_table, "export", ft_strdup(":")) == ERROR)
 		return (ERROR);
-	if (ht_add(prog_info->commands, "unset", ft_strdup(":")) == ERROR)
+	if (ht_add(prog_info->command_table, "unset", ft_strdup(":")) == ERROR)
 		return (ERROR);
-	if (ht_add(prog_info->commands, "env", ft_strdup(":")) == ERROR)
+	if (ht_add(prog_info->command_table, "env", ft_strdup(":")) == ERROR)
 		return (ERROR);
-	if (ht_add(prog_info->commands, "exit", ft_strdup(":")) == ERROR)
+	if (ht_add(prog_info->command_table, "exit", ft_strdup(":")) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
 }
