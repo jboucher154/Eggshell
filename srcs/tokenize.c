@@ -28,7 +28,12 @@ char	identify_token(char *token_start)
 	else if (*token_start == '|')
 		token_id = PIPE;
 	else if (*token_start == '<')
-		token_id = REDIRECT_IN;
+	{
+		if (token_start + 1 && *(token_start + 1 ) == '<')
+			token_id = REDIRECT_HERE;
+		else
+			token_id = REDIRECT_IN;
+	}
 	else if (*token_start == '>')
 	{
 		if (token_start + 1 && *(token_start + 1 ) == '>')
@@ -36,8 +41,6 @@ char	identify_token(char *token_start)
 		else
 			token_id = REDIRECT_OUT;
 	}
-	// else if (*token_start == ';')
-	// 	token_id = SEMICOLON;
 	return (token_id);
 }
 

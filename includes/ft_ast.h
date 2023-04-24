@@ -14,7 +14,7 @@
 # define FT_AST_H
 
 //tokens
-#define TOKENS "|<>;" //"|&<>();"
+#define TOKENS "|<>" //"|&<>();"
 #define WHITESPACE " \t\n\r\a"
 #define QUOTES "'\""
 //boolean
@@ -30,6 +30,7 @@ enum e_tokens
 	REDIRECT_IN = '<',
 	REDIRECT_OUT = '>',
 	REDIRECT_OUT_APPEND = '+',
+	REDIRECT_HERE = 'h'
 };
 
 //types of commands
@@ -77,13 +78,11 @@ typedef struct s_redirection
 }	t_redirection;
 
 //validate_syntax.c
-int	validate_syntax(char *token_start, char token_id);
-int	validate_alpha(char *token_start);
-int	validate_pipe(char *token_start);
+int	validate_syntax(char *str);
+int	validate_pipe(char *token, char *str);
 int	validate_redirect_in(char *token_start);
 int	validate_redirect_out(char *token_start);
 int	validate_redirect_out_append(char *token_start);
-int	validate_semicolon(char *token_start);
 // int	validate_or(char *token_start);
 // int	validate_and(char *token_start);
 // int	validate_open_parenthesis(char *token_start);
