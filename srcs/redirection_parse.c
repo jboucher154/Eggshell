@@ -45,6 +45,7 @@ t_cmd	*new_redirection(t_cmd *cmd, char **file_start, char token_id) //should th
 	else if (token_id == REDIRECT_OUT_APPEND)
 		new->fd = STDOUT_FILENO;
 //didn't assess the from_fd might need to add something here related to --> 2>outfile -directs only stderror to the outfile
+	printf("FILENAME FOR REDIR: %s\n", new->filename);
 	return ((t_cmd *) new);
 }
 

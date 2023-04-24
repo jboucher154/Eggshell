@@ -119,7 +119,8 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count)
 	if (!cmd)
 		return (NULL);
 	head_cmd = (t_cmd *) cmd;
-	head_cmd = handle_redirection(head_cmd, parsed_string, end);
+	if (**parsed_string == '<' || **parsed_string == '>')
+		head_cmd = handle_redirection(head_cmd, parsed_string, end);
 	while (*parsed_string < end && !ft_strchr("|", **parsed_string))//took out ;from search
 	{
 		while (**parsed_string && ft_strchr(WHITESPACE, **parsed_string))
@@ -127,13 +128,16 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count)
 		cmd->args[arg_count] = get_arg(parsed_string);
 		if (!cmd->args[arg_count])
 		{
-			printf("ERROR!!!!!!!!!!\n");
+			printf("ERROR!!!!!!!!!!\n");//
 		}
 		arg_count++;
 		if (arg_count == current_size)
 			resize_array(cmd->args, &current_size);
-		head_cmd = handle_redirection(head_cmd, parsed_string, end);
+		if (**parsed_string == '<' || **parsed_string == '>')
+			head_cmd = handle_redirection(head_cmd, parsed_string, end);
 	}
 	(*cmd_count)++;
 	return (head_cmd);
 }
+		// printf("CURRENT PARSED STRING: %s\n", *parsed_string);//
+		

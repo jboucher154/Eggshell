@@ -31,23 +31,6 @@ t_cmd	*handle_pipe(char **parsed_string, char *end, int *cmd_count, int *pipe_co
 	return (cmd);
 }
 
-// t_cmd	*parse_line(char **parsed_string, char *end, int *cmd_count, int *pipe_count)
-// {
-// 	t_cmd	*cmd;
-
-// 	printf("IN PARSE LINE\n");//
-// 	cmd = handle_pipe(parsed_string, end, cmd_count, pipe_count);
-// 	if (peek_next_token(*parsed_string, ";")) //should I peek the next token?
-// 	{
-// 		move_to_token(parsed_string, end);
-// 		//validate syntax
-// 		(*parsed_string)++; //move past the token so new command can process
-// 		cmd = new_line(cmd, parse_line(parsed_string, end, cmd_count, pipe_count));
-// 	}
-// 	return (cmd);
-// }
-
-
 t_cmd	*parser(char *input_string, t_eggcarton *prog_info)
 {
 	t_cmd	*cmd; //will be the head of the returned tree
