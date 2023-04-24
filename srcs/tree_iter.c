@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_tree.c                                     :+:      :+:    :+:   */
+/*   tree_iter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:50:12 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/21 15:50:16 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:40:10 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int i
 {
 	int	fd;
 	char *error;
+	printf("FILENAME before expansion: %s\n", redirection->filename);//
 	check_for_expansions(prog_info, &(redirection->filename), 1);
+	printf("FILENAME after expansion: %s\n", redirection->filename);//
 	fd = -1;
 	if (redirection->token_id == REDIRECT_IN)
 	{
