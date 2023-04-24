@@ -35,7 +35,6 @@ void	pwd_command(void)
 
 void	cd_command(char	**args, t_hash_table *ht_env)
 {
-	//changing OLDPWD before CD
 	char	*current_wd;
 	char	*to;
 	char	*error;
