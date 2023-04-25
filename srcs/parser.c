@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 13:46:02 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:04:19 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:37:26 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,9 @@ t_cmd	*parser(char *input_string, t_eggcarton *prog_info)
 	char	*parsed_string;
 	char	*end_parse;
 
-	printf("IN PARSER\n");
 	parsed_string = input_string;
 	end_parse = input_string + (ft_strlen(input_string));
 	cmd = handle_pipe(&parsed_string, end_parse, &(prog_info->cmd_count), &(prog_info->pipe_count));
-
 	return (cmd);
 }
 
