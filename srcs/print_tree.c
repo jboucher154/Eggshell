@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 11:28:46 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:05:41 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:30:00 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	print_children(t_child **children)
 		printf("PATH: %s\n", children[i]->path);
 
 		print_array(children[i]->args);
+		printf("PIPE CHECK for child %i: in: %i out: %i\n", i, children[i]->pipe_in,children[i]->pipe_out);
 		printf("-------------------------------------------------------------\n");
 		i++;
 	}
