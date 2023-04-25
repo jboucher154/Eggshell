@@ -114,7 +114,7 @@ void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int i
 
 //reset.c
 void 	clean_str_array(char **array);
-void 	close_pipes(int *pipes, t_eggcarton *prog_info);
+void 	close_pipes(int *pipes, int pipe_count);
 void	clean_tree(t_cmd *cmd);
 void 	reset_program(t_eggcarton *prog_info, t_cmd **cmd);
 

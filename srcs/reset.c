@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 12:49:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:07:13 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 10:01:42 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ void clean_str_array(char **array)
 	free(array);
 }	
 
-void close_pipes(int *pipes, t_eggcarton *prog_info)
+void close_pipes(int *pipes, int pipe_count)
 {
 	int index;
 	
 	index = 0;
-	if (prog_info->pipe_count == 0)
+	if (pipe_count == 0)
 		return ;
-	while(pipes[index] < prog_info->pipe_count)
+	while(pipes[index] < pipe_count)
 	{
 		close(pipes[index]);
 		index++;
@@ -51,7 +51,6 @@ void	clean_tree(t_cmd *cmd)
 		clean_tree((t_cmd *)(((t_pipe *)(cmd))->left));
 		clean_tree((t_cmd *)(((t_pipe *)(cmd))->right));
 		free((t_pipe *)cmd);
-		// printf("PIPE cleaned\n");//
 	}
 	else if (cmd->type == REDIRECTION_CMD)
 	{
@@ -77,7 +76,7 @@ void reset_program(t_eggcarton *prog_info, t_cmd **cmd)
 	}
 	if (prog_info->pipes)
 	{
-		close_pipes(prog_info->pipes, prog_info);
+		close_pipes(prog_info->pipes, prog_info->pipe_count);
 		free(prog_info->pipes);
 	}
 	if (prog_info->pids)
