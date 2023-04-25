@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:55:14 by smorphet          #+#    #+#             */
-/*   Updated: 2023/04/24 16:37:38 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:42:24 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int eggshell(t_eggcarton *prog_info)
 			{
 				//validate syntax
 				cmd_tree = parser(line, prog_info);
-				print_tree(cmd_tree, 0);
+				// print_tree(cmd_tree, 0); //
 				if (cmd_tree)
 					executer(cmd_tree, prog_info);
 				reset_program(prog_info, &cmd_tree);
