@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:44:45 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 10:03:51 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:57:20 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ t_child	*new_child(void)
 		return (NULL);
 	child->path = NULL;
 	child->args = NULL;
-	child->redir_in = -1;
-	child->redir_out = -1;
-	child->pipe_in = -1;
-	child->pipe_out = -1;
-	child->fd_to_close = -1; //
+	child->redir_in = UNSET;
+	child->redir_out = UNSET;
+	child->pipe_in = UNSET;
+	child->pipe_out = UNSET;
+	child->fd_to_close = UNSET; //
 	return (child);
 }
 

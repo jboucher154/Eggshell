@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 11:28:46 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:30:00 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 18:04:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ void	print_children(t_child **children)
 	i = 0;
 	while (children[i] != NULL)
 	{
-		printf("CHILD %i: \n redir in: %i\n redir out: %i\n pipe in%i\n pipe out%i\n", i, \
+		printf("CHILD %i: \n redir in: %i\n redir out: %i\n pipe in: %i\n pipe out%i\n", i, \
 		children[i]->redir_in, children[i]->redir_out, children[i]->pipe_in, children[i]->pipe_out);
 		// if (children[i]->path)
 		printf("PATH: %s\n", children[i]->path);
 
 		print_array(children[i]->args);
-		printf("PIPE CHECK for child %i: in: %i out: %i\n", i, children[i]->pipe_in,children[i]->pipe_out);
+		// printf("PIPE CHECK for child %i: in: %i out: %i\n", i, children[i]->pipe_in,children[i]->pipe_out);
 		printf("-------------------------------------------------------------\n");
 		i++;
 	}

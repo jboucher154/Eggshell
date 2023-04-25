@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:46:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:02:28 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:43:19 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*quote_cut(char *to_check_str)
 {
 	char *new;
 	
-	new = ft_substr(to_check_str, 1, ft_strlen(to_check_str) - 1);
+	new = ft_substr(to_check_str, 1, ft_strlen(to_check_str) - 2);
 	if (!new)
 	{
 		printf("%sEggShell🥚: malloc failed%s\n", RED, KNRM);

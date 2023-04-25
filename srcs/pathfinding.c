@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:35:22 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:05:23 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:01:46 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	**get_paths(t_eggcarton *prog_info)
 	char	**split_paths;
 
 	i = 0;
-
 	split_paths = NULL;
 	paths = ht_get(prog_info->environment, "PATH");
 	if (paths)
@@ -94,9 +93,13 @@ int	initalize_command_table(t_eggcarton *prog_info)
 		return (ERROR);
 	if (ht_add(prog_info->command_table, "echo", ft_strdup(":")) == ERROR)
 		return (ERROR);
+	if (ht_add(prog_info->command_table, "ECHO", ft_strdup(":")) == ERROR)
+		return (ERROR);
 	if (ht_add(prog_info->command_table, "cd", ft_strdup(":")) == ERROR)
 		return (ERROR);
 	if (ht_add(prog_info->command_table, "pwd", ft_strdup(":")) == ERROR)
+		return (ERROR);
+	if (ht_add(prog_info->command_table, "PWD", ft_strdup(":")) == ERROR)
 		return (ERROR);
 	if (ht_add(prog_info->command_table, "export", ft_strdup(":")) == ERROR)
 		return (ERROR);

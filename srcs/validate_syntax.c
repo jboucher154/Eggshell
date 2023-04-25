@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 10:53:21 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:59:46 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int	validate_quotes(char **token)
 int	validate_redirect(char **token, char token_id)
 {
 	(*token)++;
-	if (!*token)
-		return (print_error("syntax error near unexpected token `newline'"));
 	move_pointer_past_ws(token);
+	if (!(**token))
+		return (print_error("syntax error near unexpected token `newline'"));
 	// if (ft_isascii(token[1]) == 0)
 	// 	return (print_error("Syntax error, unexpected token"));
 	if ((token_id == REDIRECT_IN && **token == '>') || (token_id == REDIRECT_OUT && **token == '<'))
@@ -64,7 +64,7 @@ int	validate_redirect_out_append(char **token)
 {
 	(*token) += 2;
 	move_pointer_past_ws(token);
-	if (!*token)
+	if (!(**token))
 		return (print_error("syntax error near unexpected token `newline'"));
 	// if (ft_isascii(token) == 0)
 	// 	return (print_error("Syntax error, unexpected token"));
@@ -80,7 +80,7 @@ int	validate_syntax(char *str)
 	int		valid;
 
 	token = str;
-	valid = 4;
+	valid = TRUE;
 	while (*token && valid)
 	{
 		while (*token && ft_strchr(TOKENS, *token) == NULL && ft_strchr(QUOTES, *token) == NULL)
@@ -88,6 +88,7 @@ int	validate_syntax(char *str)
 		if (!*token)
 			break ;
 		token_id = identify_token(token);
+		printf("TOKEN ID: %c\n", token_id);
 		if (token_id == PIPE)
 			valid = validate_pipe(token, str);
 		else if (*token == '"' || *token == '\'')
@@ -95,7 +96,10 @@ int	validate_syntax(char *str)
 		else if (*token == ';' || *token == '&')
 			valid = print_error("Error, we did not do the bonus!");
 		else if (token_id == REDIRECT_OUT || token_id == REDIRECT_IN)
+		{
 			valid = validate_redirect(&token, token_id);
+			printf("VALID: %i\n", valid);
+		}
 		if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)
 			valid = validate_redirect_out_append(&token);
 		if (valid)

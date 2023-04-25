@@ -2,11 +2,13 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 // colours
-#define GREEN "\e[1;92m"
-#define KNRM  "\x1B[0m"
-#define RED     "\033[31m"
-#define PROMPT "\e[1;92m🐣[EggShell] % \x1B[0m"
-
+# define GREEN "\e[1;92m"
+# define KNRM  "\x1B[0m"
+# define RED     "\033[31m"
+# define PROMPT "\e[1;92m🐣[EggShell] % \x1B[0m"
+# define UNSET	-2
+# define OPEN_ERROR -1
+# define CMD_ERROR 127
 
 # include "libft.h"
 # include "ft_hash.h"
@@ -100,9 +102,9 @@ char	**get_paths(t_eggcarton *prog_info);
 
 //executer.c
 void	executer(t_cmd *cmd, t_eggcarton *prog_info);
-void 	do_command(t_executable_cmd *cmd, t_eggcarton *prog_info);
+void 	do_commands(t_eggcarton *prog_info);
 void	run_system_executable(t_executable_cmd *cmd, t_eggcarton *prog_info);
-void	run_builtins(t_executable_cmd *cmd, t_eggcarton *prog_info);
+void	run_builtins(t_child *cmd, t_eggcarton *prog_info);
 void	exit_child(char *error_msg, char *arg, int exit_code);
 
 //command_tree.c

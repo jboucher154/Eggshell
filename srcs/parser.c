@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 13:46:02 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:37:26 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:33:02 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_cmd	*handle_pipe(char **parsed_string, char *end, int *cmd_count, int *pipe_co
 	{
 		move_to_token(parsed_string, end);
 		(*parsed_string)++;
+		move_pointer_past_ws(parsed_string);
 		(*pipe_count)++;
 		cmd = new_pipe(cmd, handle_pipe(parsed_string, end, cmd_count, pipe_count));
 	}
@@ -51,7 +52,6 @@ t_cmd	*parser(char *input_string, t_eggcarton *prog_info)
 // int	main(void)
 // {
 // 	t_cmd *cmd_tree = parser("<infile_me test 'this'|echo me");
-	
 // 	printf("TO PRINT TREE\n");
 // 	print_tree(cmd_tree, 0);
 

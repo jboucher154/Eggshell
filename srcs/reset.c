@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 12:49:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 10:01:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 18:10:11 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ void close_pipes(int *pipes, int pipe_count)
 	int index;
 	
 	index = 0;
+	printf("PIPE COUNT: %i\n", pipe_count);
 	if (pipe_count == 0)
 		return ;
-	while(pipes[index] < pipe_count)
+	while(index < pipe_count * 2)
 	{
+		printf("CLOSING PIPE: %i\n", index);
 		close(pipes[index]);
 		index++;
 	}
