@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 10:51:35 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/20 14:52:31 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:09:23 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ char	move_to_token(char **parsed_string, char *end)
 			break;
 	}
 	token_id = identify_token(*parsed_string);
-	// printf("token found: %c, first char of string: %c\n", token_id, **parsed_string);//
 	return (token_id);
 }
 
@@ -73,10 +72,9 @@ int	peek_next_token(char *current_index, char *look_for)
 	token = current_index;
 	while(token)
 	{
-		if (ft_strchr(TOKENS, *token)) //if token is found, break and advance index
+		if (ft_strchr(TOKENS, *token))
 			break ;
 		token++;
 	}
-	// printf("result of peek: %i\n", (*token != '\0' && ft_strchr(look_for, *token)));//
 	return (*token != '\0' && ft_strchr(look_for, *token)); //if not null and in the token string should return true
 }

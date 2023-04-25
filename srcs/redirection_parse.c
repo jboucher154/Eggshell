@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 14:42:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/24 13:31:46 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:06:43 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ t_cmd	*new_redirection(t_cmd *cmd, char **file_start, char token_id) //should th
 		new->fd = STDOUT_FILENO;
 	else if (token_id == REDIRECT_OUT_APPEND)
 		new->fd = STDOUT_FILENO;
-//didn't assess the from_fd might need to add something here related to --> 2>outfile -directs only stderror to the outfile
-	printf("FILENAME FOR REDIR: %s\n", new->filename);
 	return ((t_cmd *) new);
 }
 
@@ -59,7 +57,6 @@ t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end)
 	move_pointer_past_ws(parsed_string);
 	while (*parsed_string < end && (**parsed_string == '<' || **parsed_string == '>')) //check if there is a redirection coming
 	{
-		printf("CURRENT PARSED STRING IN REDIRECT: %s\n", *parsed_string);//
 		token_id = move_to_token(parsed_string, end); //move to redirection
 		if (token_id == REDIRECT_OUT_APPEND)
 			(*parsed_string) += 2;

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:44:45 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/21 15:44:55 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 08:58:23 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,6 @@ t_child	*new_child(void)
 	child->fd_to_close = -1; //
 	return (child);
 }
-
-// void clean_up_children(t_child **children)
-// {
-// 	int	index;
-// 	int arg_index;
-
-// 	index = 0;
-// 	while(children[index] && children[index]->args)
-// 	{
-// 		arg_index = 0;
-// 		while(children[index]->args[arg_index])
-// 		{
-// 			free(children[index]->args[arg_index]);
-// 			arg_index++;
-// 		}
-// 		free(children[index]->args);
-// 		index++;
-// 	}
-// 	free_children(children);
-// }	
 
 void	free_children(t_child **children)
 {

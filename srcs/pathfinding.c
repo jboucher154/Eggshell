@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:35:22 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/21 13:49:11 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:05:23 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,8 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 		}
 		if (path)
 			ht_add(prog_info->command_table, fname, path);
-		//free the paths
 	}
-	return (path); //might be null, just check for that later
+	return (path);
 }
 
 //may need to destroy the table in event of error

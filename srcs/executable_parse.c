@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/24 13:32:07 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:00:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,22 @@
 /*
 ** setup new executable command node
 */
-//return pointer to the endquote
 int	find_endquote(char *begin_quote)
 {
-	printf("FIND ENDQUOTE\n");
-	// char *temp;
-	int	 len_quote; //inclusive of quotes
 
-	len_quote = 1; //start at 1 as we are already at the first quote and will end on the endquote
+	int	 len_quote;
+
+	len_quote = 1;
 	while (begin_quote[len_quote] && begin_quote[len_quote] != *begin_quote)
 		len_quote++;
 	return (len_quote);
 }
 
-//return pointer to the whitespace after word
 int	find_end_word(char *begin_word)
 {
-	// char *temp;
 	int	len_word;
 
-	len_word = 0; //start at 0 as we are already at the first char of the word and will end on whitespace
+	len_word = 0;
 	while (begin_word[len_word] && !ft_strchr(WHITESPACE, begin_word[len_word]) && !ft_strchr(TOKENS, begin_word[len_word]))
 		len_word++;
 	return (len_word);
@@ -58,12 +54,11 @@ char	*get_arg(char **parsed_string)
 	}
 	arg = ft_substr(*parsed_string, 0, len_to_copy);
 	(*parsed_string) += len_to_copy;
-	printf("PARSED string: %s\n", *parsed_string);
-	printf("ARG FOUND: %s\n\n", arg);
 	return (arg);
 }
 
-t_executable_cmd	*new_executable_cmd(void) //remember to change index
+//remember to change index
+t_executable_cmd	*new_executable_cmd(void) 
 {
 	t_executable_cmd	*new;
 	int					index;
@@ -124,9 +119,8 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count)
 	head_cmd = (t_cmd *) cmd;
 	if (**parsed_string == '<' || **parsed_string == '>')
 		head_cmd = handle_redirection(head_cmd, parsed_string, end);
-	while (*parsed_string < end && !ft_strchr("|", **parsed_string))//took out ;from search
+	while (*parsed_string < end && !ft_strchr("|", **parsed_string))
 	{
-		printf("CURRENT PARSED STRING: %s\n", *parsed_string);//
 		cmd->args[arg_count] = get_arg(parsed_string);
 		if (!cmd->args[arg_count])
 		{

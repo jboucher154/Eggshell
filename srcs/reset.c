@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 12:49:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/21 15:42:52 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:07:13 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	clean_tree(t_cmd *cmd)
 
 void reset_program(t_eggcarton *prog_info, t_cmd **cmd)
 {
-	//cleanup the cmd_tree
 	if (*cmd)
 	{
 		clean_tree(*cmd);

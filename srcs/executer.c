@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/21 15:48:13 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:01:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,8 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 		printf("%sEggShell🥚: malloc failed%s\n", RED, KNRM);
 		return ;
 	}
-	//make the array for commands
 	if (create_child_array(prog_info) == ERROR)
 		printf("ERROR\n");
-		//cry
-	printf("WE did it! %i\n", cmd->type);
-
-	//iterate the tree and populate commands, open file descriptors
 	tree_iterator(cmd, prog_info, &index);
 	print_children(prog_info->children);
 	//iterate over array of commands, forking and sending to child processes

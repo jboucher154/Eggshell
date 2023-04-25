@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smorphet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/04/24 10:55:04 by smorphet         ###   ########.fr       */
+/*   Updated: 2023/04/25 08:58:14 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "ft_hash.h"
-// #include <string.h>//strerror
-// #include <errno.h>//
 
 // we need to test error handling with quotes
 void	echo_command(char **args)

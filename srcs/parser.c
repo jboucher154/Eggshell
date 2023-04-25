@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 13:46:02 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/20 14:19:34 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:04:19 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ t_cmd	*handle_pipe(char **parsed_string, char *end, int *cmd_count, int *pipe_co
 	if (peek_next_token(*parsed_string, "|"))
 	{
 		move_to_token(parsed_string, end);
-		//validate syntax
-		(*parsed_string)++; //move past the token so new command can process
+		(*parsed_string)++;
 		(*pipe_count)++;
 		cmd = new_pipe(cmd, handle_pipe(parsed_string, end, cmd_count, pipe_count));
 	}
@@ -33,7 +32,7 @@ t_cmd	*handle_pipe(char **parsed_string, char *end, int *cmd_count, int *pipe_co
 
 t_cmd	*parser(char *input_string, t_eggcarton *prog_info)
 {
-	t_cmd	*cmd; //will be the head of the returned tree
+	t_cmd	*cmd;
 	char	*parsed_string;
 	char	*end_parse;
 

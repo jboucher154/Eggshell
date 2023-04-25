@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 11:28:46 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/24 15:38:44 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:05:41 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	print_array(char **array)
 //if we want a temp variable here it could be a union....
 void	print_tree(t_cmd *cmd, int	depth)
 {
-	// printf("TYPE FOUND: %i\n", cmd->type);
 	if (cmd->type == REDIRECTION_CMD)
 	{
 		print_tree((t_cmd *)(((t_redirection *)cmd)->cmd), depth + 1);

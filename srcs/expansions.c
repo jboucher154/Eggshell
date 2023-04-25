@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:46:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/21 15:47:37 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:02:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	insert_new_value(char *str, char *new_str, char *variable, char *value)
 	value_index = 0;
 	new_index = 0;
 	old_index = 0;
-	while (str[old_index])// should this be new string ?
+	while (str[old_index])
 	{
-		if (str[old_index] == '$') // should tigger copying of variable value to the new string
+		if (str[old_index] == '$')
 		{
 			while (value && value[value_index])
 			{
@@ -51,24 +51,20 @@ void	insert_new_value(char *str, char *new_str, char *variable, char *value)
 		else
 			new_str[new_index++] = str[old_index++];
 	}
-	// printf("CHECKING old str index content: %c\n", str[old_index]);//
 	while (str[old_index])//should pick up after the variable name, finnish copying
 	{
 		new_str[new_index++] = str[old_index++];
 	}
 	new_str[new_index] = '\0';
-	// printf("CHECKING STRING AFTER VALUE INSERT: %s\n", new_str);//
 }
 
- //exands the variable
+//exands the variable
 char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
 {
 	char	*variable;
 	char	*value;
 	char	*new_str;
-	//char	*temp;
 
-	// printf("CHECKING STRING: %s\n", str);//
 	if (variable_start == NULL)
 		return (str);
 	variable =  ft_substr(variable_start, 0, find_end_word(variable_start));
@@ -80,15 +76,10 @@ char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
 		printf("%sEggShell🥚: variable expansion failed%s\n", RED, KNRM);
 		return (str); //return the origional string incase of failure
 	}
-	// printf("STR: %s , VARIABLE: %s, VALUE: %s\n", str, variable, value);
 	insert_new_value(str, new_str, variable, value);
-	// printf("CHECKING STRING AFTER VALUE INSERT: %s\n", new_str);//
 	free(variable);
-	free(str);//?
+	free(str);
 	return (expand_env_var(prog_info, new_str, ft_strchr(new_str, '$')));
-	//iterate and copy str & value
-	//return str
-	//check if $present if '$VAR' '"$VAR"' do not expand
 }
 
 //search for needed expansions
@@ -97,15 +88,11 @@ int	check_for_expansions(t_eggcarton *prog_info, char **to_check_arr, int file_f
 	int		index;
 	char	*variable_start;
 	char	*temp;
-	//to_check = "file name, single string" OR arguments;
+	
 	index = 0;
-	// printf("CHECKING ARRAY: \n");//
-	// print_array(to_check_arr);//
 	while (to_check_arr[index])
 	{
-		// printf("START OF CHECK ARR\n");//
 		variable_start = ft_strchr(to_check_arr[index], '$');
-		// printf("VARIABLE START ASSESSED\n");//
 		if (variable_start && to_check_arr[index][0] != '\'')
 		{
 			to_check_arr[index] = expand_env_var(prog_info, to_check_arr[index], variable_start);
@@ -114,7 +101,7 @@ int	check_for_expansions(t_eggcarton *prog_info, char **to_check_arr, int file_f
 		}
 		if (ft_strchr(QUOTES, to_check_arr[index][0]))
 		{
-			temp = quote_cut(to_check_arr[index]);//
+			temp = quote_cut(to_check_arr[index]);
 			free(to_check_arr[index]);
 			to_check_arr[index] = temp; //shoudl we bail here if the malloc failed?
 		}

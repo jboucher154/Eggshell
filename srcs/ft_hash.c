@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/20 14:57:31 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:03:11 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,6 @@ void	rehash_add(t_hash_table *table , t_hash_item *to_add)
 {
 	size_t		index;
 	t_hash_item	*tmp;
-	// int			rehash_res;
 
 	index = get_hash(to_add->key) % table->size;
 	to_add->prev = NULL;
@@ -259,15 +258,6 @@ size_t	ht_rehash(t_hash_table *table)
 	table->table = new_table;
 	return (SUCCESS);
 }
-			// tmp = item;
-			// item = item->next;
-			// tmp->next = NULL;
-			// tmp->prev = NULL;
-			// ht_add(table, tmp->key, tmp->value);
-			// free(tmp->key);
-			// // free(tmp->value);
-			// free(tmp);
-			// tmp = NULL;
 
 /*
 ** This function is used to get an item from the hash table
@@ -323,13 +313,12 @@ void	ht_print(t_hash_table *table)
 	printed = 0;
 	while (index < table->size && printed < table->filled)
 	{
-		// printf("print index: %i\n", index);
 		to_print = table->table[index];
 		while (to_print != NULL)
 		{
 			printf("%s=%s\n", to_print->key, (char *)to_print->value);
 			to_print = to_print->next;
-			printed++; //may not be needed
+			printed++;
 		}
 		index++;
 	}

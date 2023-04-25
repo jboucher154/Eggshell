@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:50:12 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/24 16:46:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:11:16 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,9 @@ void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index)
 	{
 		setup_pipes(prog_info, index);
 	}
-	prog_info->children[index]->args = cmd->args; //clean in child not cmd tree
-	printf("ARRAY BEFORE EXPANSION\n");
-	print_array(prog_info->children[index]->args); //test
+	prog_info->children[index]->args = cmd->args;
 	if (check_for_expansions(prog_info, prog_info->children[index]->args, 0) == ERROR)
 		printf("%sEggShell🥚: expansion error%s\n", RED, KNRM); //continue??
-	printf("ARRAY AFTER EXPANSION\n");
-	print_array(prog_info->children[index]->args); //test
 	prog_info->children[index]->path = get_path(prog_info, cmd->args[0]);
 }
 
@@ -33,9 +29,7 @@ void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int i
 {
 	int	fd;
 	char *error;
-	printf("FILENAME before expansion: %s\n", redirection->filename);//
 	check_for_expansions(prog_info, &(redirection->filename), 1);
-	printf("FILENAME after expansion: %s\n", redirection->filename);//
 	fd = -1;
 	if (redirection->token_id == REDIRECT_IN)
 	{
@@ -64,35 +58,35 @@ void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int i
 
 void	setup_pipes(t_eggcarton *prog_info, int index)
 {
-		int	read_index;
-		int	write_index;
-		
-		write_index = index * 2 + 1;
-		read_index = index - 1 * 2;
-		if (index == 0)
-		{
-			prog_info->children[index]->pipe_in = STDIN_FILENO;
-			prog_info->children[index]->pipe_out = prog_info->pipes[1];
+	int	read_index;
+	int	write_index;
+	
+	write_index = index * 2 + 1;
+	read_index = index - 1 * 2;
+	if (index == 0)
+	{
+		prog_info->children[index]->pipe_in = STDIN_FILENO;
+		prog_info->children[index]->pipe_out = prog_info->pipes[1];
 
-		}
-		else if (index == prog_info->cmd_count)
-		{
-			read_index = index - 1 * 2;
-			prog_info->children[index]->pipe_in = prog_info->pipes[read_index];
-			prog_info->children[index]->pipe_out = STDOUT_FILENO;	
-		}
-		else
-		{
-			prog_info->children[index]->pipe_in = prog_info->pipes[read_index];
-			prog_info->children[index]->pipe_out = prog_info->pipes[write_index];
-		}
+	}
+	else if (index == prog_info->cmd_count)
+	{
+		read_index = index - 1 * 2;
+		prog_info->children[index]->pipe_in = prog_info->pipes[read_index];
+		prog_info->children[index]->pipe_out = STDOUT_FILENO;	
+	}
+	else
+	{
+		prog_info->children[index]->pipe_in = prog_info->pipes[read_index];
+		prog_info->children[index]->pipe_out = prog_info->pipes[write_index];
+	}
 		
-		//do we need to check if there will be an out?
-		// do these after we fork
-		// dup2(prog_info->pipes[read_index], 0); //reroute pipe contents to stdin
-		// dup2(prog_info->pipes[write_index], 1); //reroute stdout to outfile
-		// close(prog_info->pipes[write_index]); //close write end of pipe
 }
+	//do we need to check if there will be an out?
+	// do these after we fork
+	// dup2(prog_info->pipes[read_index], 0); //reroute pipe contents to stdin
+	// dup2(prog_info->pipes[write_index], 1); //reroute stdout to outfile
+	// close(prog_info->pipes[write_index]); //close write end of pipe
 
 int	create_pipes(t_eggcarton *prog_info)
 {
@@ -128,24 +122,19 @@ int	tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index)//index for all
 		return (SUCCESS);
 	if (cmd->type == PIPE_CMD)
 	{
-		//left
 		tree_iterator((t_cmd *)((t_pipe *)cmd)->left, prog_info, index);
-		//increment index
 		(*index)++;
-		//right
 		tree_iterator((t_cmd *)((t_pipe *)cmd)->right, prog_info, index);
 		//return (tree_iterator(left) == SUCCESS && tree_iterator(right) == SUCCESS)?
 	}
 	else if (cmd->type == REDIRECTION_CMD)
 	{
-		//assign to current index in children?
 		setup_redirection((t_redirection *)cmd, prog_info, *index);
 		tree_iterator((t_cmd *)((t_redirection *)cmd)->cmd, prog_info, index);
 	}
-	if (cmd->type == EXECUTABLE_CMD)
+	else if (cmd->type == EXECUTABLE_CMD)
 	{
-		//setup the command stuffs to current index
 		setup_child((t_executable_cmd *)cmd, prog_info, *index);
 	}
-	return (SUCCESS);//?
+	return (SUCCESS);
 }

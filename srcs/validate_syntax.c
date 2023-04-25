@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/24 17:03:45 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 09:13:44 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	validate_redirect(char *token)
 int	validate_redirect_out_append(char **token)
 {
 	if (ft_strchr(WHITESPACE, *token[0]) == NULL && ft_isalpha(*token[0]) == 0 \
-	&& token[0] != '$')
+	&& *token[0] != '$')
 	{
 		ft_putstr_fd("\033[31mEggShell🥚: syntax error near unexpected token `>'\x1B[0m\n", 2);
 		return (FALSE);
