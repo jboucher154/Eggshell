@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:50:12 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:11:16 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 10:07:33 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,16 @@ void	setup_pipes(t_eggcarton *prog_info, int index)
 	int	read_index;
 	int	write_index;
 	
-	write_index = index * 2 + 1;
-	read_index = index - 1 * 2;
+	write_index = (index * 2) + 1;
+	read_index = (index - 1) * 2;
+	printf("READ INDEX: %i   WRITE INDEX: %i \n", read_index, write_index);
 	if (index == 0)
 	{
 		prog_info->children[index]->pipe_in = STDIN_FILENO;
-		prog_info->children[index]->pipe_out = prog_info->pipes[1];
-
+		prog_info->children[index]->pipe_out = prog_info->pipes[write_index];
 	}
-	else if (index == prog_info->cmd_count)
+	else if (index == prog_info->cmd_count - 1)
 	{
-		read_index = index - 1 * 2;
 		prog_info->children[index]->pipe_in = prog_info->pipes[read_index];
 		prog_info->children[index]->pipe_out = STDOUT_FILENO;	
 	}
@@ -80,8 +79,9 @@ void	setup_pipes(t_eggcarton *prog_info, int index)
 		prog_info->children[index]->pipe_in = prog_info->pipes[read_index];
 		prog_info->children[index]->pipe_out = prog_info->pipes[write_index];
 	}
-		
+	printf("CHILD %i: in/read: %i out/write: %i\n", index, prog_info->children[index]->pipe_in, prog_info->children[index]->pipe_out);
 }
+
 	//do we need to check if there will be an out?
 	// do these after we fork
 	// dup2(prog_info->pipes[read_index], 0); //reroute pipe contents to stdin
