@@ -6,7 +6,7 @@
 #    By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 15:56:42 by jebouche          #+#    #+#              #
-#    Updated: 2023/02/06 17:09:29 by jebouche         ###   ########.fr        #
+#    Updated: 2023/04/21 16:00:43 by jebouche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRCS =  ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		ft_lstclear.c ft_lstadd_front.c ft_lstadd_back.c ft_printf.c conversion.c \
 		flags.c handle_specifiers.c legend.c characters.c hexadecimal.c itoa_base.c \
 		numbers.c padding.c percent.c unsigned.c num_utils.c get_next_line.c ft_gnl_join.c
-		
+
 OBJS = $(SRCS:.c=.o)
 
 DEPS = ./includes/libft.h ./includes/ft_printf.h
