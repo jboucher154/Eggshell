@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 11:42:32 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:13:08 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 10:07:26 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FT_AST_H
 
 //tokens
-#define TOKENS "|<>" //"|&<>();"
+#define TOKENS "|<>&;" //"|&<>();"
 #define WHITESPACE " \t\n\r\a"
 #define QUOTES "'\""
 //boolean

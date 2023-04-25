@@ -6,31 +6,30 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:13:44 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/25 10:53:21 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "ft_ast.h"
 
+int	print_error(char *error_msg)
+{
+	ft_putstr_fd("\033[31mEggShell🥚: ", 2);
+	ft_putstr_fd(error_msg, 2);
+	ft_putstr_fd("\x1B[0m\n", 2);
+	return (FALSE);
+}
+
 int	validate_pipe(char *token, char *str)
 {
 	if (token == str || token[-1] == '<' || token[-1] == ';' || \
 		token[1] == ';')
-	{
-		ft_putstr_fd("\033[31mEggShell🥚: syntax error near unexpected token `|'\x1B[0m\n", 2);
-		return (FALSE);
-	}
+		return (print_error("Syntax error, unexpected token"));
 	if (token[1] == '|')
-	{
-		ft_putstr_fd("\033[31mEggShell🥚: Error, we did not do the bonus!\x1B[0m\n", 2);
-		return (FALSE);
-	}
+		return (print_error("Error, we did not do the bonus!"));
 	if (token[-1] == '<' && token[-2] == '<')
-	{
-		ft_putstr_fd("\033[31mEggShell🥚: syntax error near unexpected token `|'\x1B[0m\n", 2);
-		return (FALSE);
-	}
+		return (print_error("Syntax error, unexpected token"));
 	return (TRUE);
 }
 
@@ -43,33 +42,34 @@ int	validate_quotes(char **token)
 	while (**token && **token != quote_to_match)
 		(*token)++;
 	if (!**token)
-	{
-		ft_putstr_fd("\033[31mEggShell🥚: syntax error unclosed quotes\x1B[0m\n", 2);
-		return (FALSE);
-	}
+		return (print_error("Syntax error, unclosed quotes"));
 	else
 		return (TRUE);
 }
 
-int	validate_redirect(char *token)
+int	validate_redirect(char **token, char token_id)
 {
-	if (ft_strchr(WHITESPACE, token[1]) == NULL && ft_isalpha(token[1]) != 1 && \
-	token[1] != '$')
-	{
-		ft_putstr_fd("\033[31mEggShell🥚: syntax error near unexpected token `>'\x1B[0m\n", 2);
-		return (FALSE);
-	}
+	(*token)++;
+	if (!*token)
+		return (print_error("syntax error near unexpected token `newline'"));
+	move_pointer_past_ws(token);
+	// if (ft_isascii(token[1]) == 0)
+	// 	return (print_error("Syntax error, unexpected token"));
+	if ((token_id == REDIRECT_IN && **token == '>') || (token_id == REDIRECT_OUT && **token == '<'))
+		return (print_error("Syntax error, unexpected token"));
 	return (TRUE);
 }
 
 int	validate_redirect_out_append(char **token)
 {
-	if (ft_strchr(WHITESPACE, *token[0]) == NULL && ft_isalpha(*token[0]) == 0 \
-	&& *token[0] != '$')
-	{
-		ft_putstr_fd("\033[31mEggShell🥚: syntax error near unexpected token `>'\x1B[0m\n", 2);
-		return (FALSE);
-	}
+	(*token) += 2;
+	move_pointer_past_ws(token);
+	if (!*token)
+		return (print_error("syntax error near unexpected token `newline'"));
+	// if (ft_isascii(token) == 0)
+	// 	return (print_error("Syntax error, unexpected token"));
+	if (**token == '>' || **token == '<')
+		return (print_error("Syntax error, unexpected token"));
 	return (TRUE);
 }
 
@@ -92,8 +92,10 @@ int	validate_syntax(char *str)
 			valid = validate_pipe(token, str);
 		else if (*token == '"' || *token == '\'')
 			valid = validate_quotes(&token);
+		else if (*token == ';' || *token == '&')
+			valid = print_error("Error, we did not do the bonus!");
 		else if (token_id == REDIRECT_OUT || token_id == REDIRECT_IN)
-			valid = validate_redirect(token);
+			valid = validate_redirect(&token, token_id);
 		if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)
 			valid = validate_redirect_out_append(&token);
 		if (valid)
