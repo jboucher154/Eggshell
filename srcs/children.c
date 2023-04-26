@@ -6,12 +6,11 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:44:45 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 16:57:20 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:59:03 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "ft_ast.h"
 
 t_child	*new_child(void)
 {

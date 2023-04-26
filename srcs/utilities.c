@@ -6,12 +6,12 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:20:14 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/24 13:23:00 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:59:04 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "ft_ast.h"
+
 
 void	move_pointer_past_ws(char **str_to_move)
 {

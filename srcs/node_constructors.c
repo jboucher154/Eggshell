@@ -6,13 +6,11 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:54:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 15:20:10 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:59:51 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "ft_ast.h"
-
 
 /*
 ** setup new pipe node

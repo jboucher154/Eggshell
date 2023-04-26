@@ -9,10 +9,17 @@
 # define UNSET	-2
 # define OPEN_ERROR -1
 # define CMD_ERROR 127
+// # define 
+//tokens
+#define TOKENS "|<>&;" //"|&<>();"
+#define WHITESPACE " \t\n\r\a"
+#define QUOTES "'\""
+//boolean
+#define TRUE 1
+#define FALSE 0
 
 # include "libft.h"
 # include "ft_hash.h"
-# include "ft_ast.h"
 
 // for printf, perror
 # include <stdio.h> 
@@ -65,6 +72,61 @@
 //for error codes
 # include <errno.h>
 
+enum e_tokens
+{
+	ALPHA = 'a',
+	PIPE = '|',
+	REDIRECT_IN = '<',
+	REDIRECT_OUT = '>',
+	REDIRECT_OUT_APPEND = '+',
+	REDIRECT_HERE = 'h'
+};
+
+//types of commands
+enum e_type
+{
+	EXECUTABLE_CMD,
+	PIPE_CMD,
+	REDIRECTION_CMD,
+	LINE,
+};
+
+//this is the base struct for all the other structs
+typedef struct s_cmd
+{
+	int	type;
+}	t_cmd;
+
+//this is the struct for the executable command
+//has pointers to beginning and end of the command
+//has a pointer to the arguments for the command
+typedef struct s_executable_cmd
+{
+	int		type;
+	char	*cmd_path;
+	char	**args;
+}	t_executable_cmd;
+
+// pipe = '|'
+typedef struct s_pipe
+{
+	int	type;
+	struct s_cmd	*left;
+	struct s_cmd	*right;
+}	t_pipe;
+
+// redirectors = '<' '>' '>>'
+typedef struct s_redirection
+{
+	int	type;
+	struct s_cmd	*cmd;
+	char			*filename;
+	int				token_id;
+	int				fd;
+	int				from_fd;
+}	t_redirection;
+
+
 //struct to send to child
 typedef struct s_child
 {
@@ -92,7 +154,53 @@ typedef	struct s_eggcarton
 
 
 //functions for PARSER
+////////////////////////// FROM AST_H
+//validate_syntax.c
+int	validate_syntax(char *str);
+int	validate_pipe(char *token, char *str);
+int	validate_redirect_in(char *token_start);
+int	validate_redirect_out(char *token_start);
+int	validate_redirect_out_append(char **token_start);
+int  validate_quotes(char **token);
+// int	validate_or(char *token_start);
+// int	validate_and(char *token_start);
+// int	validate_open_parenthesis(char *token_start);
+// int	validate_close_parenthesis(char *token_start);
 
+//parse.c
+// t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
+// t_cmd	*parse_line(char **parse_string, char *end);
+// t_cmd	*handle_block(char **parse_string, char *end);
+t_cmd	*handle_redirection(t_cmd *cmd, char **parse_string, char *end);
+t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton *prog_info);
+t_cmd	*handle_pipe(char **parsed_string, char *end, int *cmd_count, int *pipe_count, t_eggcarton *prog_info);
+
+//tokenize.c
+char	move_to_token(char **parse_string, char *end);
+char	identify_token(char *token_start);
+int		peek_next_token(char *current_index, char *look_for);
+
+//node_constructors.c
+t_cmd	*new_line(t_cmd *left, t_cmd *right);
+t_cmd	*new_pipe(t_cmd *left, t_cmd *right);
+
+//redirection_parse.c
+t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end);
+t_cmd	*new_redirection(t_cmd *cmd, char **file_start, char token_id);
+char	*find_filename(char *file_start);//for redirection
+
+//executable_parse.c
+t_executable_cmd	*new_executable_cmd(void);
+char				*find_args(char *cmd_start, char ***args); //for the executable command
+int					count_args(char *arg_start); //for the executable command
+// int				skip_redirection(char *redir_start);//for the executable command
+int					find_end_word(char *begin_word);//for the executable command
+int					find_endquote(char *begin_quote);//for the executable command
+
+//PRINT_TREE
+void	print_tree(t_cmd *cmd, int	depth);
+
+///////////////////////////////
 
 //pathfinding.c
 char	*get_path(t_eggcarton *prog_info, char *fname);
@@ -137,6 +245,9 @@ void	print_children(t_child **childs);
 void	print_tree(t_cmd *cmd, int	depth);
 void	print_array(char **array);
 
+//validate_syntax.c
+int	print_error(char *error_msg);
+
 
 //children.c
 int		create_child_array(t_eggcarton *prog_info);
@@ -144,7 +255,7 @@ void	free_children(t_child **children);
 t_child	*new_child(void);
 
 //expansions.c
-int		check_for_expansions(t_eggcarton *prog_info, char **to_check_arr, int file_flag);
+char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess);
 char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start);
 void	insert_new_value(char *str, char *new_str, char *variable, char *value);
 char	*quote_cut(char *to_check_str);

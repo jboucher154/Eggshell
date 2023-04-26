@@ -6,12 +6,12 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:50:12 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 19:08:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/26 18:01:19 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "ft_ast.h"
+
 
 void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index)
 {
@@ -20,8 +20,8 @@ void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index)
 		setup_pipes(prog_info, index);
 	}
 	prog_info->children[index]->args = cmd->args;
-	if (check_for_expansions(prog_info, prog_info->children[index]->args, 0) == ERROR)
-		printf("%sEggShell🥚: expansion error%s\n", RED, KNRM); //continue??
+	// if (check_for_expansions(prog_info, prog_info->children[index]->args, 0) == ERROR)
+	// 	print_error("expansion error");//continue??
 	prog_info->children[index]->path = get_path(prog_info, cmd->args[0]);
 }
 
@@ -29,7 +29,7 @@ void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int i
 {
 	int	fd;
 	char *error;
-	check_for_expansions(prog_info, &(redirection->filename), 1);
+	// check_for_expansions(prog_info, &(redirection->filename), 1);
 	fd = -1;
 	if (redirection->token_id == REDIRECT_IN)
 	{
@@ -97,7 +97,7 @@ int	create_pipes(t_eggcarton *prog_info)
 	prog_info->pipes = malloc(sizeof (int) * (prog_info->pipe_count * 2));
 	if (!prog_info->pipes)
 	{	
-		printf("%sEggShell🥚: malloc failed%s\n", RED, KNRM);
+		print_error("malloc failed");
 		return (ERROR);
 	}
 	pipe_ret = 0;
@@ -115,7 +115,6 @@ int	create_pipes(t_eggcarton *prog_info)
 	}
 	return (SUCCESS);
 }
-
 
 int	tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index)//index for all the ararys
 {

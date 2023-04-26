@@ -6,12 +6,11 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:35:22 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 15:01:46 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:59:37 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "ft_ast.h"
 #include "ft_hash.h"
 
 /*get_paths takes in the environment variable array and returns an array of 

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:55:14 by smorphet          #+#    #+#             */
-/*   Updated: 2023/04/25 09:42:24 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/26 12:37:35 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	initialize_eggcarton(t_eggcarton *prog_info, char **envp)
 	prog_info->pids = NULL;
 	prog_info->children = NULL;
 	if (set_shell_level(prog_info) == ERROR)
-		printf("SHELL LEVEL NOT SET!");
+		print_error("SHELL LEVEL NOT SET!");
 	return (SUCCESS);
 }
 

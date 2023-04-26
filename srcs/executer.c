@@ -6,12 +6,11 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 19:14:45 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:59:22 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "ft_ast.h"
 
 
 void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
@@ -48,6 +47,7 @@ void	wait_for_children(t_eggcarton *prog_info)
 {
 	int	exit_status;
 	int	index;
+	// int wexit_status;
 	
 	index = 0;
 	while (index < prog_info->pipe_count + 1)
@@ -56,8 +56,11 @@ void	wait_for_children(t_eggcarton *prog_info)
 		{
 			printf("WAITING for pid: %i\n", prog_info->pids[index]);
 			waitpid(prog_info->pids[index], &exit_status, 0);
-			// waitpid(prog_info->pids[index], &exit_status, 0);
 			printf("EXIT STATUS of CHILD %i: %i\n", index, exit_status);
+			printf("WEXIT STATUS of CHILD %i: %i\n", index, WEXITSTATUS(exit_status));
+			// waitpid(prog_info->pids[1], &exit_status, 0);
+			// printf("EXIT STATUS of CHILD %i: %i\n", 1, exit_status);
+			// printf("WEXIT STATUS of CHILD %i: %i\n", 1, WEXITSTATUS(exit_status));
 		}
 		index++;
 	}
@@ -90,44 +93,41 @@ static void	bail_on_child(char *cmd)
  * that are not needed, and then execve the command. If the command is not
  * found, it will exit with an error code.
  */
-void	pipe_child(t_eggcarton *prog_info, int index, int *temp_pipe)
+void	pipe_child(t_eggcarton *prog_info, int index)
 {
+	// sleep(15);//
 //process pipes dups, 
-	printf("hi1 from child :) %d pipe write %d pipe read %d\n", index, prog_info->children[index]->pipe_out, prog_info->children[index]->pipe_in);
+	// printf("hi1 from child :) %d pipe write %d pipe read %d\n", index, prog_info->children[index]->pipe_out, prog_info->children[index]->pipe_in);
 	if (prog_info->pipe_count > 0)
 	{
 		if (prog_info->children[index]->pipe_in != UNSET)
 		{
-			dup2(temp_pipe[0], STDIN_FILENO); // in  == read
-			// dup2(prog_info->children[index]->pipe_in, STDIN_FILENO); // in  == read
+			dup2(prog_info->children[index]->pipe_in, STDIN_FILENO); // in  == read
 		}
 		if (prog_info->children[index]->pipe_out != UNSET)
 		{
-			dup2(temp_pipe[1], STDOUT_FILENO); // out == write
-			// dup2(prog_info->children[index]->pipe_out, STDOUT_FILENO); // out == write
+			dup2(prog_info->children[index]->pipe_out, STDOUT_FILENO); // out == write
 		}
 	}
 	close_pipes(prog_info->pipes, prog_info->pipe_count);
-	close(temp_pipe[0]);
-	close(temp_pipe[1]);
 //then redirection dups
-	if (prog_info->children[index]->redir_in != UNSET)
-	{
-		if (prog_info->children[index]->redir_in == OPEN_ERROR)
-			write(STDIN_FILENO, "\0", 1);
-		else
-			dup2(prog_info->children[index]->redir_in, STDIN_FILENO);
-	}
-	if (prog_info->children[index]->redir_out != UNSET)
-	{
-		if (prog_info->children[index]->redir_in == OPEN_ERROR)
-			ft_putstr_fd("OUTFILE OPEN ERROR, investigate proper course\n", 2);
-		else
-			dup2(prog_info->children[index]->redir_out, STDOUT_FILENO);
-	}
+	// if (prog_info->children[index]->redir_in != UNSET)
+	// {
+	// 	if (prog_info->children[index]->redir_in == OPEN_ERROR)
+	// 		write(STDIN_FILENO, "\0", 1);
+	// 	else
+	// 		dup2(prog_info->children[index]->redir_in, STDIN_FILENO);
+	// }
+	// if (prog_info->children[index]->redir_out != UNSET)
+	// {
+	// 	if (prog_info->children[index]->redir_in == OPEN_ERROR)
+	// 		ft_putstr_fd("OUTFILE OPEN ERROR, investigate proper course\n", 2);
+	// 	else
+	// 		dup2(prog_info->children[index]->redir_out, STDOUT_FILENO);
+	// }
 //close all the fds
-	close(prog_info->children[index]->redir_in);
-	close(prog_info->children[index]->redir_out);
+	// close(prog_info->children[index]->redir_in);
+	// close(prog_info->children[index]->redir_out);
 
 	if (prog_info->children[index]->path == NULL)
 		bail_on_child(prog_info->children[index]->args[0]);
@@ -153,11 +153,9 @@ void	do_commands(t_eggcarton *prog_info)
 {
 	int		index;
 	int 	current_pid;
-	int		temp_pipe[2];//
 
 	index = 0;
 	current_pid = 0;
-	pipe(temp_pipe);//
 	while (index < prog_info->pipe_count + 1)
 	{
 		if ( prog_info->children[index]->path && prog_info->children[index]->path[0] == ':')
@@ -170,27 +168,25 @@ void	do_commands(t_eggcarton *prog_info)
 			current_pid = fork(); //child pid == 0
 			if (current_pid == 0)
 			{
-				pipe_child(prog_info, index, temp_pipe);//
-				printf("COMMAND DOES NOT EXIST, OR SOMETHING ELSE WAS WRONG\n");//
+				pipe_child(prog_info, index);//
+				print_error("COMMAND DOES NOT EXIST, OR SOMETHING ELSE WAS WRONG");
 				exit(1);//
 			}
 			else
-			{
-				printf("current child[%i]		PID: %i\n", index, current_pid);
+			{  
+				// printf("current child[%i]		PID: %i\n", index, current_pid);
 				prog_info->pids[index] = current_pid;
-				printf("-----PARENT CLOSING-----\n");
-				close(prog_info->children[index]->redir_in);
-				close(prog_info->children[index]->redir_out);
-				close_pipes(prog_info->pipes, prog_info->pipe_count);
-				close(temp_pipe[0]);
-				close(temp_pipe[1]);
-				printf("-----------------\n");
 			}
 		}
 		index++;
 	}
+	// printf("-----PARENT CLOSING-----\n");
+	// close(prog_info->children[index]->redir_in);
+	// close(prog_info->children[index]->redir_out);
+	close_pipes(prog_info->pipes, prog_info->pipe_count);
+	// printf("-----------------\n");
 	wait_for_children(prog_info);
-	printf("DONE WAITING!\n");//
+	// printf("DONE WAITING!\n");//
 }
 
 
@@ -199,21 +195,22 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 	int	index;
 
 	index = 0;
+	print_tree(cmd, 0);//
 //	prog_info->pipes = create_pipes(prog_info);
 	// printf("EGGCARTON info: cmd count: %i, pipe count: %i\n", prog_info->cmd_count, prog_info->pipe_count);
 	if (create_pipes(prog_info) == ERROR)
 	{
-		printf("%sEggShell🥚: pipe creation failed%s\n", RED, KNRM);
+		print_error("pipe creation failed");
 		return ;
 	}
 	prog_info->pids = malloc(sizeof(int) * prog_info->cmd_count); //ft_calloc?
 	if (!prog_info->pids)
 	{	
-		printf("%sEggShell🥚: malloc failed%s\n", RED, KNRM);
+		print_error("malloc failed");
 		return ;
 	}
 	if (create_child_array(prog_info) == ERROR)
-		printf("ERROR\n");
+		print_error("ERROR");
 
 	tree_iterator(cmd, prog_info, &index);
 	print_children(prog_info->children);//

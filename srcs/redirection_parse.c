@@ -6,12 +6,11 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 14:42:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:06:43 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:59:24 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "ft_ast.h"
 
 char	*find_filename(char *file_start)  //can probably turn this into a utility that finds end of 'word' and returns malloc'd copy
 {
@@ -64,9 +63,7 @@ t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end)
 			(*parsed_string)++;
 		move_pointer_past_ws(parsed_string);
 		if (identify_token(*parsed_string) != ALPHA)
-		{
-			printf("ERROR!!!!!!!\n");// print error and exit this process!!
-		}
+			print_error("Error");// print error and exit this process!!
 		new_redir = new_redirection(new_redir, parsed_string, token_id);
 		move_pointer_past_ws(parsed_string);
 	}
