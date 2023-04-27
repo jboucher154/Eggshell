@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 11:28:46 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 17:59:30 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:49:37 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_array(char **array)
 	index = 0;
 	while (array && array[index])
 	{
-		printf("ARG: %s ", array[index]);
+		printf("ARG: |%s| ", array[index]);
 		index++;
 	}
 	printf("\n");
