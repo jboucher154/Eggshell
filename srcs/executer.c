@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 13:12:27 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 16:13:35 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 
 	if (prog_info->children[index]->path == NULL)
 		bail_on_child(prog_info->children[index]->args[0]);
-	else if (prog_info->children[index]->redir_in == OPEN_ERROR) //targeted to redir in, should this apply to redir out as well?
-		exit(1);
+	else if (prog_info->children[index]->redir_in == OPEN_ERROR || prog_info->children[index]->redir_out == OPEN_ERROR) //targeted to redir in, should this apply to redir out as well?
+		exit(1);//
 	execve(prog_info->children[index]->path, prog_info->children[index]->args, prog_info->og_env);
 	exit_child("exeve failed: ", prog_info->children[index]->args[0], errno);
 }
