@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:44:45 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 17:59:03 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 11:00:23 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_child	*new_child(void)
 	child->redir_out = UNSET;
 	child->pipe_in = UNSET;
 	child->pipe_out = UNSET;
-	child->fd_to_close = UNSET; //
 	return (child);
 }
 
@@ -36,8 +35,7 @@ void	free_children(t_child **children)
 	index = 0;
 	while (children[index])
 	{
-		close(children[index]->redir_in);//
-		close(children[index]->redir_out);//
+		close_redirections(children[index]->redir_in, children[index]->redir_out);
 		free(children[index]);
 		index++;
 	}

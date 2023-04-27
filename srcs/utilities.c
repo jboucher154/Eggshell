@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:20:14 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 10:15:55 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:58:57 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,12 @@ int	print_error(char *error_msg)
 	ft_putstr_fd(error_msg, 2);
 	ft_putstr_fd("\x1B[0m\n", 2);
 	return (FALSE);
+}
+
+void	close_redirections(int fd_in, int fd_out)
+{
+	if (fd_in != UNSET)
+		close(fd_in);
+	if (fd_out != UNSET)
+		close(fd_out);
 }

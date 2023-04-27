@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 10:09:49 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 11:18:27 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	exit_child(char *error_msg, char *arg, int exit_code)
 	ft_putstr_fd("\033[31mEggShell🥚: ", STDERR_FILENO);
 	ft_putstr_fd(error_msg, STDERR_FILENO);
 	ft_putendl_fd(arg, STDERR_FILENO);
-	ft_putstr_fd("\x1B[0m\n", 2);
+	ft_putstr_fd("\x1B[0m", STDERR_FILENO);
 	exit(exit_code);
 }
 
@@ -115,8 +115,7 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 	// 		dup2(prog_info->children[index]->redir_out, STDOUT_FILENO);
 	// }
 //close all the fds
-	// close(prog_info->children[index]->redir_in);
-	// close(prog_info->children[index]->redir_out);
+	// close_redirections(prog_info->children[index]->redir_in, prog_info->children[index]->redir_out);
 
 	if (prog_info->children[index]->path == NULL)
 		bail_on_child(prog_info->children[index]->args[0]);
@@ -126,18 +125,6 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 	exit_child("exeve failed: ", prog_info->children[index]->args[0], errno);
 }
 
-	// if (cmd->read_from < 0)
-	// 	write(STDIN_FILENO, "\0", 1);
-	// else
-	// {
-	// 	dup2(cmd->read_from, STDIN_FILENO);
-	// 	close(cmd->read_from);
-	// }
-	// dup2(cmd->write_to, STDOUT_FILENO);
-	// close(cmd->write_to);
-	// close(cmd->to_close);
-	//checks before execution
-
 void	do_commands(t_eggcarton *prog_info)
 {
 	int		index;
@@ -145,9 +132,10 @@ void	do_commands(t_eggcarton *prog_info)
 
 	index = 0;
 	current_pid = 0;
+	print_children(prog_info->children);//
 	while (index < prog_info->pipe_count + 1)
 	{
-		if ( prog_info->children[index]->path && prog_info->children[index]->path[0] == ':')
+		if (prog_info->children[index]->path && prog_info->children[index]->path[0] == ':')
 		{
 			run_builtins(prog_info->children[index], prog_info);
 			prog_info->pids[index] = -1;
@@ -176,7 +164,7 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 	int	index;
 
 	index = 0;
-	print_tree(cmd, 0);//
+	// print_tree(cmd, 0);//
 	if (create_pipes(prog_info) == ERROR)
 	{
 		print_error("pipe creation failed");
@@ -192,7 +180,7 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 		print_error("ERROR");
 
 	tree_iterator(cmd, prog_info, &index);
-	print_children(prog_info->children);//
+	// print_children(prog_info->children);//
 	do_commands(prog_info);
 	free_children(prog_info->children);
 }
