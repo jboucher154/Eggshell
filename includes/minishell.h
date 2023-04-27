@@ -170,7 +170,7 @@ int  validate_quotes(char **token);
 // t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
 // t_cmd	*parse_line(char **parse_string, char *end);
 // t_cmd	*handle_block(char **parse_string, char *end);
-t_cmd	*handle_redirection(t_cmd *cmd, char **parse_string, char *end);
+// t_cmd	*handle_redirection(t_cmd *cmd, char **parse_string, char *end);
 t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton *prog_info);
 t_cmd	*handle_pipe(char **parsed_string, char *end, int *cmd_count, int *pipe_count, t_eggcarton *prog_info);
 
@@ -184,8 +184,8 @@ t_cmd	*new_line(t_cmd *left, t_cmd *right);
 t_cmd	*new_pipe(t_cmd *left, t_cmd *right);
 
 //redirection_parse.c
-t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end);
-t_cmd	*new_redirection(t_cmd *cmd, char **file_start, char token_id);
+t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end, t_eggcarton *prog_info);
+t_cmd	*new_redirection(t_cmd *cmd, char **file_start, char token_id, t_eggcarton *prog_info);
 char	*find_filename(char *file_start);//for redirection
 
 //executable_parse.c
@@ -195,6 +195,8 @@ int					count_args(char *arg_start); //for the executable command
 // int				skip_redirection(char *redir_start);//for the executable command
 int					find_end_word(char *begin_word);//for the executable command
 int					find_endquote(char *begin_quote);//for the executable command
+char				*get_arg(char **parsed_string, t_eggcarton *prog_info);
+
 
 //PRINT_TREE
 void	print_tree(t_cmd *cmd, int	depth);

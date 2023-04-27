@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:50:12 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 12:35:25 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 13:05:34 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,22 +101,22 @@ int	create_pipes(t_eggcarton *prog_info)
 	if (pipe_ret == -1)
 	{
 		error = strerror(errno);
-		printf("%sEggShell🥚:%s%s\n", RED, error, KNRM);
+		print_error(error);
 	}
 	return (SUCCESS);
 }
 
-void	process_redirections(t_redirection *redir, t_eggcarton *prog_info)
+void	process_redirections(t_redirection *redir, t_eggcarton *prog_info, int index)
 {
 	if (redir->cmd->type == EXECUTABLE_CMD)
 	{
-		setup_redirection(redir, prog_info, *index);
+		setup_redirection(redir, prog_info, index);
 		return ;
 	}
 	else if (redir->cmd->type == REDIRECTION_CMD)
 	{
-		process_redirections(redir->cmd, prog_info);
-		setup_redirection(redir, prog_info, *index);
+		process_redirections(((t_redirection *)redir->cmd), prog_info, index);
+		setup_redirection(redir, prog_info, index);
 	}
 }
 
@@ -135,7 +135,7 @@ int	tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index)//index for all
 	{
 		// setup_redirection((t_redirection *)cmd, prog_info, *index);
 		//send executable form here
-		process_redirections((t_redirection *)cmd, prog_info);
+		process_redirections((t_redirection *)cmd, prog_info, *index);
 		while (cmd->type == REDIRECTION_CMD)
 			cmd = ((t_redirection *)cmd)->cmd;
 		tree_iterator(cmd, prog_info, index);

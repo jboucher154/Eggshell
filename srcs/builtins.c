@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/04/25 15:41:14 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 13:08:27 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	cd_command(char	**args, t_hash_table *ht_env)
 	if (chdir(to) == -1)
 	{
 		error = strerror(errno);
-		printf("%sEggShell🥚: %s: %s%s\n", RED, args[1], error, KNRM);
+		print_error(error);
 	}
 	current_wd = getcwd(NULL, 0);
 	ht_update_value(ht_env, "PWD", (void *) current_wd);
@@ -82,7 +82,6 @@ void	unset_command(char **args, t_hash_table *ht_env)
 void	export_command(char **args, t_hash_table *ht_env)
 {
 	//needs to handle multiple exports in one call
-
 	int		index;
 	char	*key;
 	char	*value;

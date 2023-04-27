@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 11:18:27 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 13:12:27 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,22 +100,22 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 	}
 	close_pipes(prog_info->pipes, prog_info->pipe_count);
 //then redirection dups
-	// if (prog_info->children[index]->redir_in != UNSET)
-	// {
-	// 	if (prog_info->children[index]->redir_in == OPEN_ERROR)
-	// 		write(STDIN_FILENO, "\0", 1);
-	// 	else
-	// 		dup2(prog_info->children[index]->redir_in, STDIN_FILENO);
-	// }
-	// if (prog_info->children[index]->redir_out != UNSET)
-	// {
-	// 	if (prog_info->children[index]->redir_in == OPEN_ERROR)
-	// 		ft_putstr_fd("OUTFILE OPEN ERROR, investigate proper course\n", 2);
-	// 	else
-	// 		dup2(prog_info->children[index]->redir_out, STDOUT_FILENO);
-	// }
+	if (prog_info->children[index]->redir_in != UNSET)
+	{
+		if (prog_info->children[index]->redir_in == OPEN_ERROR)
+			write(STDIN_FILENO, "\0", 1);
+		else
+			dup2(prog_info->children[index]->redir_in, STDIN_FILENO);
+	}
+	if (prog_info->children[index]->redir_out != UNSET)
+	{
+		if (prog_info->children[index]->redir_in == OPEN_ERROR)
+			ft_putstr_fd("OUTFILE OPEN ERROR, investigate proper course\n", 2);
+		else
+			dup2(prog_info->children[index]->redir_out, STDOUT_FILENO);
+	}
 //close all the fds
-	// close_redirections(prog_info->children[index]->redir_in, prog_info->children[index]->redir_out);
+	close_redirections(prog_info->children[index]->redir_in, prog_info->children[index]->redir_out);
 
 	if (prog_info->children[index]->path == NULL)
 		bail_on_child(prog_info->children[index]->args[0]);

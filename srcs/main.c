@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:55:14 by smorphet          #+#    #+#             */
-/*   Updated: 2023/04/26 12:37:35 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 14:04:46 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int eggshell(t_eggcarton *prog_info)
 	while (status != 1)
 	{
 		line = ft_gets();
-		if (validate_syntax(line))
+		if (line && *line && validate_syntax(line)) //added line check
 		{	
 			if (!ft_strncmp("EXIT", line, 4))
 			{

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 10:51:16 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 13:26:16 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char *find_end(char **parsed_string)
 	quote_type = UNSET;
 	while (end != NULL)
 	{
-		if(end == NULL || (ft_strchr(WHITESPACE, *end) && in_quote == FALSE))
+		if(end == NULL || (ft_strchr(WHITESPACE, *end) && in_quote == FALSE) || (ft_strchr("<>", *end) && in_quote == FALSE))
 			return(end);
 		else if (ft_strchr(QUOTES, *end) && in_quote == FALSE)
 		{
@@ -186,7 +186,7 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton 
 	head_cmd = (t_cmd *) cmd;
 	move_pointer_past_ws(parsed_string);
 	if (**parsed_string == '<' || **parsed_string == '>')
-		head_cmd = handle_redirection(head_cmd, parsed_string, end);//
+		head_cmd = handle_redirection(head_cmd, parsed_string, end, prog_info);//
 	while (*parsed_string < end && !ft_strchr("|", **parsed_string))
 	{
 		cmd->args[arg_count] = get_arg(parsed_string, prog_info);
@@ -201,7 +201,7 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton 
 			break ;
 		move_pointer_past_ws(parsed_string);
 		if (**parsed_string == '<' || **parsed_string == '>')
-			head_cmd = handle_redirection(head_cmd, parsed_string, end);
+			head_cmd = handle_redirection(head_cmd, parsed_string, end, prog_info);
 	}
 	(*cmd_count)++;
 	return (head_cmd);

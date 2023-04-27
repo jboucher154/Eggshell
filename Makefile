@@ -4,7 +4,7 @@ LIB = libft/libft.a
 
 CC := CC
 
-CFLAGS := -Wall -Wextra -Werror -I includes -g -fsanitize=address
+CFLAGS := -Wall -Wextra -Werror -I includes -g #-fsanitize=address
 
 INCS := includes/minishell.h
 #need to add handling for compling from srcs subdirs
