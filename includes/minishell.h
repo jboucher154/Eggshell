@@ -134,7 +134,6 @@ typedef struct s_child
 	int		redir_out;
 	int		pipe_in;
 	int		pipe_out;
-	int		fd_to_close;//might not be needed
 	char 	*path;
 	char	**args;
 }	t_child;
@@ -262,6 +261,7 @@ char	*quote_cut(char *to_check_str);
 //untility.c
 void	move_pointer_past_ws(char **str_to_move);
 int		print_error(char *error_msg);
+void	close_redirections(int fd_in, int fd_out);
 
 
 #endif
