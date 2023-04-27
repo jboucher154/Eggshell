@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 10:10:11 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:51:16 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,11 +184,11 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton 
 	if (!cmd)
 		return (NULL);
 	head_cmd = (t_cmd *) cmd;
+	move_pointer_past_ws(parsed_string);
 	if (**parsed_string == '<' || **parsed_string == '>')
 		head_cmd = handle_redirection(head_cmd, parsed_string, end);//
 	while (*parsed_string < end && !ft_strchr("|", **parsed_string))
 	{
-		move_pointer_past_ws(parsed_string);
 		cmd->args[arg_count] = get_arg(parsed_string, prog_info);
 		if (!cmd->args[arg_count])
 		{
@@ -199,6 +199,7 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton 
 			cmd->args = resize_array(cmd->args, &current_size);
 		if (!**parsed_string)
 			break ;
+		move_pointer_past_ws(parsed_string);
 		if (**parsed_string == '<' || **parsed_string == '>')
 			head_cmd = handle_redirection(head_cmd, parsed_string, end);
 	}
