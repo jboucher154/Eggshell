@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:55:14 by smorphet          #+#    #+#             */
-/*   Updated: 2023/04/27 14:04:46 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:14:34 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,49 @@ static void initialize_env_table(t_hash_table *ht_env, char **envp)
 	}	
 }
 
+void signal_handler(int sig)
+{
+	if (sig == SIGINT)
+	 {
+		printf("\n");
+		rl_on_new_line();
+		rl_redisplay();
+		return ;
+	 }
+	if (sig == SIGTSTP)
+	{
+		printf("%i\n", sig);
+		printf("No Sheree, not that one!!\n");
+	}
+	 	if (sig == SIGQUIT)
+	 {
+		printf("%i		I see you ctrl-\\!\n", sig);
+		return ;
+	 }
+}
+
+//int sigaction(int signum, const struct sigaction *restrict act, struct sigaction *restrict oldact);
+
 static int eggshell(t_eggcarton *prog_info)
 {
 	int		status;
 	char	*line;
 	t_cmd	*cmd_tree;
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
+	struct sigaction sig_act;//
+	ft_bzero(&sig_act, sizeof(sig_act));
+	sig_act.sa_handler = &signal_handler;//
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 	status = 0;
 	cmd_tree = NULL;
 	while (status != 1)
 	{
+		sigaction(SIGINT, &sig_act, NULL);
+		sigaction(SIGTSTP, &sig_act, NULL);
+		sigaction(SIGQUIT, &sig_act, NULL);
 		line = ft_gets();
 		if (line && *line && validate_syntax(line)) //added line check
 		{	
