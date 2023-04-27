@@ -246,7 +246,6 @@ void	print_tree(t_cmd *cmd, int	depth);
 void	print_array(char **array);
 
 //validate_syntax.c
-int	print_error(char *error_msg);
 
 
 //children.c
@@ -262,6 +261,7 @@ char	*quote_cut(char *to_check_str);
 
 //untility.c
 void	move_pointer_past_ws(char **str_to_move);
+int		print_error(char *error_msg);
 
 
 #endif

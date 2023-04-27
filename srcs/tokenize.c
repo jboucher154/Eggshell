@@ -6,12 +6,11 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 10:51:35 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 17:59:14 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:24:52 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 /*
 **	Identify the token type and return the token id assigned in the enum
@@ -51,7 +50,7 @@ char	move_to_token(char **parsed_string, char *end)
 
 	while((*parsed_string) < end)
 	{
-		if (ft_strchr(WHITESPACE, **parsed_string)) //if whitespace is found, advance index past it, if multiple whitespace, subsequent passes of while loop should get past them all
+		if (ft_strchr(WHITESPACE, **parsed_string))
 			(*parsed_string)++;
 		else
 			break;
@@ -76,5 +75,5 @@ int	peek_next_token(char *current_index, char *look_for)
 			break ;
 		token++;
 	}
-	return (*token != '\0' && ft_strchr(look_for, *token)); //if not null and in the token string should return true
+	return (*token != '\0' && ft_strchr(look_for, *token));
 }

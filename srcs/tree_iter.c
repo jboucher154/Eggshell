@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:50:12 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 18:01:19 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:15:18 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,14 @@ void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index)
 		setup_pipes(prog_info, index);
 	}
 	prog_info->children[index]->args = cmd->args;
-	// if (check_for_expansions(prog_info, prog_info->children[index]->args, 0) == ERROR)
-	// 	print_error("expansion error");//continue??
 	prog_info->children[index]->path = get_path(prog_info, cmd->args[0]);
 }
 
 void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int index)
 {
-	int	fd;
-	char *error;
-	// check_for_expansions(prog_info, &(redirection->filename), 1);
+	int		fd;
+	char	*error;
+	
 	fd = -1;
 	if (redirection->token_id == REDIRECT_IN)
 	{
@@ -58,35 +56,28 @@ void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int i
 
 void	setup_pipes(t_eggcarton *prog_info, int index)
 {
-	int	read_index;  // in  == read
-	int	write_index; //out  == write
+	int	read_index; 
+	int	write_index; 
 	
 	write_index = (index * 2) + 1;
 	read_index = (index - 1) * 2;
 	printf("READ INDEX: %i   WRITE INDEX: %i \n", read_index, write_index);
 	if (index == 0)
 	{
-		prog_info->children[index]->pipe_in = UNSET; // or unset? STDIN
+		prog_info->children[index]->pipe_in = UNSET;
 		prog_info->children[index]->pipe_out = prog_info->pipes[write_index];
 	}
 	else if (index == prog_info->cmd_count - 1)
 	{
 		prog_info->children[index]->pipe_in = prog_info->pipes[read_index];
-		prog_info->children[index]->pipe_out = UNSET; // STDOUT?	
+		prog_info->children[index]->pipe_out = UNSET;	
 	}
 	else
 	{
 		prog_info->children[index]->pipe_in = prog_info->pipes[read_index];
 		prog_info->children[index]->pipe_out = prog_info->pipes[write_index];
 	}
-	printf("CHILD %i: in/read: %i out/write: %i\n", index, prog_info->children[index]->pipe_in, prog_info->children[index]->pipe_out); //
 }
-
-	//do we need to check if there will be an out?
-	// do these after we fork
-	// dup2(prog_info->pipes[read_index], 0); //reroute pipe contents to stdin
-	// dup2(prog_info->pipes[write_index], 1); //reroute stdout to outfile
-	// close(prog_info->pipes[write_index]); //close write end of pipe
 
 int	create_pipes(t_eggcarton *prog_info)
 {

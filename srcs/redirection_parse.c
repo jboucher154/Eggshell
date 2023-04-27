@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 14:42:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 17:59:24 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:13:15 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ char	*find_filename(char *file_start)  //can probably turn this into a utility t
 	int		len;
 
 	len  = 0;
-	while (!ft_strchr(WHITESPACE, file_start[len])) //should this be checked against tokens too?
+	while (!ft_strchr(WHITESPACE, file_start[len]))
 		len++;
-	filename = ft_substr(file_start, 0, len); //+1 to len? no it should point to whitespace so that should be okay
+	filename = ft_substr(file_start, 0, len);
 	return (filename);
 
 }
@@ -63,7 +63,7 @@ t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end)
 			(*parsed_string)++;
 		move_pointer_past_ws(parsed_string);
 		if (identify_token(*parsed_string) != ALPHA)
-			print_error("Error");// print error and exit this process!!
+			print_error("Error");
 		new_redir = new_redirection(new_redir, parsed_string, token_id);
 		move_pointer_past_ws(parsed_string);
 	}

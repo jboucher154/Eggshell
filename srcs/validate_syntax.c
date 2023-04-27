@@ -6,19 +6,11 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 17:58:57 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:24:24 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	print_error(char *error_msg)
-{
-	ft_putstr_fd("\033[31mEggShell🥚: ", 2);
-	ft_putstr_fd(error_msg, 2);
-	ft_putstr_fd("\x1B[0m\n", 2);
-	return (FALSE);
-}
 
 int	validate_pipe(char *token, char *str)
 {
@@ -52,8 +44,6 @@ int	validate_redirect(char **token, char token_id)
 	move_pointer_past_ws(token);
 	if (!(**token))
 		return (print_error("syntax error near unexpected token `newline'"));
-	// if (ft_isascii(token[1]) == 0)
-	// 	return (print_error("Syntax error, unexpected token"));
 	if ((token_id == REDIRECT_IN && **token == '>') || (token_id == REDIRECT_OUT && **token == '<'))
 		return (print_error("Syntax error, unexpected token"));
 	return (TRUE);
@@ -65,11 +55,27 @@ int	validate_redirect_out_append(char **token)
 	move_pointer_past_ws(token);
 	if (!(**token))
 		return (print_error("syntax error near unexpected token `newline'"));
-	// if (ft_isascii(token) == 0)
-	// 	return (print_error("Syntax error, unexpected token"));
 	if (**token == '>' || **token == '<')
 		return (print_error("Syntax error, unexpected token"));
 	return (TRUE);
+}
+
+static int validate_token(char *token, char *str, char token_id)
+{
+	int		valid;
+
+	valid = FALSE;
+	if (token_id == PIPE)
+		valid = validate_pipe(token, str);
+	else if (*token == '"' || *token == '\'')
+		valid = validate_quotes(&token);
+	else if (*token == ';' || *token == '&')
+		valid = print_error("Error, we did not do the bonus!");
+	else if (token_id == REDIRECT_OUT || token_id == REDIRECT_IN)
+		valid = validate_redirect(&token, token_id);
+	else if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)
+		valid = validate_redirect_out_append(&token);
+	return (valid);
 }
 
 int	validate_syntax(char *str)
@@ -87,20 +93,7 @@ int	validate_syntax(char *str)
 		if (!*token)
 			break ;
 		token_id = identify_token(token);
-		printf("TOKEN ID: %c\n", token_id);
-		if (token_id == PIPE)
-			valid = validate_pipe(token, str);
-		else if (*token == '"' || *token == '\'')
-			valid = validate_quotes(&token);
-		else if (*token == ';' || *token == '&')
-			valid = print_error("Error, we did not do the bonus!");
-		else if (token_id == REDIRECT_OUT || token_id == REDIRECT_IN)
-		{
-			valid = validate_redirect(&token, token_id);
-			printf("VALID: %i\n", valid);
-		}
-		if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)
-			valid = validate_redirect_out_append(&token);
+		valid = validate_tokens(token, str, token_id);
 		if (valid)
 			token++;
 	}

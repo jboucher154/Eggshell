@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 12:49:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 17:59:19 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:13:24 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,11 @@ void	clean_tree(t_cmd *cmd)
 		clean_tree((t_cmd *)(((t_redirection *)cmd)->cmd));
 		free(((t_redirection *) cmd)->filename);
 		free((t_redirection *) cmd);
-		// printf("REDIRECTION CMD CLEANED:\n");//
 	}
 	else if (cmd->type == EXECUTABLE_CMD)
 	{
 		clean_str_array(((t_executable_cmd *)cmd)->args);
 		free((t_executable_cmd *)cmd);	
-		// printf("EXECUTABLE CMD CLEANED\n");//
 	}
 }
 

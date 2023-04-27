@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:46:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 18:28:29 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:11:25 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	insert_new_value(char *str, char *new_str, char *variable, char *value)
 		else
 			new_str[new_index++] = str[old_index++];
 	}
-	while (str[old_index])//should pick up after the variable name, finnish copying
+	while (str[old_index])
 	{
 		new_str[new_index++] = str[old_index++];
 	}
@@ -93,12 +93,12 @@ char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
 	{
 		free(variable);
 		print_error("variable expansion failed");
-		return (str); //return the origional string incase of failure
+		return (str);
 	}
 	insert_new_value(str, new_str, variable, value);
 	free(variable);
 	free(str);
-	return (new_str);// return (new_str);
+	return (new_str);
 }
 
 //search for needed expansions
@@ -118,12 +118,12 @@ char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess)
 		return (str_to_assess);
 	while (str_to_assess[index])
 	{
-		if (ft_strchr(QUOTES, str_to_assess[index]) && in_quote == FALSE) //begin quote
+		if (ft_strchr(QUOTES, str_to_assess[index]) && in_quote == FALSE)
 		{
 			in_quote = TRUE;
 			quote_type = str_to_assess[index];
 		}
-		else if (str_to_assess[index] == quote_type && in_quote == TRUE) //end quote
+		else if (str_to_assess[index] == quote_type && in_quote == TRUE)
 		{
 			in_quote = FALSE;
 			quote_type = UNSET;
@@ -143,62 +143,3 @@ char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess)
 	}
 	return (str_to_assess);
 }
-
-		// if (ft_strchr(QUOTES, to_check_arr[index][0]))
-		// {
-		// 	temp = quote_cut(to_check_arr[index]);
-		// 	free(to_check_arr[index]);
-		// 	to_check_arr[index] = temp; //should we bail here if the malloc failed?
-		// }
-
-// 		int	check_for_expansions(t_eggcarton *prog_info, char **to_check_str, int file_flag)
-// {
-// 	int		index;
-// 	char	*variable_start;
-// 	char	*temp;
-	
-// 	index = 0;
-// 	while (to_check_arr[index])
-// 	{
-// 		variable_start = ft_strchr(to_check_arr[index], '$');
-// 		if (variable_start && variable_start[1] && ft_strchr(WHITESPACE, variable_start[1]) == NULL && to_check_arr[index][0] != '\'')
-// 		{
-// 			to_check_arr[index] = expand_env_var(prog_info, to_check_arr[index], variable_start);
-// 			if (to_check_arr[index] == NULL)
-// 				return (ERROR); //
-// 		}
-// 		if (file_flag == 1)
-// 			break;
-// 		index++;
-// 	}
-// 	return (SUCCESS);
-// }
-
-
-// char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
-// {
-// 	char	*variable;
-// 	char	*value;
-// 	char	*new_str;
-// 	int		new_strlen;
-// 	if (variable_start == NULL)
-// 		return (str);
-// 	variable =  ft_substr(variable_start, 0, find_end_of_variable(variable_start)); // there is whitespace at the end NEEDS TO BE ws or quote
-// 	value  = ht_get(prog_info->environment, variable + 1);
-// 	printf("VALUE: %s	VARIABLE: %s\n", value, variable);
-// 	if (value == NULL)
-// 		new_strlen = (ft_strlen(str) - ft_strlen(variable));
-// 	else 
-// 		new_strlen = (ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
-// 	new_str = (char *) malloc(sizeof(char) * (new_strlen + 1));
-// 	if (!new_str)
-// 	{
-// 		free(variable);
-// 		print_error("variable expansion failed");
-// 		return (str); //return the origional string incase of failure
-// 	}
-// 	insert_new_value(str, new_str, variable, value);
-// 	free(variable);
-// 	free(str);
-// 	return (expand_env_var(prog_info, new_str, ft_strchr(new_str, '$')));
-// }

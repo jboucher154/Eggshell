@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 18:35:50 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:10:11 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,44 +110,19 @@ char *find_end(char **parsed_string)
 char	*get_arg(char **parsed_string, t_eggcarton *prog_info) //points to the first char of the arg
 {
 	char	*arg;
-	// int		len_to_copy;
 	char 	*end;
 	
 	if (!*parsed_string)
 		return (NULL);
-	//find the end
 	end = find_end(parsed_string);
 	arg = ft_substr(*parsed_string, 0, end - *parsed_string);
-	// printf("END: %c\n", *end);
-	//expand, return a malloc char * with expansions done, if no expansions == substring
 	arg = check_for_expansions(prog_info, arg);
 	arg = remove_quotes(arg);
-	// printf("ARG: %s\n", arg);
-	
-	//move the parsed string + len processed
 	(*parsed_string) += end - *parsed_string;
 	return (arg);
 }
 
-// char	*get_arg(char **parsed_string)
-// {
-// 	char	*arg;
-// 	int		len_to_copy;
 
-// 	if (!*parsed_string)
-// 		return (NULL);
-// 	if (ft_strchr(QUOTES, **parsed_string))
-// 	{
-// 		len_to_copy = find_endquote(*parsed_string) + 1;
-// 	}
-// 	else
-// 	{
-// 		len_to_copy = find_end_word(*parsed_string);
-// 	}
-// 	arg = ft_substr(*parsed_string, 0, len_to_copy);
-// 	(*parsed_string) += len_to_copy;
-// 	return (arg);
-// }
 //////////////////////////////////////////////////////////////////////////////////////////
 //remember to change index
 t_executable_cmd	*new_executable_cmd(void) 
@@ -196,7 +171,7 @@ char	**resize_array(char **array, int *size)
 	return (new);
 }
 
-t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton *prog_info) //add eggcarton
+t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton *prog_info)
 {
 	t_executable_cmd	*cmd;
 	t_cmd				*head_cmd;
@@ -209,7 +184,6 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton 
 	if (!cmd)
 		return (NULL);
 	head_cmd = (t_cmd *) cmd;
-	//whitespace skip?
 	if (**parsed_string == '<' || **parsed_string == '>')
 		head_cmd = handle_redirection(head_cmd, parsed_string, end);//
 	while (*parsed_string < end && !ft_strchr("|", **parsed_string))
@@ -231,17 +205,3 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton 
 	(*cmd_count)++;
 	return (head_cmd);
 }
-
-
-
-// int	main(int argc, char **argv)
-// {
-// 	if (argc == 1)
-// 		return (0);
-
-// 	// argc (void *)
-// 	char *test = "\"ec\'\'ho\"";
-// 	get_arg(&test);
-// 	// get_arg(&argv[1]);
-// 	return (0);
-// }

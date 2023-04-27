@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 17:59:22 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:09:49 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,7 @@ void	wait_for_children(t_eggcarton *prog_info)
 	while (index < prog_info->pipe_count + 1)
 	{
 		if (prog_info->pids[index] >= 0)
-		{
-			printf("WAITING for pid: %i\n", prog_info->pids[index]);
 			waitpid(prog_info->pids[index], &exit_status, 0);
-			printf("EXIT STATUS of CHILD %i: %i\n", index, exit_status);
-			printf("WEXIT STATUS of CHILD %i: %i\n", index, WEXITSTATUS(exit_status));
-			// waitpid(prog_info->pids[1], &exit_status, 0);
-			// printf("EXIT STATUS of CHILD %i: %i\n", 1, exit_status);
-			// printf("WEXIT STATUS of CHILD %i: %i\n", 1, WEXITSTATUS(exit_status));
-		}
 		index++;
 	}
 	//may need to update env variable based on exit status of last child
@@ -95,9 +87,6 @@ static void	bail_on_child(char *cmd)
  */
 void	pipe_child(t_eggcarton *prog_info, int index)
 {
-	// sleep(15);//
-//process pipes dups, 
-	// printf("hi1 from child :) %d pipe write %d pipe read %d\n", index, prog_info->children[index]->pipe_out, prog_info->children[index]->pipe_in);
 	if (prog_info->pipe_count > 0)
 	{
 		if (prog_info->children[index]->pipe_in != UNSET)
@@ -173,20 +162,12 @@ void	do_commands(t_eggcarton *prog_info)
 				exit(1);//
 			}
 			else
-			{  
-				// printf("current child[%i]		PID: %i\n", index, current_pid);
 				prog_info->pids[index] = current_pid;
-			}
 		}
 		index++;
 	}
-	// printf("-----PARENT CLOSING-----\n");
-	// close(prog_info->children[index]->redir_in);
-	// close(prog_info->children[index]->redir_out);
 	close_pipes(prog_info->pipes, prog_info->pipe_count);
-	// printf("-----------------\n");
 	wait_for_children(prog_info);
-	// printf("DONE WAITING!\n");//
 }
 
 
@@ -196,14 +177,12 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 
 	index = 0;
 	print_tree(cmd, 0);//
-//	prog_info->pipes = create_pipes(prog_info);
-	// printf("EGGCARTON info: cmd count: %i, pipe count: %i\n", prog_info->cmd_count, prog_info->pipe_count);
 	if (create_pipes(prog_info) == ERROR)
 	{
 		print_error("pipe creation failed");
 		return ;
 	}
-	prog_info->pids = malloc(sizeof(int) * prog_info->cmd_count); //ft_calloc?
+	prog_info->pids = malloc(sizeof(int) * prog_info->cmd_count);
 	if (!prog_info->pids)
 	{	
 		print_error("malloc failed");
@@ -214,8 +193,6 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 
 	tree_iterator(cmd, prog_info, &index);
 	print_children(prog_info->children);//
-	do_commands(prog_info);//
-	//iterate over array of commands, forking and sending to child processes
-	//parent process waits for all PIDs saved in array
+	do_commands(prog_info);
 	free_children(prog_info->children);
 }
