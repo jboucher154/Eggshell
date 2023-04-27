@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 10:24:24 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 10:39:53 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,21 @@ int	validate_redirect_out_append(char **token)
 	return (TRUE);
 }
 
-static int validate_token(char *token, char *str, char token_id)
+static int validate_token(char **token, char *str, char token_id)
 {
 	int		valid;
 
 	valid = FALSE;
 	if (token_id == PIPE)
-		valid = validate_pipe(token, str);
-	else if (*token == '"' || *token == '\'')
-		valid = validate_quotes(&token);
-	else if (*token == ';' || *token == '&')
+		valid = validate_pipe(*token, str);
+	else if (**token == '"' || **token == '\'')
+		valid = validate_quotes(token);
+	else if (**token == ';' || **token == '&')
 		valid = print_error("Error, we did not do the bonus!");
 	else if (token_id == REDIRECT_OUT || token_id == REDIRECT_IN)
-		valid = validate_redirect(&token, token_id);
+		valid = validate_redirect(token, token_id);
 	else if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)
-		valid = validate_redirect_out_append(&token);
+		valid = validate_redirect_out_append(token);
 	return (valid);
 }
 
@@ -93,7 +93,7 @@ int	validate_syntax(char *str)
 		if (!*token)
 			break ;
 		token_id = identify_token(token);
-		valid = validate_tokens(token, str, token_id);
+		valid = validate_token(&token, str, token_id);
 		if (valid)
 			token++;
 	}
