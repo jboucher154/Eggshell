@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:50:12 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 13:05:34 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/27 15:49:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int i
 	}
 	else if (redirection->token_id == REDIRECT_OUT)
 	{
-		fd = open(redirection->filename, O_WRONLY|O_CREAT|O_TRUNC);
+		fd = open(redirection->filename, O_WRONLY|O_CREAT|O_TRUNC, 0644);
 		close(prog_info->children[index]->redir_out);
 		prog_info->children[index]->redir_out = fd;
 	}
 	else if (redirection->token_id == REDIRECT_OUT_APPEND)
 	{
-		fd = open(redirection->filename, O_WRONLY|O_CREAT);
+		fd = open(redirection->filename, O_WRONLY|O_CREAT, 0644);
 		close(prog_info->children[index]->redir_out);
 		prog_info->children[index]->redir_out = fd;
 	}
