@@ -11,12 +11,14 @@
 # define CMD_ERROR 127
 // # define 
 //tokens
-#define TOKENS "|<>&;" //"|&<>();"
-#define WHITESPACE " \t\n\r\a"
-#define QUOTES "'\""
+# define TOKENS "|<>&;" //"|&<>();"
+# define WHITESPACE " \t\n\r\a"
+# define QUOTES "'\""
 //boolean
-#define TRUE 1
-#define FALSE 0
+# define TRUE 1
+# define FALSE 0
+# define ON 1
+# define OFF 0
 
 # include "libft.h"
 # include "ft_hash.h"
@@ -141,6 +143,7 @@ typedef struct s_child
 //struct for program
 typedef	struct s_eggcarton
 {
+	struct termios 		*saved_term;
 	struct s_hash_table	*environment;
 	struct s_hash_table *command_table;
 	char				**og_env;
@@ -150,6 +153,10 @@ typedef	struct s_eggcarton
 	int					*pids;
 	struct s_child		**children;
 }	t_eggcarton;
+
+
+
+void rl_replace_line(const char *text, int clear_undo); ////////////////////
 
 
 //functions for PARSER
@@ -248,6 +255,11 @@ void	print_array(char **array);
 
 //validate_syntax.c
 
+//signal.c
+void 	signal_handler(int sig); //, t_eggcarton *prog_info
+
+//eggshell.c
+int eggshell(t_eggcarton *prog_info);
 
 //children.c
 int		create_child_array(t_eggcarton *prog_info);
@@ -264,6 +276,9 @@ char	*quote_cut(char *to_check_str);
 void	move_pointer_past_ws(char **str_to_move);
 int		print_error(char *error_msg);
 void	close_redirections(int fd_in, int fd_out);
+void 	echoctl_switch(int toggle);
 
 
+//initialize.c
+int		initialize_eggcarton(t_eggcarton *prog_info, char **envp, struct termios *saved_term);
 #endif
