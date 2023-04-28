@@ -18,28 +18,28 @@ void	terminal_takeover(void)
 
 	tcgetattr(STDIN_FILENO, &takeover_term);//get copy for us to edit
 	takeover_term.c_lflag &= ~(ICANON);//sets to non-canonical, echoing (ICANON|ECHO)<-nonecho
-	takeover_term.c_cc[VTIME] = 0;//sets timeout for non-canonical to 0
-	takeover_term.c_cc[VMIN] = 0;//sets minimum input for non-canonical to 0
-	tcsetattr(STDIN_FILENO, TCSANOW, &takeover_term);//set out terminal :)
+	takeover_term.c_cc[VTIME] = 0;//sets timeout for non-canonical to 0 //
+	takeover_term.c_cc[VMIN] = 0;//sets minimum input for non-canonical to 0 //
+	tcsetattr(STDIN_FILENO, TCSANOW, &takeover_term);//set out terminal :) 
 	echoctl_switch(OFF); //turn off echoing of signal characters
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	// struct termios	saved_term;
+	struct termios	saved_term;
 	t_eggcarton		prog_info;
 	(void) argc;
 	(void) argv;
 
-	// tcgetattr(STDIN_FILENO, &saved_term);//get saved copy
-	initialize_eggcarton(&prog_info, envp, NULL); //saved term
-	// terminal_takeover();
+	tcgetattr(STDIN_FILENO, &saved_term);//get saved copy
+	initialize_eggcarton(&prog_info, envp, &saved_term); //saved term
+	terminal_takeover();
 	eggshell(&prog_info);
 
 	//below this is for cleanup and exiting
-	// ht_destroy(&(prog_info.environment));
-	// ht_destroy(&(prog_info.command_table));
-	// tcsetattr(STDIN_FILENO, TCSANOW, &saved_term);//
+	ht_destroy(&(prog_info.environment));
+	ht_destroy(&(prog_info.command_table));
+	tcsetattr(STDIN_FILENO, TCSANOW, &saved_term);//
 	return (0);
 	// exit(EXIT_SUCCESS);
 }

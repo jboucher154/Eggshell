@@ -35,22 +35,22 @@ int eggshell(t_eggcarton *prog_info)
 	char	*line;
 	t_cmd	*cmd_tree;
 
-	// struct sigaction sig_act;//
-	// ft_bzero(&sig_act, sizeof(sig_act));
+	struct sigaction sig_act;//
+	ft_bzero(&sig_act, sizeof(sig_act));
 
-	// sig_act.sa_handler = &signal_handler;
-	// sig_act.sa_flags = SA_RESTART;
+	sig_act.sa_handler = &signal_handler;
+	sig_act.sa_flags = SA_RESTART;
 	
 	// (void) prog_info;
+	sigaction(SIGINT, &sig_act, NULL);
+	sigaction(SIGTSTP, &sig_act, NULL);
+	sigaction(SIGQUIT, &sig_act, NULL);
 
 	status = 0;
 	// status = -5;
 	cmd_tree = NULL;
 	while (status != 1)
 	{
-		// sigaction(SIGINT, &sig_act, NULL);
-		// sigaction(SIGTSTP, &sig_act, NULL);
-		// sigaction(SIGQUIT, &sig_act, NULL);
 		printf("BEFORE FT GETES\n");
 		line = ft_gets();
 		printf("LINE: %s\n", line);
