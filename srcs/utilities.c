@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:20:14 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 10:58:57 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/04/28 15:26:35 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,21 @@ void	close_redirections(int fd_in, int fd_out)
 		close(fd_in);
 	if (fd_out != UNSET)
 		close(fd_out);
+}
+
+//OFF = printing of ctrl characters off
+void echoctl_switch(int toggle)
+{
+	struct termios 	term;//
+	
+	tcgetattr(STDIN_FILENO, &term);
+	if (toggle == OFF)
+	{
+		term.c_lflag &= ~(ECHOCTL); // disable ECHO/////
+	}
+	else 
+	{
+		term.c_lflag |= ECHOCTL;// re-enable ECHO
+	}
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
