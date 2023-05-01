@@ -12,21 +12,6 @@
 
 #include "minishell.h"
 
-// char	*quote_cut(char *to_check_str)
-// {
-// 	char *new;
-	
-// 	printf("TO CHECK: %s\n", to_check_str);
-// 	new = ft_substr(to_check_str, 1, ft_strlen(to_check_str) - 2); //assuming that the last character is the matching quote...
-// 	printf("AFTER SUBSTR: %s\n", new);
-// 	if (!new)
-// 	{
-// 		print_error("malloc failed");
-// 		return (NULL);
-// 	}
-// 	return (new);
-// }
-
 void	insert_new_value(char *str, char *new_str, char *variable, char *value)
 {
 	int		value_index;
