@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 16:13:35 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/01 19:17:44 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 		if (!ft_strncmp("cd", cmd->args[0], 3))
 			cd_command(cmd->args, prog_info->environment);
 		if (!ft_strncmp("export", cmd->args[0], 6))
+		{
+
 			export_command(cmd->args, prog_info->environment);
+		}
 		if (!ft_strncmp("unset", cmd->args[0], 5))
 			unset_command(cmd->args, prog_info->environment);
 		if ((!ft_strncmp("echo", cmd->args[0], 4) || !ft_strncmp("ECHO", cmd->args[0], 4)))
@@ -31,7 +34,11 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 		if (!ft_strncmp("EXIT", cmd->args[0], 4))
 			exit(EXIT_SUCCESS);
 		if (cmd->pid == 0)
+		{
+			printf("I am a child and will exit now!\n");// leave for now
 			exit(EXIT_SUCCESS);
+		}
+		printf("I'm not a child!\n");// leave for now
 }
 
 void	run_system_executable(t_executable_cmd *cmd, t_eggcarton *prog_info)
@@ -135,13 +142,27 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 		exit(0); //run redirection commands and exit before command checking and execution
 	if (prog_info->children[index]->path == NULL)
 		bail_on_child(prog_info->children[index]->args[0]);
-	else if (prog_info->children[index]->redir_in == OPEN_ERROR || prog_info->children[index]->redir_out == OPEN_ERROR) //targeted to redir in, should this apply to redir out as well?
+	else if (prog_info->children[index]->redir_in == OPEN_ERROR || \
+		prog_info->children[index]->redir_out == OPEN_ERROR) //targeted to redir in, should this apply to redir out as well?
 		exit(1);//
 	if (prog_info->children[index]->path[0] == ':')
 		run_builtins(prog_info->children[index], prog_info);
 	else
 		execve(prog_info->children[index]->path, prog_info->children[index]->args, prog_info->og_env);
 	exit_child("exeve failed: ", prog_info->children[index]->args[0], errno);
+}
+
+int	should_run_in_parent(t_eggcarton *prog_info, int index)
+{
+	if (prog_info->cmd_count == 1 && \
+	(!ft_strncmp("cd", prog_info->children[index]->args[0], 2) || \
+	!ft_strncmp("exit", prog_info->children[index]->args[0], 4) || \
+	!ft_strncmp("unset", prog_info->children[index]->args[0], 5)))
+		return (TRUE);
+	else if (!ft_strncmp("export", prog_info->children[index]->args[0], 6) && \
+		prog_info->children[index]->args[1] != NULL)
+		return (TRUE);
+	return (FALSE);
 }
 
 void	do_commands(t_eggcarton *prog_info)
@@ -156,10 +177,11 @@ void	do_commands(t_eggcarton *prog_info)
 	{
 		if (prog_info->children[index]->path && prog_info->children[index]->path[0] == ':')
 		{
-			if (prog_info->cmd_count == 1 && (!ft_strncmp("cd", prog_info->children[index]->args[0], 2) || !ft_strncmp("exit", prog_info->children[index]->args[0], 4) ||!ft_strncmp("unset", prog_info->children[index]->args[0], 5)))
+			if (should_run_in_parent(prog_info, index) == TRUE)
 			{
-				run_builtins(prog_info->children[index], prog_info);
+				printf("I WILL RUN IN PARENT\n");//
 				prog_info->children[index]->pid = -1;
+				run_builtins(prog_info->children[index], prog_info);
 			}
 			else
 			{
