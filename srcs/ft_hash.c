@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/25 09:03:11 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/01 19:14:26 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,10 @@ int	ht_add(t_hash_table *table, const char *key, void *value)
 	int			rehash_res;
 
 	rehash_res = 0;
+	if (ht_get(table, key) != NULL)
+	{
+		return (ht_update_value(table, key, value));//integrated update into add
+	}
 	if (table->filled >= table->size / 2)
 	{
 		rehash_res = ht_rehash(table);
@@ -153,6 +157,8 @@ int	ht_add(t_hash_table *table, const char *key, void *value)
 			return (ERROR);
 	}
 	item = new_hash_item(key, value);
+	if (!item)//
+		printf("MALLOC ERROR IN HT_ADD!!!!!!\n");//
 	if (!item)
 		return (ERROR);
 	index = get_hash(key) % table->size;
@@ -318,7 +324,7 @@ void	ht_print_env(t_hash_table *table)
 		to_print = table->table[index];
 		while (to_print != NULL)
 		{
-			// if (to_print->key[0] != '?' && to_print->value) //skip hidden variable and null values
+			if (to_print->key[0] != '?' && to_print->value) //skip hidden variable and null values
 				printf("%s=%s\n", to_print->key, (char *)to_print->value);
 			to_print = to_print->next;
 			printed++;
@@ -343,9 +349,9 @@ void	ht_print_export(t_hash_table *table)
 		{
 			if (to_print->key[0] != '?') //skip hidden variable
 			{
-				// if (to_print->value == NULL)
-				// 	printf("declare -x %s\n", to_print->key);
-				// else
+				if (to_print->value == NULL)
+					printf("declare -x %s\n", to_print->key);
+				else
 					printf("declare -x %s=\"%s\"\n", to_print->key, (char *)to_print->value);
 			}
 			to_print = to_print->next;
