@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include "ft_hash.h"
 
-// we need to test error handling with quotes
+// we need to set up child processes
 void	echo_command(char **args)
 {
 	int		new_line;
@@ -23,7 +23,8 @@ void	echo_command(char **args)
 	if (!ft_strncmp("-n", *args, 2))
 	{
 		new_line = 1;
-		args++;
+		while (!ft_strncmp("-n", *args, 2))
+			args++;
 	}
 	while (*args != '\0')
 	{
@@ -79,26 +80,58 @@ void	unset_command(char **args, t_hash_table *ht_env)
 	}
 }
 
+
 void	export_command(char **args, t_hash_table *ht_env)
 {
 	//needs to handle multiple exports in one call
 	int		index;
-	char	*key;
+	char 	**split_arg;
 	char	*value;
 
-	index = 0;
-	while (args[1][index] != '=')
+	index = 1;
+	if (!args[index])
+	{
+		ht_print_export(ht_env);
+		return ;
+	}
+	while (args[index])
+	{
+		split_arg = ft_split(args[index], '=');
+		if (split_arg[1])
+			value = ft_strdup(split_arg[1]);
+		else 
+			value = NULL;
+		ht_add(ht_env, split_arg[0], value);
+		clean_str_array(split_arg);
 		index++;
-	key = ft_substr(args[1], 0, index);
-		index++;
-	value = ft_strdup(args[1] + index);
-	ht_add(ht_env, key, value);
-	free(key);
+	}
 }
+
+// void	export_command(char **args, t_hash_table *ht_env)
+// {
+// 	//needs to handle multiple exports in one call
+// 	int		index;
+// 	char	*key;
+// 	char	*value;
+
+// 	index = 0;
+// 	if (!args[1])
+// 	{
+// 		ht_print_export(ht_env);
+// 		return ;
+// 	}
+// 	while (args[1][index] != '=')
+// 		index++;
+// 	key = ft_substr(args[1], 0, index);
+// 		index++;
+// 	value = ft_strdup(args[1] + index);
+// 	ht_add(ht_env, key, value);
+// 	free(key);
+// }
 
 void	print_enviroment(t_hash_table	*ht_env)
 {
-	ht_print(ht_env);
+	ht_print_env(ht_env);
 }
 
 void	clearing(void)
