@@ -35,7 +35,7 @@ int main(int argc, char **argv, char **envp)
 	initialize_eggcarton(&prog_info, envp, &saved_term); //saved term
 	terminal_takeover();
 	eggshell(&prog_info);
-
+	
 	//below this is for cleanup and exiting
 	ht_destroy(&(prog_info.environment));
 	ht_destroy(&(prog_info.command_table));

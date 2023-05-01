@@ -12,29 +12,35 @@
 
 #include "minishell.h"
 
+
+void initialize_signals(void)
+{
+	struct sigaction	sig_act;
+	struct sigaction	sig_quit;
+
+	ft_bzero(&sig_act, sizeof(sig_act));
+    sig_act.sa_handler = &signal_handler;
+	ft_bzero(&sig_quit, sizeof(sig_quit));
+    sig_quit.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sig_act, NULL);
+	sigaction(SIGTSTP, &sig_act, NULL);
+   	sigaction(SIGQUIT, &sig_quit, NULL);
+}
+
+
 void signal_handler(int sig) //t_eggcarton *prog_info
 {
-	
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 1);
 	 	write(1,"\n", 1);
 		rl_on_new_line();
-		return ;
+		rl_redisplay();
 	}
-	if (sig == SIGTSTP)
+	else if (sig == SIGTSTP)
 	{
 		printf("%i\n", sig);
 		printf("No Sheree, not that one!!\n");
-	}
-	if (sig == SIGQUIT)
-	{
-		// (void) prog_info;
-		//clean exit program
-		// ht_destroy(&(prog_info->environment));
-		// ht_destroy(&(prog_info->command_table));
-		// tcsetattr(STDIN_FILENO, TCSANOW, prog_info->saved_term);//
-		exit(EXIT_SUCCESS);
 	}
 	return ;
 }

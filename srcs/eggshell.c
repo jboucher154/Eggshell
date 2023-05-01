@@ -35,30 +35,20 @@ int eggshell(t_eggcarton *prog_info)
 	char	*line;
 	t_cmd	*cmd_tree;
 
-	struct sigaction sig_act;//
-	ft_bzero(&sig_act, sizeof(sig_act));
-
-	sig_act.sa_handler = &signal_handler;
-	sig_act.sa_flags = SA_RESTART;
-	
-	// (void) prog_info;
-	sigaction(SIGINT, &sig_act, NULL);
-	sigaction(SIGTSTP, &sig_act, NULL);
-	sigaction(SIGQUIT, &sig_act, NULL);
-
+	initialize_signals();
 	status = 0;
-	// status = -5;
 	cmd_tree = NULL;
 	while (status != 1)
 	{
-		printf("BEFORE FT GETES\n");
 		line = ft_gets();
-		printf("LINE: %s\n", line);
-		sleep(4);//
-		// status += 1;
+        if (line == NULL) /* Exit on Ctrl-D */
+        {
+			status = 1;
+			break;
+		//	exit(0); //EXIT CLEAN UP ETC
+		} 
 		if (line && *line && validate_syntax(line)) //added line check
-		{	
-			printf("AFTER FT GETES\n");
+		{
 			if (!ft_strncmp("EXIT", line, 4))
 			{
 				status = 1;
@@ -66,7 +56,6 @@ int eggshell(t_eggcarton *prog_info)
 			}
 			else
 			{
-		// 		//validate syntax
 				cmd_tree = parser(line, prog_info);
 				print_tree(cmd_tree, 0); //
 				if (cmd_tree)
