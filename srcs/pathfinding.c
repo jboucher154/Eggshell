@@ -67,6 +67,8 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 	char	*path;
 	char	**paths;
 
+	if (!fname || !*fname)//  just added to handle th "", may not catch the " "
+		return (NULL);//
 	path = ht_get(prog_info->command_table, fname);
 	if (!path)
 	{
