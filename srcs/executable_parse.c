@@ -147,6 +147,7 @@ t_executable_cmd	*new_executable_cmd(void)
 		new->args[index] = NULL;
 		index++;
 	}
+	new->arg_count = 0;
 	return (new);
 }
 
@@ -175,10 +176,10 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton 
 {
 	t_executable_cmd	*cmd;
 	t_cmd				*head_cmd;
-	int					arg_count;
+	// int					arg_count; //cahnged to sstruct based variable
 	int					current_size;
 
-	arg_count = 0;
+	// arg_count = 0;
 	current_size = 10;
 	cmd = new_executable_cmd();
 	if (!cmd)
@@ -189,13 +190,13 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton 
 		head_cmd = handle_redirection(head_cmd, parsed_string, end, prog_info);//
 	while (*parsed_string < end && !ft_strchr("|", **parsed_string))
 	{
-		cmd->args[arg_count] = get_arg(parsed_string, prog_info);
-		if (!cmd->args[arg_count])
+		cmd->args[cmd->arg_count] = get_arg(parsed_string, prog_info);
+		if (!cmd->args[cmd->arg_count])
 		{
 			printf("ERROR!!!!!!!!!!\n");//
 		}
-		arg_count++;
-		if (arg_count == current_size)
+		(cmd->arg_count)++;
+		if (cmd->arg_count == current_size)
 			cmd->args = resize_array(cmd->args, &current_size);
 		if (!**parsed_string)
 			break ;
@@ -203,6 +204,7 @@ t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton 
 		if (**parsed_string == '<' || **parsed_string == '>')
 			head_cmd = handle_redirection(head_cmd, parsed_string, end, prog_info);
 	}
-	(*cmd_count)++;
+	(*cmd_count)++;//
+	printf("ARG COUNT: %i\n", cmd->arg_count);//
 	return (head_cmd);
 }

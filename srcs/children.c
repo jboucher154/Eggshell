@@ -21,6 +21,7 @@ t_child	*new_child(void)
 		return (NULL);
 	child->path = NULL;
 	child->args = NULL;
+	child->command_present = TRUE;// added to track if it is for redirects only, default is true
 	child->redir_in = UNSET;
 	child->redir_out = UNSET;
 	child->pipe_in = UNSET;
@@ -47,10 +48,12 @@ int	create_child_array(t_eggcarton *prog_info)
 {
 	t_child	**children;
 	int		index;
-	
-	children = (t_child **) malloc(sizeof(t_child *) * (prog_info->cmd_count + 1));
+	int		child_count;//
+
+	child_count = 1 + prog_info->pipe_count;//
+	children = (t_child **) malloc(sizeof(t_child *) * (child_count + 1));//change allocation to make children based on pipe count. This is so we can run redirection only child tasks
 	if (!children)
-		return (ERROR);
+		return (print_error("malloc failed"));
 	index = 0;
 	children[prog_info->cmd_count] = NULL;
 	while(index < prog_info->cmd_count)

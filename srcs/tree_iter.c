@@ -15,6 +15,12 @@
 
 void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index)
 {
+	if (cmd->arg_count == 0)
+	{
+		prog_info->children[index]->command_present = FALSE;
+		printf("assigned FALSE\n");//
+		return ;
+	}
 	if (prog_info->pipe_count != 0)
 	{
 		setup_pipes(prog_info, index);
@@ -108,12 +114,12 @@ int	create_pipes(t_eggcarton *prog_info)
 
 void	process_redirections(t_redirection *redir, t_eggcarton *prog_info, int index)
 {
-	if (redir->cmd->type == EXECUTABLE_CMD)
+	if (redir && (redir->cmd == NULL|| redir->cmd->type == EXECUTABLE_CMD)) //added check for null next
 	{
 		setup_redirection(redir, prog_info, index);
 		return ;
 	}
-	else if (redir->cmd->type == REDIRECTION_CMD)
+	else if (redir && redir->cmd->type == REDIRECTION_CMD)
 	{
 		process_redirections(((t_redirection *)redir->cmd), prog_info, index);
 		setup_redirection(redir, prog_info, index);
@@ -134,11 +140,16 @@ int	tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index)//index for all
 	else if (cmd->type == REDIRECTION_CMD)
 	{
 		// setup_redirection((t_redirection *)cmd, prog_info, *index);
-		//send executable form here
 		process_redirections((t_redirection *)cmd, prog_info, *index);
-		while (cmd->type == REDIRECTION_CMD)
+		while (cmd && cmd->type == REDIRECTION_CMD) //added check for null
 			cmd = ((t_redirection *)cmd)->cmd;
-		tree_iterator(cmd, prog_info, index);
+		if (cmd)
+			tree_iterator(cmd, prog_info, index);
+		else
+		{
+			prog_info->children[*index]->command_present = FALSE;
+			printf("assigned FALSE\n");//
+		}
 	}
 	else if (cmd->type == EXECUTABLE_CMD)
 	{
