@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 {
 		if (!ft_strncmp("pwd", cmd->args[0], 3) || !ft_strncmp("PWD", cmd->args[0], 3))
@@ -31,6 +30,8 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 			clearing();
 		if (!ft_strncmp("EXIT", cmd->args[0], 4))
 			exit(EXIT_SUCCESS);
+		if (cmd->pid == 0)
+			exit(EXIT_SUCCESS);
 }
 
 void	run_system_executable(t_executable_cmd *cmd, t_eggcarton *prog_info)
@@ -47,17 +48,31 @@ void	wait_for_children(t_eggcarton *prog_info)
 {
 	int	exit_status;
 	int	index;
-	// int wexit_status;
 	
 	index = 0;
 	while (index < prog_info->pipe_count + 1)
 	{
-		if (prog_info->pids[index] >= 0)
-			waitpid(prog_info->pids[index], &exit_status, 0);
+		if (prog_info->children[index]->pid >= 0)
+			waitpid(prog_info->children[index]->pid , &exit_status, 0);
 		index++;
 	}
 	//may need to update env variable based on exit status of last child
 }
+
+// void	wait_for_children(t_eggcarton *prog_info)
+// {
+// 	int	exit_status;
+// 	int	index;
+	
+// 	index = 0;
+// 	while (index < prog_info->pipe_count + 1)
+// 	{
+// 		if (prog_info->pids[index] >= 0)
+// 			waitpid(prog_info->pids[index], &exit_status, 0);
+// 		index++;
+// 	}
+// 	//may need to update env variable based on exit status of last child
+// }
 
 
 void	exit_child(char *error_msg, char *arg, int exit_code)
@@ -116,12 +131,16 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 	}
 //close all the fds
 	close_redirections(prog_info->children[index]->redir_in, prog_info->children[index]->redir_out);
-
+	if (prog_info->children[index]->command_present == FALSE) //may want to move this up more before the redirections are duped
+		exit(0); //run redirection commands and exit before command checking and execution
 	if (prog_info->children[index]->path == NULL)
 		bail_on_child(prog_info->children[index]->args[0]);
 	else if (prog_info->children[index]->redir_in == OPEN_ERROR || prog_info->children[index]->redir_out == OPEN_ERROR) //targeted to redir in, should this apply to redir out as well?
 		exit(1);//
-	execve(prog_info->children[index]->path, prog_info->children[index]->args, prog_info->og_env);
+	if (prog_info->children[index]->path[0] == ':')
+		run_builtins(prog_info->children[index], prog_info);
+	else
+		execve(prog_info->children[index]->path, prog_info->children[index]->args, prog_info->og_env);
 	exit_child("exeve failed: ", prog_info->children[index]->args[0], errno);
 }
 
@@ -137,8 +156,23 @@ void	do_commands(t_eggcarton *prog_info)
 	{
 		if (prog_info->children[index]->path && prog_info->children[index]->path[0] == ':')
 		{
-			run_builtins(prog_info->children[index], prog_info);
-			prog_info->pids[index] = -1;
+			if (prog_info->cmd_count == 1 && (!ft_strncmp("cd", prog_info->children[index]->args[0], 2) || !ft_strncmp("exit", prog_info->children[index]->args[0], 4) ||!ft_strncmp("unset", prog_info->children[index]->args[0], 5)))
+			{
+				run_builtins(prog_info->children[index], prog_info);
+				prog_info->children[index]->pid = -1;
+			}
+			else
+			{
+				prog_info->children[index]->pid = fork(); //child pid == 0
+				if (prog_info->children[index]->pid == 0)
+				{
+					pipe_child(prog_info, index);//
+					print_error("COMMAND DOES NOT EXIST, OR SOMETHING ELSE WAS WRONG");
+					exit(1);//
+				}
+				else
+					prog_info->children[index]->pid = current_pid;
+			}
 		}
 		else
 		{
@@ -150,7 +184,7 @@ void	do_commands(t_eggcarton *prog_info)
 				exit(1);//
 			}
 			else
-				prog_info->pids[index] = current_pid;
+				prog_info->children[index]->pid = current_pid;
 		}
 		index++;
 	}
@@ -158,6 +192,40 @@ void	do_commands(t_eggcarton *prog_info)
 	wait_for_children(prog_info);
 }
 
+// void	do_commands(t_eggcarton *prog_info)
+// {
+// 	int		index;
+// 	int 	current_pid;
+
+// 	index = 0;
+// 	current_pid = 0;
+// 	print_children(prog_info->children);//
+// 	while (index < prog_info->pipe_count + 1)
+// 	{
+// 		// if built in, should it be a child process or not? else if, else etc. if PID = 0, is child and exit. if not 0.....return to next process
+// 		if (prog_info->children[index]->path && prog_info->children[index]->path[0] == ':')
+// 		{
+// 			run_builtins(prog_info->children[index], prog_info);
+// 			prog_info->pids[index] = -1;
+// 		}
+// 		else
+// 		{
+
+// 			current_pid = fork(); //child pid == 0
+// 			if (current_pid == 0)
+// 			{
+// 				pipe_child(prog_info, index);//
+// 				print_error("COMMAND DOES NOT EXIST, OR SOMETHING ELSE WAS WRONG");
+// 				exit(1);//
+// 			}
+// 			else
+// 				prog_info->pids[index] = current_pid;
+// 		}
+// 		index++;
+// 	}
+// 	close_pipes(prog_info->pipes, prog_info->pipe_count);
+// 	wait_for_children(prog_info);
+// }
 
 void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 {
@@ -177,8 +245,7 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 		return ;
 	}
 	if (create_child_array(prog_info) == ERROR)
-		print_error("ERROR");
-
+		print_error("ERROR");//printed the error in the array creation...
 	tree_iterator(cmd, prog_info, &index);
 	// print_children(prog_info->children);//
 	do_commands(prog_info);

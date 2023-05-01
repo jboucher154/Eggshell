@@ -107,6 +107,7 @@ typedef struct s_executable_cmd
 	int		type;
 	char	*cmd_path;
 	char	**args;
+	int		arg_count;
 }	t_executable_cmd;
 
 // pipe = '|'
@@ -132,6 +133,8 @@ typedef struct s_redirection
 //struct to send to child
 typedef struct s_child
 {
+	int		command_present;
+	int		pid;
 	int		redir_in;
 	int		redir_out;
 	int		pipe_in;
@@ -257,6 +260,7 @@ void	print_array(char **array);
 
 //signal.c
 void 	signal_handler(int sig); //, t_eggcarton *prog_info
+void	initialize_signals(void);
 
 //eggshell.c
 int eggshell(t_eggcarton *prog_info);
