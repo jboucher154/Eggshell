@@ -62,7 +62,6 @@ static void initialize_env_table(t_hash_table *ht_env, char **envp)
 		print_error("SHELL LEVEL NOT SET!");
 }
 
-
 int	initialize_eggcarton(t_eggcarton *prog_info, char **envp, struct termios *saved_term)
 {
 	prog_info->environment = ht_create(150);
