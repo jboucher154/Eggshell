@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/04/27 13:08:27 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/01 19:24:53 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,53 +81,37 @@ void	unset_command(char **args, t_hash_table *ht_env)
 }
 
 
-void	export_command(char **args, t_hash_table *ht_env)
+void	export_command(char **args, t_hash_table *environment)
 {
-	//needs to handle multiple exports in one call
 	int		index;
-	char 	**split_arg;
+	int		arg_index;
+	char 	*key;
 	char	*value;
 
 	index = 1;
 	if (!args[index])
 	{
-		ht_print_export(ht_env);
+		ht_print_export(environment);
 		return ;
 	}
 	while (args[index])
 	{
-		split_arg = ft_split(args[index], '=');
-		if (split_arg[1])
-			value = ft_strdup(split_arg[1]);
-		else 
+		arg_index = 0;
+		while (args[index][arg_index] != '\0' && args[index][arg_index] != '=')
+			arg_index++;
+		key = ft_substr(args[index], 0, arg_index);
+		if (args[index][arg_index] == '\0')
 			value = NULL;
-		ht_add(ht_env, split_arg[0], value);
-		clean_str_array(split_arg);
+		else
+		{
+			arg_index++;
+			value = ft_strdup(args[index]+ arg_index);
+		}
+		ht_add(environment, key, value);
+		free(key);
 		index++;
 	}
 }
-
-// void	export_command(char **args, t_hash_table *ht_env)
-// {
-// 	//needs to handle multiple exports in one call
-// 	int		index;
-// 	char	*key;
-// 	char	*value;
-
-// 	index = 0;
-// 	if (!args[1])
-// 	{
-// 		ht_print_export(ht_env);
-// 		return ;
-// 	}
-// 	while (args[1][index] != '=')
-// 		index++;
-// 	key = ft_substr(args[1], 0, index);
-// 		index++;
-// 	value = ft_strdup(args[1] + index);
-// 	ht_add(ht_env, key, value);
-// 	free(key);
-// }
 
 void	print_enviroment(t_hash_table	*ht_env)
 {
