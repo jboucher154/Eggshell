@@ -32,7 +32,7 @@ int	validate_quotes(char **token)
 	(*token)++;
 	while (**token && **token != quote_to_match)
 		(*token)++;
-	if (!**token)
+	if (!(**token))
 		return (print_error("Syntax error, unclosed quotes"));
 	else
 		return (TRUE);
@@ -94,7 +94,7 @@ int	validate_syntax(char *str)
 			break ;
 		token_id = identify_token(token);
 		valid = validate_token(&token, str, token_id);
-		if (valid)
+		if (valid && !((token_id == REDIRECT_IN || token_id == REDIRECT_OUT || token_id == REDIRECT_OUT_APPEND)&& ft_strchr(QUOTES, *token)))
 			token++;
 	}
 	return (valid);
