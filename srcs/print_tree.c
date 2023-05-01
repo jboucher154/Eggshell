@@ -30,6 +30,8 @@ void	print_array(char **array)
 //if we want a temp variable here it could be a union....
 void	print_tree(t_cmd *cmd, int	depth)
 {
+	if (!cmd)
+		return ;
 	if (cmd->type == REDIRECTION_CMD)
 	{
 		print_tree((t_cmd *)(((t_redirection *)cmd)->cmd), depth + 1);
@@ -64,7 +66,8 @@ void	print_children(t_child **children)
 		children[i]->redir_in, children[i]->redir_out, children[i]->pipe_in, children[i]->pipe_out);
 		// if (children[i]->path)
 		printf("PATH: %s\n", children[i]->path);
-
+		printf("command present: %i\n", children[i]->command_present);
+		
 		print_array(children[i]->args);
 		// printf("PIPE CHECK for child %i: in: %i out: %i\n", i, children[i]->pipe_in,children[i]->pipe_out);
 		printf("-------------------------------------------------------------\n");
