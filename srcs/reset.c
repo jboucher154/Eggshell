@@ -25,6 +25,7 @@ void clean_str_array(char **array)
 		index++;
 	}
 	free(array);
+	array = NULL;
 }	
 
 void close_pipes(int *pipes, int pipe_count)
