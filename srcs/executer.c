@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 11:33:02 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 11:36:07 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 	printf("I'm not a child!\n");// leave for now
 }
 
+//is this needed?
 void	run_system_executable(t_executable_cmd *cmd, t_eggcarton *prog_info)
 {
 	int	ret;
