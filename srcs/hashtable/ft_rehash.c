@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:03:01 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:03:05 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 18:07:13 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,34 +37,48 @@ static void	rehash_add(t_hash_table *table, t_hash_item *to_add)
 	}
 }
 
+static void	add_items_from_index(int index, t_hash_table *table, \
+t_hash_item **old_table)
+{
+	t_hash_item	*item;
+	t_hash_item	*tmp;
+
+	item = old_table[index];
+	while (item)
+	{
+		tmp = item;
+		item = item->next;
+		rehash_add(table, tmp);
+	}
+}
+
 size_t	ht_rehash(t_hash_table *table)
 {
 	t_hash_item	**new;
-	t_hash_item	*item;
-	t_hash_item	*tmp;
 	size_t		i;
 	t_hash_item	**old_table;
 
 	table->size = table->size * 2;
-	new = (t_hash_item **)ft_calloc(table->size + 1, sizeof(t_hash_item *));
 	new = (t_hash_item **)ft_calloc(table->size + 1, sizeof(t_hash_item *));
 	if (!new)
 		return (ERROR);
 	old_table = table->table;
 	table->table = new;
 	i = 0;
-	while (i < table->size / 2)//
+	while (i < table->size / 2)
 	{
-		item = old_table[i];
-		while (item)
-		{
-			tmp = item;
-			item = item->next;
-			rehash_add(table, tmp);
-		}
+		add_items_from_index(i, table, old_table);
 		i++;
 	}
 	free(old_table);
 	table->table = new;
 	return (SUCCESS);
 }
+
+		// item = old_table[i];
+		// while (item)
+		// {
+		// 	tmp = item;
+		// 	item = item->next;
+		// 	rehash_add(table, tmp);
+		// }
