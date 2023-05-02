@@ -113,7 +113,7 @@ typedef struct s_executable_cmd
 // pipe = '|'
 typedef struct s_pipe
 {
-	int	type;
+	int				type;
 	struct s_cmd	*left;
 	struct s_cmd	*right;
 }	t_pipe;
@@ -121,14 +121,13 @@ typedef struct s_pipe
 // redirectors = '<' '>' '>>'
 typedef struct s_redirection
 {
-	int	type;
+	int				type;
 	struct s_cmd	*cmd;
 	char			*filename;
 	int				token_id;
 	int				fd;
 	int				from_fd;
 }	t_redirection;
-
 
 //struct to send to child
 typedef struct s_child
@@ -139,12 +138,12 @@ typedef struct s_child
 	int		redir_out;
 	int		pipe_in;
 	int		pipe_out;
-	char 	*path;
+	char	*path;
 	char	**args;
 }	t_child;
 
 //struct for program
-typedef	struct s_eggcarton
+typedef struct s_eggcarton
 {
 	struct termios 		*saved_term;
 	struct s_hash_table	*environment;
@@ -157,10 +156,15 @@ typedef	struct s_eggcarton
 	struct s_child		**children;
 }	t_eggcarton;
 
+//struct for quote tracking
+typedef struct s_quote_tracker
+{
+	char	quote_type;
+	int		in_quote;
+	int		quote_index;
+}	t_quote_tracker;
 
-
-void rl_replace_line(const char *text, int clear_undo); ////////////////////
-
+void	rl_replace_line(const char *text, int clear_undo); ////////////////////
 
 //functions for PARSER
 ////////////////////////// FROM AST_H
@@ -181,8 +185,8 @@ int  validate_quotes(char **token);
 // t_cmd	*parse_line(char **parse_string, char *end);
 // t_cmd	*handle_block(char **parse_string, char *end);
 // t_cmd	*handle_redirection(t_cmd *cmd, char **parse_string, char *end);
-t_cmd	*handle_exec(char **parsed_string, char *end, int *cmd_count, t_eggcarton *prog_info);
-t_cmd	*handle_pipe(char **parsed_string, char *end, int *cmd_count, int *pipe_count, t_eggcarton *prog_info);
+t_cmd	*handle_exec(char **parsed_string, char *end, t_eggcarton *prog_info);
+t_cmd	*handle_pipe(char **parsed_string, char *end, int *pipe_count, t_eggcarton *prog_info);
 
 //tokenize.c
 char	move_to_token(char **parse_string, char *end);
