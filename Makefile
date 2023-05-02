@@ -1,74 +1,55 @@
-### COLOURS ###
-COLOUR_GREEN=\033[0;32m
-COLOUR_RED=\033[0;31m
-COLOUR_END=\033[0m
+NAME := minishell
 
-### SET UP ###
-CC = cc
-CFLAGS = -Wall -Werror -Wall -I$I
+LIB = libft/libft.a
 
-RM = /bin/rm -f
-RMDIR = /bin/rmdir -p
+CC := CC
 
-LIBFT = libft/libft.a
+CFLAGS := -Wall -Wextra -Werror -I includes -g #-fsanitize=address
 
-S = srcs
-O = objs
-I = includes
+DIR_DUP     = mkdir -p $(@D)
 
-FILES = main.c builtins.c env_builtins.c executable_parse.c executer.c node_constructors.c parser.c \
-		pathfinding.c redirection_parse.c tokenize.c utilities.c \
-		ft_hash.c ft_hash_add_remove.c ft_rehash.c ft_hash_print.c ft_hash_destroy.c reset.c expansions.c children.c tree_iter.c print_tree.c \
-		validate_syntax.c validate_redirection.c signal.c initialize.c eggshell.c execute_child.c setup_redirections.c get_arg.c expand_env_variable.c
+INCS := includes/minishell.h
 
+SRC_DIR := srcs
 
-HEADER = minishell.h libft.h ft_hash.h
-HEADER := $(addprefix $I/,$(HEADER))
+OBJ_DIR := objs
 
-SRCS := $(foreach FILE,$(FILES),$(shell find $S -type f -name '$(FILE)')) # get a list of all source code files
-O_DIRS = $(dir $(OBJS)) # convert source code paths to object code paths
-OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) # get a list of all object code directories
+SRCS := main.c builtins/builtins.c builtins/env_builtins.c parser/executable_parse.c execution/executer.c parser/node_constructors.c parser/parser.c \
+		execution/pathfinding.c parser/redirection_parse.c parser/tokenize.c utilities/utilities.c \
+		hashtable/ft_hash.c hashtable/ft_hash_add_remove.c hashtable/ft_rehash.c hashtable/ft_hash_print.c hashtable/ft_hash_destroy.c utilities/reset.c parser/expansions.c children/children.c execution/tree_iter.c print_tree.c \
+		setup/validate_syntax.c setup/validate_redirection.c setup/signal.c setup/initialize.c eggshell.c execution/execute_child.c execution/setup_redirections.c parser/get_arg.c parser/expand_env_variable.c
 
-READLINE = -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
+SRCS := $(SRCS:%=$(SRC_DIR)/%)
 
-NAME = minishell
+OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-### RULES ###
-all: $(NAME)
+READLINE := -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include #from Lucas
 
-print: #print the list of source code files
-	@echo $(SRCS)  
+all:  $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJS) $(READLINE) -Llibft -lft -o $(NAME)
-	@echo "$(COLOUR_GREEN) $(NAME) created$(COLOUR_END)"
+$(NAME): $(OBJS) $(LIB)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIB) $(READLINE)
+	@echo "\033[0;92m* $(NAME) was created *\033[0m"
 
-$O:
-	@mkdir -p $@ $(O_DIRS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(DIR_DUP)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$O/%.o: $S/%.c $(HEADER) | $O
-	@$(CC) $(CFLAGS) -c $< -o $@
-
-### LIBFT
-
-libft: $(LIBFT)
-
-$(LIBFT):
-	@$(MAKE) -C libft
-	@echo "$(COLOUR_GREEN) $(LIBFT) created$(COLOUR_END)"
-
-### CLEANING
+$(LIB): 
+	$(MAKE) -C libft
 
 clean:
-	@cd libft && $(MAKE) clean
-	@echo "$(COLOUR_RED) $(LIBFT) removed$(COLOUR_END)"
-	@if [ -d $O ]; then $(RM) -rf $(O_DIRS) $O; fi
+	@rm -f $(OBJS)
+	@rm -rf $(OBJ_DIR)
+	$(MAKE) clean -C libft
+	@echo "\033[0;91m* $(NAME) .o files and obj directory were deleted *\033[0m"
 
-fclean : clean
-	@cd libft && $(MAKE) fclean
-	@$(RM) $(NAME)
-	@echo "$(COLOUR_RED) $(NAME) removed$(COLOUR_END)"
+fclean: clean
+	@rm -f $(NAME)
+	$(MAKE) fclean -C libft
+	@echo "\033[0;91m* $(NAME) was deleted *\033[0m"
 
-re: fclean $(NAME)
-
+re: fclean all
+	
 .PHONY: all clean fclean re
+.SILENT:
