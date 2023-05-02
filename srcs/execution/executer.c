@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 11:36:07 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:07:43 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,6 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 	printf("I'm not a child!\n");// leave for now
 }
 
-//is this needed?
-void	run_system_executable(t_executable_cmd *cmd, t_eggcarton *prog_info)
-{
-	int	ret;
-
-	ret = execve(cmd->cmd_path, cmd->args, prog_info->og_env);
-	if (ret == -1)
-		exit_child("exeve failed: ", cmd->args[0], errno);
-}
-
 //may need to update env variable based on exit status of last child
 void	wait_for_children(t_eggcarton *prog_info)
 {
@@ -63,88 +53,9 @@ void	wait_for_children(t_eggcarton *prog_info)
 	while (index < prog_info->pipe_count + 1)
 	{
 		if (prog_info->children[index]->pid >= 0)
-			waitpid(prog_info->children[index]->pid , &exit_status, 0);
+			waitpid(prog_info->children[index]->pid, &exit_status, 0);
 		index++;
 	}
-}
-
-void	exit_child(char *error_msg, char *arg, int exit_code)
-{
-	ft_putstr_fd("\033[31mEggShell🥚: ", STDERR_FILENO);
-	ft_putstr_fd(error_msg, STDERR_FILENO);
-	ft_putendl_fd(arg, STDERR_FILENO);
-	ft_putstr_fd("\x1B[0m", STDERR_FILENO);
-	exit(exit_code);
-}
-
-/* bail_on_child is called by the child process if the command is not found.
- * It will exit with an error code.
- */
-static void	bail_on_child(char *cmd)
-{
-	if (cmd == NULL)
-		exit_child("command not found: ", " ", CMD_ERROR);
-	else
-		exit_child("command not found: ", cmd, CMD_ERROR);
-}
-
-static void	dup_pipes(t_eggcarton *prog_info, int index)
-{
-	if (prog_info->pipe_count > 0)
-	{
-		if (prog_info->children[index]->pipe_in != UNSET)
-		{
-			dup2(prog_info->children[index]->pipe_in, STDIN_FILENO);
-		}
-		if (prog_info->children[index]->pipe_out != UNSET)
-		{
-			dup2(prog_info->children[index]->pipe_out, STDOUT_FILENO);
-		}
-	}
-	close_pipes(prog_info->pipes, prog_info->pipe_count);
-}
-
-static void	dup_redirections(t_eggcarton *prog_info, int index)
-{
-	if (prog_info->children[index]->redir_in != UNSET)
-	{
-		if (prog_info->children[index]->redir_in == OPEN_ERROR)
-			write(STDIN_FILENO, "\0", 1);
-		else
-			dup2(prog_info->children[index]->redir_in, STDIN_FILENO);
-	}
-	if (prog_info->children[index]->redir_out != UNSET)
-	{
-		if (prog_info->children[index]->redir_in == OPEN_ERROR)
-			ft_putstr_fd("OUTFILE OPEN ERROR, investigate proper course\n", 2);
-		else
-			dup2(prog_info->children[index]->redir_out, STDOUT_FILENO);
-	}
-	close_redirections(prog_info->children[index]->redir_in, \
-	prog_info->children[index]->redir_out);
-}
-/* pipe_child is called by child processes. It will dup2 the read and write
- * file descriptors to the correct file descriptors, close the file descriptors
- * that are not needed, and then execve the command. If the command is not
- * found, it will exit with an error code.
- */
-void	pipe_child(t_eggcarton *prog_info, int index)
-{
-	dup_pipes(prog_info, index);
-	dup_redirections(prog_info, index);
-	if (prog_info->children[index]->command_present == FALSE)
-		exit(0);
-	if (prog_info->children[index]->path == NULL)
-		bail_on_child(prog_info->children[index]->args[0]);
-	else if (prog_info->children[index]->redir_in == OPEN_ERROR || \
-		prog_info->children[index]->redir_out == OPEN_ERROR)
-		exit(1);
-	if (prog_info->children[index]->path[0] == ':')
-		run_builtins(prog_info->children[index], prog_info);
-	else
-		execve(prog_info->children[index]->path, \
-		prog_info->children[index]->args, prog_info->og_env);
-	exit_child("exeve failed: ", prog_info->children[index]->args[0], errno);
 }
 
 int	should_run_in_parent(t_eggcarton *prog_info, int index)
