@@ -8,7 +8,7 @@ CFLAGS := -Wall -Wextra -Werror -I includes -g #-fsanitize=address
 
 DIR_DUP     = mkdir -p $(@D)
 
-INCS := includes/minishell.h
+INCS := includes/minishell.h includes/ft_hash.h includes/libft.h
 
 SRC_DIR := srcs
 
@@ -31,7 +31,7 @@ $(NAME): $(OBJS) $(LIB)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIB) $(READLINE)
 	@echo "\033[0;92m* $(NAME) was created *\033[0m"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCS)
 	$(DIR_DUP)
 	$(CC) $(CFLAGS) -c $< -o $@
 
