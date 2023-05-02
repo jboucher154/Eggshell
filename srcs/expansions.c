@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:46:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 12:59:36 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 13:25:26 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,81 +99,51 @@ char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
 	return (new_str);
 }
 
-//search for needed expansions
-char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess)
+static void	update_quote_info(t_quote_tracker *quote_info, int in_quote_value, \
+char quote_type_value)
 {
-	int				index;
-	t_quote_tracker quote_info;
-
-	quote_info.in_quote = FALSE;
-	quote_info.quote_type = UNSET;
-	index = 0;
-	if (ft_strchr(str_to_assess, '$') == NULL)
-		return (str_to_assess);
-	while (str_to_assess[index])
-	{
-		if (ft_strchr(QUOTES, str_to_assess[index]) && quote_info.in_quote == FALSE)
-		{
-			quote_info.in_quote = TRUE;
-			quote_info.quote_type = str_to_assess[index];
-		}
-		else if (str_to_assess[index] == quote_info.quote_type && quote_info.in_quote == TRUE)
-		{
-			quote_info.in_quote = FALSE;
-			quote_info.quote_type = UNSET;
-		}
-		else if (str_to_assess[index] == '$')
-		{
-			if (((quote_info.in_quote == TRUE && quote_info.quote_type != '\'') || quote_info.in_quote == FALSE) && (str_to_assess[index + 1] != '\0' || (str_to_assess[index + 1] && ft_strchr(WHITESPACE, str_to_assess[index + 1]) == NULL)))
-			{
-				str_to_assess = expand_env_var(prog_info, str_to_assess, str_to_assess + index);
-				if (str_to_assess == NULL)
-					return (NULL); //
-				index = 0;
-				continue ;
-			}
-		}
-		index++;
-	}
-	return (str_to_assess);
+	quote_info->in_quote = in_quote_value;
+	quote_info->quote_type = quote_type_value;
 }
 
-// char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess)
-// {
-// 	int		index;
-// 	// t_quote_tracker quote_info;//
-// 	int		in_quote;
-// 	char	quote_type;
+static int yes_expand(t_quote_tracker *q_info, char *to_assess, int index)
+{
+	if (((q_info->in_quote == TRUE && q_info->quote_type != '\'') || \
+	q_info->in_quote == FALSE) && (to_assess[(index) + 1] != '\0' || \
+	(to_assess[(index) + 1] && \
+	ft_strchr(WHITESPACE, to_assess[index + 1]) == NULL)))
+	{
+		return (TRUE);
+	}
+	return (FALSE);
+}
 
-// 	in_quote = FALSE;
-// 	index = 0;
-// 	quote_type = UNSET;
-// 	if (ft_strchr(str_to_assess, '$') == NULL)
-// 		return (str_to_assess);
-// 	while (str_to_assess[index])
-// 	{
-// 		if (ft_strchr(QUOTES, str_to_assess[index]) && in_quote == FALSE)
-// 		{
-// 			in_quote = TRUE;
-// 			quote_type = str_to_assess[index];
-// 		}
-// 		else if (str_to_assess[index] == quote_type && in_quote == TRUE)
-// 		{
-// 			in_quote = FALSE;
-// 			quote_type = UNSET;
-// 		}
-// 		else if (str_to_assess[index] == '$')
-// 		{
-// 			if (((in_quote == TRUE && quote_type != '\'') || in_quote == FALSE) && (str_to_assess[index + 1] != '\0' || (str_to_assess[index + 1] && ft_strchr(WHITESPACE, str_to_assess[index + 1]) == NULL)))
-// 			{
-// 				str_to_assess = expand_env_var(prog_info, str_to_assess, str_to_assess + index);
-// 				if (str_to_assess == NULL)
-// 					return (NULL); //
-// 				index = 0;
-// 				continue ;
-// 			}
-// 		}
-// 		index++;
-// 	}
-// 	return (str_to_assess);
-// }
+//search for needed expansions
+char	*check_for_expansions(t_eggcarton *prog_info, char *to_assess)
+{
+	int				i;
+	t_quote_tracker	q_info;
+
+	update_quote_info(&q_info, FALSE, UNSET);
+	i = 0;
+	if (ft_strchr(to_assess, '$') == NULL)
+		return (to_assess);
+	while (to_assess[i])
+	{
+		if (ft_strchr(QUOTES, to_assess[i]) && q_info.in_quote == FALSE)
+			update_quote_info(&q_info, TRUE, to_assess[i]);
+		else if (to_assess[i] == q_info.quote_type && \
+		q_info.in_quote == TRUE)
+			update_quote_info(&q_info, FALSE, UNSET);
+		else if (to_assess[i] == '$' && yes_expand(&q_info, to_assess, i))
+		{
+			to_assess = expand_env_var(prog_info, to_assess, to_assess + i);
+			if (to_assess == NULL)
+				return (NULL);
+			i = 0;
+			continue ;
+		}
+		i++;
+	}
+	return (to_assess);
+}
