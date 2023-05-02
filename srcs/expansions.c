@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:46:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 10:11:25 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 11:39:22 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	find_end_of_variable(char *varaible_start)
 	int	index;
 
 	index = 1;
-	while (varaible_start[index] == '_' || ft_isalpha(varaible_start[index]) || ft_isdigit(varaible_start[index]))
+	while (varaible_start[index] == '_' || ft_isalpha(varaible_start[index]) || \
+	ft_isdigit(varaible_start[index]))
 		index++;
 	return (index);
 }
@@ -61,14 +62,13 @@ char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
 	char	*value;
 	char	*new_str;
 	int		new_strlen;
-	
+
 	if (variable_start == NULL)
 		return (str);
 	variable =  ft_substr(variable_start, 0, find_end_of_variable(variable_start)); // there is whitespace at the end NEEDS TO BE ws or quote
 	if (variable == NULL)
 		return (str); //ERROR print?
-	value  = ht_get(prog_info->environment, variable + 1);
-	printf("VALUE: %s	VARIABLE: %s\n", value, variable);//
+	value = ht_get(prog_info->environment, variable + 1);
 	if (value == NULL)
 		new_strlen = (ft_strlen(str) - ft_strlen(variable));
 	else 
@@ -89,14 +89,12 @@ char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
 //search for needed expansions
 char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess)
 {
-	
 	int		index;
+	t_quote_tracker quote_info;//
 	int		in_quote;
 	char	quote_type;
-	int		expand;//
 
 	in_quote = FALSE;
-	expand = TRUE;//
 	index = 0;
 	quote_type = UNSET;
 	if (ft_strchr(str_to_assess, '$') == NULL)
