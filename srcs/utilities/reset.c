@@ -6,20 +6,20 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 12:49:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 11:15:59 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:03:40 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void clean_str_array(char **array)
+void	clean_str_array(char **array)
 {
 	int	index;
 
 	index = 0;
 	if (!array)
 		return ;
-	while(array[index])
+	while (array[index])
 	{
 		free(array[index]);
 		index++;
@@ -28,17 +28,15 @@ void clean_str_array(char **array)
 	array = NULL;
 }	
 
-void close_pipes(int *pipes, int pipe_count)
+void	close_pipes(int *pipes, int pipe_count)
 {
-	int index;
-	
+	int	index;
+
 	index = 0;
-	// printf("PIPE COUNT: %i\n", pipe_count);
 	if (pipe_count == 0)
 		return ;
-	while(index < pipe_count * 2)
+	while (index < pipe_count * 2)
 	{
-		// printf("CLOSING PIPE: %i\n", index);
 		close(pipes[index]);
 		index++;
 	}
@@ -63,11 +61,11 @@ void	clean_tree(t_cmd *cmd)
 	else if (cmd->type == EXECUTABLE_CMD)
 	{
 		clean_str_array(((t_executable_cmd *)cmd)->args);
-		free((t_executable_cmd *)cmd);	
+		free((t_executable_cmd *)cmd);
 	}
 }
 
-void reset_program(t_eggcarton *prog_info, t_cmd **cmd)
+void	reset_program(t_eggcarton *prog_info, t_cmd **cmd)
 {
 	if (*cmd)
 	{
