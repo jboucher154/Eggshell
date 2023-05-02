@@ -164,6 +164,14 @@ typedef struct s_quote_tracker
 	int		quote_index;
 }	t_quote_tracker;
 
+//struct for executable parse info
+typedef struct s_exec_parse_info
+{
+	int						current_size;
+	struct s_executable_cmd	*cmd;
+	struct s_cmd			*head_cmd;
+}	t_exec_parse_info;
+
 void	rl_replace_line(const char *text, int clear_undo); ////////////////////
 
 //functions for PARSER
@@ -186,7 +194,7 @@ int  validate_quotes(char **token);
 // t_cmd	*handle_block(char **parse_string, char *end);
 // t_cmd	*handle_redirection(t_cmd *cmd, char **parse_string, char *end);
 t_cmd	*handle_exec(char **parsed_string, char *end, t_eggcarton *prog_info);
-t_cmd	*handle_pipe(char **parsed_string, char *end, int *pipe_count, t_eggcarton *prog_info);
+t_cmd	*handle_pipe(char **parsed_string, char *end, t_eggcarton *prog_info);
 
 //tokenize.c
 char	move_to_token(char **parse_string, char *end);
