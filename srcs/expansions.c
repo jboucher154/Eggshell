@@ -6,31 +6,37 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:46:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 11:39:22 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 12:54:49 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	copy_from_value(char *new_str, int *new_index, char *value)
+{
+	int	value_index;
+
+	value_index = 0;
+	while (value && value[value_index])
+	{
+		new_str[*new_index] = value[value_index];
+		value_index++;
+		(*new_index)++;
+	}
+}
+
 void	insert_new_value(char *str, char *new_str, char *variable, char *value)
 {
-	int		value_index;
 	int		new_index;
 	int		old_index;
 
-	value_index = 0;
 	new_index = 0;
 	old_index = 0;
 	while (str[old_index])
 	{
 		if (str[old_index] == '$')
 		{
-			while (value && value[value_index])
-			{
-				new_str[new_index] = value[value_index];
-				value_index++;
-				new_index++;
-			}
+			copy_from_value(new_str, &new_index, value);
 			old_index += ft_strlen(variable);
 			break ;
 		}
@@ -90,7 +96,7 @@ char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
 char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess)
 {
 	int		index;
-	t_quote_tracker quote_info;//
+	// t_quote_tracker quote_info;//
 	int		in_quote;
 	char	quote_type;
 
