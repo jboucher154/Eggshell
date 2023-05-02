@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:46:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 12:54:49 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 12:57:03 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	insert_new_value(char *str, char *new_str, char *variable, char *value)
 	new_str[new_index] = '\0';
 }
 
-int	find_end_of_variable(char *varaible_start)
+int	find_end_of_var(char *varaible_start)
 {
 	int	index;
 
@@ -61,25 +61,32 @@ int	find_end_of_variable(char *varaible_start)
 	return (index);
 }
 
+static size_t	new_str_len(char *str, char *variable, char *value)
+{
+	if (value == NULL)
+		return (ft_strlen(str) - ft_strlen(variable));
+	else
+		return (ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
+}
+
 //exands the variable
 char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
 {
 	char	*variable;
 	char	*value;
 	char	*new_str;
-	int		new_strlen;
 
 	if (variable_start == NULL)
 		return (str);
-	variable =  ft_substr(variable_start, 0, find_end_of_variable(variable_start)); // there is whitespace at the end NEEDS TO BE ws or quote
+	variable = ft_substr(variable_start, 0, find_end_of_var(variable_start));
 	if (variable == NULL)
-		return (str); //ERROR print?
+	{
+		print_error("malloc failed during expansion");
+		return (str);
+	}
 	value = ht_get(prog_info->environment, variable + 1);
-	if (value == NULL)
-		new_strlen = (ft_strlen(str) - ft_strlen(variable));
-	else 
-		new_strlen = (ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
-	new_str = (char *) malloc(sizeof(char) * (new_strlen + 1));
+	new_str = (char *) malloc(sizeof(char) * \
+	(new_str_len(str, variable, value) + 1));
 	if (!new_str)
 	{
 		free(variable);
