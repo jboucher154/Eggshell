@@ -19,7 +19,7 @@ I = includes
 FILES = main.c builtins.c env_builtins.c executable_parse.c executer.c node_constructors.c parser.c \
 		pathfinding.c redirection_parse.c tokenize.c utilities.c \
 		ft_hash.c ft_hash_add_remove.c ft_rehash.c ft_hash_print.c reset.c expansions.c children.c tree_iter.c print_tree.c validate_syntax.c \
-		signal.c initialize.c eggshell.c
+		signal.c initialize.c eggshell.c execute_file.c
 
 
 HEADER = minishell.h libft.h ft_hash.h
