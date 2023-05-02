@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_rehash.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/02 16:03:01 by jebouche          #+#    #+#             */
+/*   Updated: 2023/05/02 16:03:05 by jebouche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_hash.h"
 
 /*
@@ -5,7 +17,7 @@
 ** It returns SUCCESS if the table was resized
 ** It returns ERROR if an error occured
 */
-static void	rehash_add(t_hash_table *table , t_hash_item *to_add)
+static void	rehash_add(t_hash_table *table, t_hash_item *to_add)
 {
 	size_t		index;
 	t_hash_item	*tmp;

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 10:51:35 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 10:24:52 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:15:15 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ char	identify_token(char *token_start)
 		token_id = PIPE;
 	else if (*token_start == '<')
 	{
-		if (token_start + 1 && *(token_start + 1 ) == '<')
+		if (token_start + 1 && *(token_start + 1) == '<')
 			token_id = REDIRECT_HERE;
 		else
 			token_id = REDIRECT_IN;
 	}
 	else if (*token_start == '>')
 	{
-		if (token_start + 1 && *(token_start + 1 ) == '>')
+		if (token_start + 1 && *(token_start + 1) == '>')
 			token_id = REDIRECT_OUT_APPEND;
 		else
 			token_id = REDIRECT_OUT;
@@ -46,14 +46,14 @@ char	identify_token(char *token_start)
 //return the next non-whitespace character's identity
 char	move_to_token(char **parsed_string, char *end)
 {
-	char token_id;
+	char	token_id;
 
-	while((*parsed_string) < end)
+	while ((*parsed_string) < end)
 	{
 		if (ft_strchr(WHITESPACE, **parsed_string))
 			(*parsed_string)++;
 		else
-			break;
+			break ;
 	}
 	token_id = identify_token(*parsed_string);
 	return (token_id);
@@ -67,9 +67,9 @@ char	move_to_token(char **parsed_string, char *end)
 int	peek_next_token(char *current_index, char *look_for)
 {
 	char	*token;
-	
+
 	token = current_index;
-	while(token)
+	while (token)
 	{
 		if (ft_strchr(TOKENS, *token))
 			break ;

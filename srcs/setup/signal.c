@@ -6,12 +6,11 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:14:03 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 13:47:43 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:03:45 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	initialize_signals(void)
 {
@@ -26,7 +25,6 @@ void	initialize_signals(void)
 	sigaction(SIGTSTP, &sig_act, NULL);
 	sigaction(SIGQUIT, &sig_quit, NULL);
 }
-
 
 void	signal_handler(int sig)
 {
@@ -44,4 +42,3 @@ void	signal_handler(int sig)
 	}
 	return ;
 }
-

@@ -18,8 +18,8 @@ I = includes
 
 FILES = main.c builtins.c env_builtins.c executable_parse.c executer.c node_constructors.c parser.c \
 		pathfinding.c redirection_parse.c tokenize.c utilities.c \
-		ft_hash.c ft_hash_add_remove.c ft_rehash.c ft_hash_print.c reset.c expansions.c children.c tree_iter.c print_tree.c validate_syntax.c \
-		signal.c initialize.c eggshell.c execute_file.c
+		ft_hash.c ft_hash_add_remove.c ft_rehash.c ft_hash_print.c ft_hash_destroy.c reset.c expansions.c children.c tree_iter.c print_tree.c \
+		validate_syntax.c validate_redirection.c signal.c initialize.c eggshell.c execute_child.c setup_redirections.c get_arg.c expand_env_variable.c
 
 
 HEADER = minishell.h libft.h ft_hash.h
@@ -66,6 +66,8 @@ clean:
 
 fclean : clean
 	@cd libft && $(MAKE) fclean
+	@$(RM) $(NAME)
+	@echo "$(COLOUR_RED) $(NAME) removed$(COLOUR_END)"
 
 re: fclean $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/28 16:09:40 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:16:03 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,7 @@ int	validate_quotes(char **token)
 		return (TRUE);
 }
 
-int	validate_redirect(char **token, char token_id)
-{
-	(*token)++;
-	move_pointer_past_ws(token);
-	if (!(**token))
-		return (print_error("syntax error near unexpected token `newline'"));
-	if ((token_id == REDIRECT_IN && **token == '>') || (token_id == REDIRECT_OUT && **token == '<'))
-		return (print_error("Syntax error, unexpected token"));
-	return (TRUE);
-}
-
-int	validate_redirect_out_append(char **token)
-{
-	(*token) += 2;
-	move_pointer_past_ws(token);
-	if (!(**token))
-		return (print_error("syntax error near unexpected token `newline'"));
-	if (**token == '>' || **token == '<')
-		return (print_error("Syntax error, unexpected token"));
-	return (TRUE);
-}
-
-static int validate_token(char **token, char *str, char token_id)
+static int	validate_token(char **token, char *str, char token_id)
 {
 	int		valid;
 
@@ -88,13 +66,15 @@ int	validate_syntax(char *str)
 	valid = TRUE;
 	while (*token && valid)
 	{
-		while (*token && ft_strchr(TOKENS, *token) == NULL && ft_strchr(QUOTES, *token) == NULL)
+		while (*token && ft_strchr(TOKENS, *token) == NULL && \
+		ft_strchr(QUOTES, *token) == NULL)
 			token++;
 		if (!*token)
 			break ;
 		token_id = identify_token(token);
 		valid = validate_token(&token, str, token_id);
-		if (valid && !((token_id == REDIRECT_IN || token_id == REDIRECT_OUT || token_id == REDIRECT_OUT_APPEND)&& ft_strchr(QUOTES, *token)))
+		if (valid && !((token_id == REDIRECT_IN || token_id == REDIRECT_OUT || \
+		token_id == REDIRECT_OUT_APPEND) && ft_strchr(QUOTES, *token)))
 			token++;
 	}
 	return (valid);

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:16:07 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/28 15:50:23 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:10:43 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ int	set_shell_level(t_hash_table *environment)
 	return (ht_update_value(environment, "SHLVL", new_level));
 }
 
-static void initialize_env_table(t_hash_table *ht_env, char **envp)
+static void	initialize_env_table(t_hash_table *ht_env, char **envp)
 {
-	int index;
-	int out_index;
-	char *key;
-	char *value;
-	
+	int		index;
+	int		out_index;
+	char	*key;
+	char	*value;
+
 	index = 0;
 	out_index = 0;
-	while (envp[out_index])	
+	while (envp[out_index])
 	{
 		while (envp[out_index][index] != '=')
 			index++;
@@ -59,23 +59,23 @@ static void initialize_env_table(t_hash_table *ht_env, char **envp)
 	}
 	ht_update_value(ht_env, "SHELL", getcwd(NULL, 0));
 	if (set_shell_level(ht_env) == ERROR)
-		print_error("SHELL LEVEL NOT SET!");
+		print_error("Shell level not set!");
 }
 
-int	initialize_eggcarton(t_eggcarton *prog_info, char **envp, struct termios *saved_term)
+int	initialize_eggcarton(t_eggcarton *prog, char **env, struct termios *term)
 {
-	prog_info->environment = ht_create(150);
-	if (prog_info->environment == NULL)
+	prog->environment = ht_create(150);
+	if (prog->environment == NULL)
 		return (ERROR);
-	initialize_env_table(prog_info->environment, envp);
-	if (initalize_command_table(prog_info) == ERROR)
+	initialize_env_table(prog->environment, env);
+	if (initalize_command_table(prog) == ERROR)
 		return (EXIT_FAILURE); //clean exit
-	prog_info->saved_term = saved_term;
-	prog_info->cmd_count = 0;
-	prog_info->pipe_count = 0;
-	prog_info->og_env = envp;
-	prog_info->pipes = NULL;
-	prog_info->pids = NULL;
-	prog_info->children = NULL;
+	prog->saved_term = term;
+	prog->cmd_count = 0;
+	prog->pipe_count = 0;
+	prog->og_env = env;
+	prog->pipes = NULL;
+	prog->pids = NULL;
+	prog->children = NULL;
 	return (SUCCESS);
 }

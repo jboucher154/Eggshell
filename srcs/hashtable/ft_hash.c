@@ -6,19 +6,12 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/01 19:14:26 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:16:29 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_hash.h"
-#include "../includes/libft.h"
-#include "stdio.h"
-
-/*
-** These functions have not been tested yet
-** They are not used in eggshell yet
-** They are here for future use
-*/
+#include "libft.h"
 
 /*
 ** This function is used to get the hash of a string.

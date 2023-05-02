@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
+/*   Updated: 2023/05/02 16:32:26 by jebouche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -34,8 +45,8 @@
 # include <stdlib.h>
 
 //for write, access, read, close, fork, getcwd, chdir, stat, lstat, fstat, 
-// unlink, execve, dup, dup2, pipe, isatty, ttyname, ttyslot(BSD-like systems and Linux)
-// tcsetattr, tcgetattr
+// unlink, execve, dup, dup2, pipe, isatty, ttyname, 
+// ttyslot(BSD-like systems and Linux), tcsetattr, tcgetattr
 # include <unistd.h>
 
 //for open,
@@ -145,9 +156,9 @@ typedef struct s_child
 //struct for program
 typedef struct s_eggcarton
 {
-	struct termios 		*saved_term;
+	struct termios		*saved_term;
 	struct s_hash_table	*environment;
-	struct s_hash_table *command_table;
+	struct s_hash_table	*command_table;
 	char				**og_env;
 	int					cmd_count;
 	int					pipe_count;
@@ -172,27 +183,17 @@ typedef struct s_exec_parse_info
 	struct s_cmd			*head_cmd;
 }	t_exec_parse_info;
 
-void	rl_replace_line(const char *text, int clear_undo); ////////////////////
+//from readline library
+void	rl_replace_line(const char *text, int clear_undo);
 
-//functions for PARSER
-////////////////////////// FROM AST_H
 //validate_syntax.c
-int	validate_syntax(char *str);
-int	validate_pipe(char *token, char *str);
-int	validate_redirect_in(char *token_start);
-int	validate_redirect_out(char *token_start);
-int	validate_redirect_out_append(char **token_start);
-int  validate_quotes(char **token);
-// int	validate_or(char *token_start);
-// int	validate_and(char *token_start);
-// int	validate_open_parenthesis(char *token_start);
-// int	validate_close_parenthesis(char *token_start);
+int		validate_syntax(char *str);
+int		validate_pipe(char *token, char *str);
+int		validate_redirect(char **token_start, char token_id);
+int		validate_redirect_out_append(char **token);
+int		validate_quotes(char **token);
 
 //parse.c
-// t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
-// t_cmd	*parse_line(char **parse_string, char *end);
-// t_cmd	*handle_block(char **parse_string, char *end);
-// t_cmd	*handle_redirection(t_cmd *cmd, char **parse_string, char *end);
 t_cmd	*handle_exec(char **parsed_string, char *end, t_eggcarton *prog_info);
 t_cmd	*handle_pipe(char **parsed_string, char *end, t_eggcarton *prog_info);
 
@@ -202,28 +203,20 @@ char	identify_token(char *token_start);
 int		peek_next_token(char *current_index, char *look_for);
 
 //node_constructors.c
-t_cmd	*new_line(t_cmd *left, t_cmd *right);
 t_cmd	*new_pipe(t_cmd *left, t_cmd *right);
 
 //redirection_parse.c
-t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end, t_eggcarton *prog_info);
-t_cmd	*new_redirection(t_cmd *cmd, char **file_start, char token_id, t_eggcarton *prog_info);
-char	*find_filename(char *file_start);//for redirection
+t_cmd	*handle_redirection(t_cmd *cmd, \
+		char **parsed_string, char *end, t_eggcarton *prog_info);
+t_cmd	*new_redirection(t_cmd *cmd, char **file_start, \
+		char token_id, t_eggcarton *prog_info);
 
 //executable_parse.c
 t_executable_cmd	*new_executable_cmd(void);
-char				*find_args(char *cmd_start, char ***args); //for the executable command
-int					count_args(char *arg_start); //for the executable command
-// int				skip_redirection(char *redir_start);//for the executable command
-int					find_end_word(char *begin_word);//for the executable command
-int					find_endquote(char *begin_quote);//for the executable command
-char				*get_arg(char **parsed_string, t_eggcarton *prog_info);
-
+char	*get_arg(char **parsed_string, t_eggcarton *prog_info);
 
 //PRINT_TREE
-void	print_tree(t_cmd *cmd, int	depth);
-
-///////////////////////////////
+void	print_tree(t_cmd *cmd, int depth);
 
 //pathfinding.c
 char	*get_path(t_eggcarton *prog_info, char *fname);
@@ -233,23 +226,27 @@ char	**get_paths(t_eggcarton *prog_info);
 
 //executer.c
 void	executer(t_cmd *cmd, t_eggcarton *prog_info);
-void 	do_commands(t_eggcarton *prog_info);
+void	do_commands(t_eggcarton *prog_info);
 void	run_system_executable(t_executable_cmd *cmd, t_eggcarton *prog_info);
 void	run_builtins(t_child *cmd, t_eggcarton *prog_info);
 void	exit_child(char *error_msg, char *arg, int exit_code);
+void	pipe_child(t_eggcarton *prog_info, int index);
+void	process_redirections(t_redirection *redir, t_eggcarton *prog_info, \
+		int index);
 
 //command_tree.c
 int		create_pipes(t_eggcarton *prog_info);
 int		tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index);
 void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index);
 void	setup_pipes(t_eggcarton *prog_info, int index);
-void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, int index);
+void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, \
+		int index);
 
 //reset.c
-void 	clean_str_array(char **array);
-void 	close_pipes(int *pipes, int pipe_count);
+void	clean_str_array(char **array);
+void	close_pipes(int *pipes, int pipe_count);
 void	clean_tree(t_cmd *cmd);
-void 	reset_program(t_eggcarton *prog_info, t_cmd **cmd);
+void	reset_program(t_eggcarton *prog_info, t_cmd **cmd);
 
 //parser.c
 t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
@@ -265,17 +262,17 @@ void	clearing(void);
 
 //print tree helpers
 void	print_children(t_child **childs);
-void	print_tree(t_cmd *cmd, int	depth);
+void	print_tree(t_cmd *cmd, int depth);
 void	print_array(char **array);
 
 //validate_syntax.c
 
 //signal.c
-void 	signal_handler(int sig); //, t_eggcarton *prog_info
+void	signal_handler(int sig); //, t_eggcarton *prog_info
 void	initialize_signals(void);
 
 //eggshell.c
-int eggshell(t_eggcarton *prog_info);
+int		eggshell(t_eggcarton *prog_info);
 
 //children.c
 int		create_child_array(t_eggcarton *prog_info);
@@ -284,17 +281,19 @@ t_child	*new_child(void);
 
 //expansions.c
 char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess);
-char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start);
-void	insert_new_value(char *str, char *new_str, char *variable, char *value);
+char	*expand_env_var(t_eggcarton *prog_info, char *str, \
+		char *variable_start);
+
 char	*quote_cut(char *to_check_str);
 
 //untility.c
 void	move_pointer_past_ws(char **str_to_move);
 int		print_error(char *error_msg);
 void	close_redirections(int fd_in, int fd_out);
-void 	echoctl_switch(int toggle);
-
+void	echoctl_switch(int toggle);
+int		print_errno_error(void);
 
 //initialize.c
-int		initialize_eggcarton(t_eggcarton *prog_info, char **envp, struct termios *saved_term);
+int		initialize_eggcarton(t_eggcarton *prog, char **env, \
+		struct termios *term);
 #endif

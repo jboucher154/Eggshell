@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:35:22 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/26 17:59:37 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:40:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 	char	*path;
 	char	**paths;
 
-	if (!fname || !*fname)//  just added to handle th "", may not catch the " "
-		return (NULL);//
+	if (!fname || !*fname)
+		return (NULL);
 	path = ht_get(prog_info->command_table, fname);
 	if (!path)
 	{

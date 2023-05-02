@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_hash_add_remove.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/02 16:00:55 by jebouche          #+#    #+#             */
+/*   Updated: 2023/05/02 16:01:32 by jebouche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_hash.h"
 
 /*
@@ -10,8 +22,6 @@ t_hash_item	*new_hash_item(const char *key, void *value)
 {
 	t_hash_item	*item;
 
-	// if (!value) //I want null values added
-	// 	return (NULL);
 	item = (t_hash_item *)malloc(sizeof(t_hash_item));
 	if (!item)
 		return (NULL);
@@ -27,35 +37,10 @@ t_hash_item	*new_hash_item(const char *key, void *value)
 	return (item);
 }
 
-/*
-** This function is used to add a new item to the hash table
-** It returns SUCCESS if the item was added
-** It returns ERROR if an error occured
-*/
-int	ht_add(t_hash_table *table, const char *key, void *value)
+static void	find_table_place(t_hash_table *table, int index, t_hash_item *item)
 {
-	t_hash_item	*item;
-	size_t		index;
 	t_hash_item	*tmp;
-	int			rehash_res;
 
-	rehash_res = 0;
-	if (ht_get(table, key) != NULL)
-	{
-		return (ht_update_value(table, key, value));//integrated update into add
-	}
-	if (table->filled >= table->size / 2)
-	{
-		rehash_res = ht_rehash(table);
-		if (rehash_res == ERROR)
-			return (ERROR);
-	}
-	item = new_hash_item(key, value);
-	if (!item)//
-		printf("MALLOC ERROR IN HT_ADD!!!!!!\n");//
-	if (!item)
-		return (ERROR);
-	index = get_hash(key) % table->size;
 	tmp = table->table[index];
 	if (tmp)
 	{
@@ -66,6 +51,30 @@ int	ht_add(t_hash_table *table, const char *key, void *value)
 	}
 	else
 		table->table[index] = item;
+}
+
+/*
+** This function is used to add a new item to the hash table
+** It returns SUCCESS if the item was added
+** It returns ERROR if an error occured
+*/
+int	ht_add(t_hash_table *table, const char *key, void *value)
+{
+	t_hash_item	*item;
+	size_t		index;
+
+	if (ht_get(table, key) != NULL)
+		return (ht_update_value(table, key, value));
+	if (table->filled >= table->size / 2)
+	{
+		if (ht_rehash(table) == ERROR)
+			return (ERROR);
+	}
+	item = new_hash_item(key, value);
+	if (!item)
+		return (ERROR);
+	index = get_hash(key) % table->size;
+	find_table_place(table, index, item);
 	table->filled++;
 	return (SUCCESS);
 }

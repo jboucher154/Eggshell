@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:20:14 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 13:45:27 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:47:30 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ int	print_error(char *error_msg)
 	ft_putstr_fd(error_msg, 2);
 	ft_putstr_fd("\x1B[0m\n", 2);
 	return (FALSE);
+}
+
+int	print_errno_error(void)
+{
+	char	*error;
+
+	error = strerror(errno);
+	printf("%sEggShell🥚:%s%s\n", RED, error, KNRM);
+	return (ERROR);
 }
 
 void	close_redirections(int fd_in, int fd_out)
