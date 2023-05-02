@@ -6,14 +6,13 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/01 19:24:53 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 08:49:07 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "ft_hash.h"
 
-// we need to set up child processes
 void	echo_command(char **args)
 {
 	int		new_line;
@@ -35,11 +34,12 @@ void	echo_command(char **args)
 		printf("\n");
 }
 
+//check if return from getcwd needs freed
 void	pwd_command(void)
 {
 	char	*current_wd;
 
-	current_wd = getcwd(NULL, 0);//check it it needs free
+	current_wd = getcwd(NULL, 0);
 	printf("%s\n", current_wd);
 	free(current_wd);
 }
@@ -52,7 +52,6 @@ void	cd_command(char	**args, t_hash_table *ht_env)
 
 	current_wd = getcwd(NULL, 0);
 	ht_update_value(ht_env, "OLDPWD", (void *) current_wd);
-	
 	if (args[1] == '\0')
 		to = getenv("HOME");
 	else
@@ -69,7 +68,6 @@ void	cd_command(char	**args, t_hash_table *ht_env)
 
 void	unset_command(char **args, t_hash_table *ht_env)
 {
-	//needs to handle multiple unsets in one call
 	int	index;
 
 	index = 1;
@@ -80,13 +78,30 @@ void	unset_command(char **args, t_hash_table *ht_env)
 	}
 }
 
+void	set_new_env_variable(char *arg, t_hash_table *environment)
+{
+	int		arg_index;
+	char	*key;
+	char	*value;
+
+	arg_index = 0;
+	while (arg[arg_index] != '\0' && arg[arg_index] != '=')
+		arg_index++;
+	key = ft_substr(arg, 0, arg_index);
+	if (arg[arg_index] == '\0')
+		value = NULL;
+	else
+	{
+		arg_index++;
+		value = ft_strdup(arg + arg_index);
+	}
+	ht_add(environment, key, value);
+	free(key);
+}
 
 void	export_command(char **args, t_hash_table *environment)
 {
 	int		index;
-	int		arg_index;
-	char 	*key;
-	char	*value;
 
 	index = 1;
 	if (!args[index])
@@ -96,19 +111,7 @@ void	export_command(char **args, t_hash_table *environment)
 	}
 	while (args[index])
 	{
-		arg_index = 0;
-		while (args[index][arg_index] != '\0' && args[index][arg_index] != '=')
-			arg_index++;
-		key = ft_substr(args[index], 0, arg_index);
-		if (args[index][arg_index] == '\0')
-			value = NULL;
-		else
-		{
-			arg_index++;
-			value = ft_strdup(args[index]+ arg_index);
-		}
-		ht_add(environment, key, value);
-		free(key);
+		set_new_env_variable(args[index]);
 		index++;
 	}
 }
