@@ -45,5 +45,4 @@ void			*ht_get(t_hash_table *table, const char *key);
 void			ht_print_env(t_hash_table *table);
 void			ht_print_export(t_hash_table *table);
 size_t			ht_update_value(t_hash_table *table, const char *key, void *new_value);
-
 #endif
