@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 15:07:43 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 18:52:09 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 void	wait_for_children(t_eggcarton *prog_info)
 {
 	int	exit_status;
+	int	wexit;
 	int	index;
 
 	index = 0;
@@ -56,6 +57,8 @@ void	wait_for_children(t_eggcarton *prog_info)
 			waitpid(prog_info->children[index]->pid, &exit_status, 0);
 		index++;
 	}
+	wexit = WEXITSTATUS(exit_status);
+	ht_update_value(prog_info->environment, "?", ft_itoa(wexit));
 }
 
 int	should_run_in_parent(t_eggcarton *prog_info, int index)

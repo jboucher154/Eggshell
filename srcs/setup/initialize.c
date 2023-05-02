@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:16:07 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:10:43 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/02 18:43:15 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static void	initialize_env_table(t_hash_table *ht_env, char **envp)
 		index = 0;
 		out_index++;
 	}
+	ht_add(ht_env, "?", ft_strdup("0"));
 	ht_update_value(ht_env, "SHELL", getcwd(NULL, 0));
 	if (set_shell_level(ht_env) == ERROR)
 		print_error("Shell level not set!");
