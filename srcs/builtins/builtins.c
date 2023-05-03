@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/02 08:57:39 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 11:15:58 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,18 @@ void	cd_command(char	**args, t_hash_table *ht_env)
 	return ;
 }
 
-void	clearing(void)
-{
-	printf("\033[H\033[J");
-}
+ void	exit_command(t_eggcarton *prog_info, t_child *cmd)
+ {
+	int exit_code;
+
+	exit_code = 0;
+	if (cmd->args[1] == '\0')
+		exit_code = ft_atoi(ht_get(prog_info->environment, "?"));
+	// else if (cmd->args[1] != '\0' && cmd->args[2] != '\0')
+	// {
+	// 	print_error("Too many arguments");
+	// 	return ;
+	// }
+	printf("exit\n");
+	exit (exit_code);//
+ }

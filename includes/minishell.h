@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 10:11:06 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 11:05:40 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,7 @@ void	cd_command(char	**args, t_hash_table *ht_env);
 void	unset_command(char **args, t_hash_table *ht_env);
 void	export_command(char **args, t_hash_table *ht_env);
 void	print_enviroment(t_hash_table	*ht_env);
-void	clearing(void);
+void	exit_command(t_eggcarton *prog_info, t_child *cmd);
 
 //print tree helpers
 void	print_children(t_child **childs);

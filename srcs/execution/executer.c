@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 10:24:32 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:58:32 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 		echo_command(cmd->args);
 	if (!ft_strncmp("env", cmd->args[0], 3))
 		print_enviroment(prog_info->environment);
-	if (!ft_strncmp("EXIT", cmd->args[0], 4))
-		exit(EXIT_SUCCESS);
+	if (!ft_strncmp("exit", cmd->args[0], 4))
+		exit_command(prog_info, cmd);
 	if (cmd->pid == 0)
 	{
 		printf("I am a child and will exit now!\n");// leave for now
