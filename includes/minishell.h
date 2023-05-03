@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 15:24:30 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:32:15 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void	rl_replace_line(const char *text, int clear_undo);
 
 //validate_syntax.c
 int		validate_syntax(char *str, t_eggcarton *prog_info);
-int		validate_pipe(char *token, char *str);
+int		validate_pipe(char **token, char *str);
 int		validate_redirect(char **token_start, char token_id);
 int		validate_redirect_out_append(char **token);
 int		validate_quotes(char **token);
@@ -284,10 +284,12 @@ char	*expand_env_var(t_eggcarton *prog_info, char *str, \
 
 //untility.c
 void	move_pointer_past_ws(char **str_to_move);
+void	move_pointer_backwards_ws(char **str_to_move, char *dont_go_past);
 int		print_error(char *error_msg);
 void	close_redirections(int fd_in, int fd_out);
 void	echoctl_switch(int toggle);
 int		print_errno_error(void);
+int		print_blame_error(char *error_msg, char *to_blame);
 
 //initialize.c
 int		initialize_eggcarton(t_eggcarton *prog, char **env, \
