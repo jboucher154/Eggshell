@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 12:49:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 09:45:28 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:06:23 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	clean_tree(t_cmd *cmd)
 	}
 	else if (cmd->type == EXECUTABLE_CMD)
 	{
-		clean_str_array(((t_executable_cmd *)cmd)->args);
+		// clean_str_array(((t_executable_cmd *)cmd)->args);
 		free((t_executable_cmd *)cmd);
 	}
 }

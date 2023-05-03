@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:44:45 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 08:50:24 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:06:14 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	free_children(t_child **children)
 	{
 		close_redirections(children[index]->redir_in, \
 		children[index]->redir_out);
+		clean_str_array(children[index]->args);
 		free(children[index]);
 		index++;
 	}
