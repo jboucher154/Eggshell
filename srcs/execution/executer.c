@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 10:18:14 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:24:32 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	wait_for_children(t_eggcarton *prog_info)
 	}
 	wexit = WEXITSTATUS(exit_status);
 	ht_update_value(prog_info->environment, "?", ft_itoa(wexit));
+	echoctl_switch(OFF);
 }
 
 int	should_run_in_parent(t_eggcarton *prog_info, int index)
@@ -93,7 +94,7 @@ void	do_commands(t_eggcarton *prog_info)
 			prog_info->children[index]->pid = fork();
 			if (prog_info->children[index]->pid == 0)
 			{
-				echoctl_switch(ON);//
+				echoctl_switch(ON);
 				pipe_child(prog_info, index);
 			}
 		}
