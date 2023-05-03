@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:14:27 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/02 18:57:29 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:43:45 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,20 @@ void	set_new_env_variable(char *arg, t_hash_table *environment)
 
 void	export_command(char **args, t_hash_table *environment)
 {
-	int		index;
+	int	index;
+	int	added;
 
+	added = 0;
 	index = 1;
-	if (!args[index])
-	{
-		ht_print_export(environment);
-		return ;
-	}
 	while (args[index])
 	{
-		set_new_env_variable(args[index], environment);
+		if (args[index][0])
+		{
+			set_new_env_variable(args[index], environment);
+			added++;
+		}
 		index++;
 	}
+	if (added == 0)
+		ht_print_export(environment);
 }
