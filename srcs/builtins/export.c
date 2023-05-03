@@ -6,13 +6,28 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:38:37 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 15:38:49 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:44:58 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_new_env_variable(char *arg, t_hash_table *environment)
+int	is_valid_var_name(char *key)
+{
+	size_t	index;
+
+	index = 0;
+	printf("KEY: %s, %zu\n", key, ft_strlen(key));
+	while (key[index] == '_' || ft_isalpha(key[index]) || \
+	ft_isdigit(key[index])) //key[index] == '?' don't allow users to access
+		index++;
+	if (index == ft_strlen(key))
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
+void	set_new_env_variable(char *arg, t_hash_table *environment, int *error_occured)
 {
 	int		arg_index;
 	char	*key;
@@ -22,6 +37,13 @@ void	set_new_env_variable(char *arg, t_hash_table *environment)
 	while (arg[arg_index] != '\0' && arg[arg_index] != '=')
 		arg_index++;
 	key = ft_substr(arg, 0, arg_index);
+	if (is_valid_var_name(key) == FALSE)
+	{
+		print_blame_error("not a valid identifier", key);
+		free(key);
+		(*error_occured) = 1;
+		return ;
+	}
 	if (arg[arg_index] == '\0')
 		value = NULL;
 	else
@@ -37,18 +59,21 @@ void	export_command(char **args, t_hash_table *environment)
 {
 	int	index;
 	int	added;
+	int	error;
 
 	added = 0;
 	index = 1;
+	error = 0;
 	while (args[index])
 	{
 		if (args[index][0])
 		{
-			set_new_env_variable(args[index], environment);
+			set_new_env_variable(args[index], environment, &error);
 			added++;
 		}
 		index++;
 	}
 	if (added == 0)
 		ht_print_export(environment);
+	ht_update_value(environment, "?", ft_itoa(error));
 }
