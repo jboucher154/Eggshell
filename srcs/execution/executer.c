@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 09:44:30 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:18:14 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 	if (!ft_strncmp("cd", cmd->args[0], 3))
 		cd_command(cmd->args, prog_info->environment);
 	if (!ft_strncmp("export", cmd->args[0], 6))
-	{
 		export_command(cmd->args, prog_info->environment);
-	}
 	if (!ft_strncmp("unset", cmd->args[0], 5))
 		unset_command(cmd->args, prog_info->environment);
 	if ((!ft_strncmp("echo", cmd->args[0], 4) || \
@@ -31,8 +29,6 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 		echo_command(cmd->args);
 	if (!ft_strncmp("env", cmd->args[0], 3))
 		print_enviroment(prog_info->environment);
-	if (!ft_strncmp("CLEAR", cmd->args[0], 5))
-		clearing();
 	if (!ft_strncmp("EXIT", cmd->args[0], 4))
 		exit(EXIT_SUCCESS);
 	if (cmd->pid == 0)
@@ -96,7 +92,10 @@ void	do_commands(t_eggcarton *prog_info)
 		{
 			prog_info->children[index]->pid = fork();
 			if (prog_info->children[index]->pid == 0)
+			{
+				echoctl_switch(ON);//
 				pipe_child(prog_info, index);
+			}
 		}
 		index++;
 	}
@@ -115,7 +114,7 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 		return ;
 	}
 	if (create_child_array(prog_info) == ERROR)
-		print_error("ERROR");//printed the error in the array creation...
+		return ;
 	tree_iterator(cmd, prog_info, &index);
 	do_commands(prog_info);
 	free_children(prog_info->children);
