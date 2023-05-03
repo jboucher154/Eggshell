@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 18:52:09 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 09:44:30 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,6 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 	if (create_pipes(prog_info) == ERROR)
 	{
 		print_error("pipe creation failed");
-		return ;
-	}
-	prog_info->pids = malloc(sizeof(int) * prog_info->cmd_count);
-	if (!prog_info->pids)
-	{	
-		print_error("malloc failed");
 		return ;
 	}
 	if (create_child_array(prog_info) == ERROR)

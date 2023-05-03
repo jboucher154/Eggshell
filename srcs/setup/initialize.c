@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:16:07 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 18:43:15 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 09:45:53 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	initialize_eggcarton(t_eggcarton *prog, char **env, struct termios *term)
 	prog->pipe_count = 0;
 	prog->og_env = env;
 	prog->pipes = NULL;
-	prog->pids = NULL;
 	prog->children = NULL;
 	return (SUCCESS);
 }

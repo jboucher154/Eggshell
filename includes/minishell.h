@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:32:26 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 09:44:15 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ typedef struct s_eggcarton
 	int					cmd_count;
 	int					pipe_count;
 	int					*pipes;
-	int					*pids;
 	struct s_child		**children;
 }	t_eggcarton;
 

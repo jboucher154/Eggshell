@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 12:49:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 15:03:40 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 09:45:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,8 @@ void	reset_program(t_eggcarton *prog_info, t_cmd **cmd)
 		close_pipes(prog_info->pipes, prog_info->pipe_count);
 		free(prog_info->pipes);
 	}
-	if (prog_info->pids)
-		free(prog_info->pids);
 	prog_info->cmd_count = 0;
 	prog_info->pipe_count = 0;
 	prog_info->pipes = NULL;
-	prog_info->pids = NULL;
 	prog_info->children = NULL;
 }
