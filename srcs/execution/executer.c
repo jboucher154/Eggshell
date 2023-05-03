@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 10:58:32 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 15:20:10 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 	!ft_strncmp("PWD", cmd->args[0], 3))
 		pwd_command();
 	if (!ft_strncmp("cd", cmd->args[0], 3))
-		cd_command(cmd->args, prog_info->environment);
+		cd_command(cmd->args, prog_info);
 	if (!ft_strncmp("export", cmd->args[0], 6))
 		export_command(cmd->args, prog_info->environment);
 	if (!ft_strncmp("unset", cmd->args[0], 5))
@@ -50,11 +50,13 @@ void	wait_for_children(t_eggcarton *prog_info)
 	while (index < prog_info->pipe_count + 1)
 	{
 		if (prog_info->children[index]->pid >= 0)
+		{
 			waitpid(prog_info->children[index]->pid, &exit_status, 0);
+			wexit = WEXITSTATUS(exit_status);
+			ht_update_value(prog_info->environment, "?", ft_itoa(wexit));
+		}
 		index++;
 	}
-	wexit = WEXITSTATUS(exit_status);
-	ht_update_value(prog_info->environment, "?", ft_itoa(wexit));
 	echoctl_switch(OFF);
 }
 
@@ -104,7 +106,7 @@ void	do_commands(t_eggcarton *prog_info)
 	wait_for_children(prog_info);
 }
 
-void	executer(t_cmd *cmd, t_eggcarton *prog_info)
+void	executer(t_cmd **cmd, t_eggcarton *prog_info)
 {
 	int	index;
 
@@ -116,7 +118,9 @@ void	executer(t_cmd *cmd, t_eggcarton *prog_info)
 	}
 	if (create_child_array(prog_info) == ERROR)
 		return ;
-	tree_iterator(cmd, prog_info, &index);
+	tree_iterator(*cmd, prog_info, &index);
+	clean_tree(*cmd);
+	*cmd = NULL;
 	do_commands(prog_info);
 	free_children(prog_info->children);
 }
