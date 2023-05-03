@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:07:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:07:51 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 09:53:49 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*find_end(char **parsed_string)
 	while (end != NULL)
 	{
 		if (end == NULL || (ft_strchr(WHITESPACE, *end) && in_quote == FALSE) \
-		|| (ft_strchr("<>", *end) && in_quote == FALSE))
+		|| (ft_strchr("<>|", *end) && in_quote == FALSE))
 			return (end);
 		else if (ft_strchr(QUOTES, *end) && in_quote == FALSE)
 		{
