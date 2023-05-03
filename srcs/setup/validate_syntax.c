@@ -6,21 +6,39 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 15:37:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:16:05 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	validate_pipe(char *token, char *str)
+//needs work....
+int	validate_pipe(char **token, char *str)
 {
-	if (token == str || token[-1] == '<' || token[-1] == ';' || \
-		(token[1] && token[1] == ';') || (!token[1]))
+	char **check_before;
+	char **check_after;
+
+	check_before = token;
+	check_after = token;
+	(*check_after)++;
+	(*check_before)--;
+	if (*token == str)
 		return (print_error("Syntax error, unexpected token"));
-	if (token[1] == '|')
+	if (**check_after == '\0' || **check_before == '\0')
+		return (print_error("Syntax error, unexpected token"));
+	move_pointer_backwards_ws(check_before, str);
+	move_pointer_past_ws(check_after);
+	printf("BEFORE after ws: ~%s~\n", *check_before);
+	if (**check_after == '\0' || **check_before == '\0')
+		return (print_error("Syntax error, unexpected token"));
+	if (**check_before == ';' || (**check_before == '<' && *check_before[-1] && *check_before[-1] == '<'))
+		return (print_error("Syntax error, unexpected token"));
+	//check after
+	// printf("token after ws: ~%s~", *token);
+	if (**check_before == '<' || **check_after == '|')
+		return (print_error("Syntax error, unexpected token"));
+	if (**check_after == ';' ||  **check_before == ';')
 		return (print_error("Error, we did not do the bonus!"));
-	if (token[-1] == '<' && token[-2] == '<')
-		return (print_error("Syntax error, unexpected token"));
 	return (TRUE);
 }
 
@@ -44,7 +62,7 @@ static int	validate_token(char **token, char *str, char token_id)
 
 	valid = FALSE;
 	if (token_id == PIPE)
-		valid = validate_pipe(*token, str);
+		valid = validate_pipe(token, str);
 	else if (**token == '"' || **token == '\'')
 		valid = validate_quotes(token);
 	else if (**token == ';' || **token == '&')
@@ -66,6 +84,7 @@ int	validate_syntax(char *str, t_eggcarton *prog_info)
 	valid = TRUE;
 	while (*token && valid)
 	{
+		printf("TOKEN at top of loop: %s\n", token);//
 		while (*token && ft_strchr(TOKENS, *token) == NULL && \
 		ft_strchr(QUOTES, *token) == NULL)
 			token++;
@@ -73,7 +92,7 @@ int	validate_syntax(char *str, t_eggcarton *prog_info)
 			break ;
 		token_id = identify_token(token);
 		valid = validate_token(&token, str, token_id);
-		if (valid && !((token_id == REDIRECT_IN || token_id == REDIRECT_OUT || \
+		if (valid && *token && !((token_id == REDIRECT_IN || token_id == REDIRECT_OUT || \
 		token_id == REDIRECT_OUT_APPEND) && ft_strchr(QUOTES, *token)))
 			token++;
 	}

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:14:19 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:16:37 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:18:36 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	validate_redirect(char **token, char token_id)
 {
 	(*token)++;
 	move_pointer_past_ws(token);
+	printf("token at top of validate redirect: %s\n", *token);//
 	if (!(**token))
 		return (print_error("syntax error near unexpected token `newline'"));
 	if ((token_id == REDIRECT_IN && **token == '>') || \
@@ -27,10 +28,13 @@ int	validate_redirect(char **token, char token_id)
 int	validate_redirect_out_append(char **token)
 {
 	(*token) += 2;
+	printf("token at top of validate redirect out append: %s\n", *token);//
 	move_pointer_past_ws(token);
 	if (!(**token))
 		return (print_error("syntax error near unexpected token `newline'"));
 	if (**token == '>' || **token == '<')
+		return (print_error("Syntax error, unexpected token"));
+	if (**token == '|') //added this...
 		return (print_error("Syntax error, unexpected token"));
 	return (TRUE);
 }
