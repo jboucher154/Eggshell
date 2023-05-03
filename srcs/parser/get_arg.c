@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:07:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 09:53:49 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:33:19 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ char	*remove_quotes(char *expanded_string)
 		parse_quote(quoteless, &quote_info, expanded_string, index);
 		index++;
 	}
+	free(expanded_string);
 	return (quoteless);
 }
 
