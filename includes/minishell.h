@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 11:05:40 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 15:24:30 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ typedef struct s_exec_parse_info
 void	rl_replace_line(const char *text, int clear_undo);
 
 //validate_syntax.c
-int		validate_syntax(char *str);
+int		validate_syntax(char *str, t_eggcarton *prog_info);
 int		validate_pipe(char *token, char *str);
 int		validate_redirect(char **token_start, char token_id);
 int		validate_redirect_out_append(char **token);
@@ -224,7 +224,7 @@ char	*find_correct_path(char *fname, char **paths);
 char	**get_paths(t_eggcarton *prog_info);
 
 //executer.c
-void	executer(t_cmd *cmd, t_eggcarton *prog_info);
+void	executer(t_cmd **cmd, t_eggcarton *prog_info);
 void	do_commands(t_eggcarton *prog_info);
 void	run_builtins(t_child *cmd, t_eggcarton *prog_info);
 void	exit_child(char *error_msg, char *arg, int exit_code);
@@ -252,7 +252,7 @@ t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
 //builtins.c
 void	echo_command(char **args);
 void	pwd_command(void);
-void	cd_command(char	**args, t_hash_table *ht_env);
+void	cd_command(char	**args, t_eggcarton *prog_info);
 void	unset_command(char **args, t_hash_table *ht_env);
 void	export_command(char **args, t_hash_table *ht_env);
 void	print_enviroment(t_hash_table	*ht_env);
