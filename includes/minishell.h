@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 09:44:15 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:11:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,6 @@ char	**get_paths(t_eggcarton *prog_info);
 //executer.c
 void	executer(t_cmd *cmd, t_eggcarton *prog_info);
 void	do_commands(t_eggcarton *prog_info);
-void	run_system_executable(t_executable_cmd *cmd, t_eggcarton *prog_info);
 void	run_builtins(t_child *cmd, t_eggcarton *prog_info);
 void	exit_child(char *error_msg, char *arg, int exit_code);
 void	pipe_child(t_eggcarton *prog_info, int index);
@@ -282,8 +281,6 @@ t_child	*new_child(void);
 char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess);
 char	*expand_env_var(t_eggcarton *prog_info, char *str, \
 		char *variable_start);
-
-char	*quote_cut(char *to_check_str);
 
 //untility.c
 void	move_pointer_past_ws(char **str_to_move);
