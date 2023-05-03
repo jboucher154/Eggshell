@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:16:03 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/03 15:37:42 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	validate_pipe(char *token, char *str)
 {
 	if (token == str || token[-1] == '<' || token[-1] == ';' || \
-		token[1] == ';')
+		(token[1] && token[1] == ';') || (!token[1]))
 		return (print_error("Syntax error, unexpected token"));
 	if (token[1] == '|')
 		return (print_error("Error, we did not do the bonus!"));
@@ -56,7 +56,7 @@ static int	validate_token(char **token, char *str, char token_id)
 	return (valid);
 }
 
-int	validate_syntax(char *str)
+int	validate_syntax(char *str, t_eggcarton *prog_info)
 {
 	char	token_id;
 	char	*token;
@@ -77,5 +77,7 @@ int	validate_syntax(char *str)
 		token_id == REDIRECT_OUT_APPEND) && ft_strchr(QUOTES, *token)))
 			token++;
 	}
+	if (valid == FALSE)
+		ht_update_value(prog_info->environment, "?", ft_strdup("258"));
 	return (valid);
 }
