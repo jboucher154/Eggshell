@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:16:07 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 09:45:53 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:33:13 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,12 @@ int	initialize_eggcarton(t_eggcarton *prog, char **env, struct termios *term)
 	initialize_env_table(prog->environment, env);
 	if (initalize_command_table(prog) == ERROR)
 		return (EXIT_FAILURE); //clean exit
+	prog->og_env = ht_export_to_array(prog->environment);
+	if (prog->og_env == NULL)
+		return (EXIT_FAILURE); //clean exit
 	prog->saved_term = term;
 	prog->cmd_count = 0;
 	prog->pipe_count = 0;
-	prog->og_env = env;
 	prog->pipes = NULL;
 	prog->children = NULL;
 	return (SUCCESS);
