@@ -23,26 +23,26 @@ int	validate_pipe(char **token, char *str)
 	(*check_after)++;
 	(*check_before)--;
 	if (*token == str)
-		return (print_error("Syntax error, unexpected token"));
+		return (print_blame_error("Syntax error, unexpected token", "|1"));
 	if (**check_after == '\0' || **check_before == '\0')
-		return (print_error("Syntax error, unexpected token"));
+		return (print_blame_error("Syntax error, unexpected token", "|2"));
 	move_pointer_backwards_ws(check_before, str);
 	move_pointer_past_ws(check_after);
 	printf("BEFORE after ws: ~%s~\n", *check_before);
 	if (**check_after == '\0' || **check_before == '\0')
-		return (print_error("Syntax error, unexpected token"));
+		return (print_blame_error("Syntax error, unexpected token", "|3"));
 	if (**check_before == ';' || (**check_before == '<' && *check_before[-1] && *check_before[-1] == '<'))
-		return (print_error("Syntax error, unexpected token"));
+		return (print_blame_error("Syntax error, unexpected token", "|4"));
 	//check after
-	// printf("token after ws: ~%s~", *token);
-	if (**check_before == '<' || **check_after == '|')
-		return (print_error("Syntax error, unexpected token"));
+	printf("token after ws: ~%s~", *token);
+	// if (**check_before == '<' || **check_after == '|')
+	// 	return (print_blame_error("Syntax error, unexpected token", "|5"));
 	if (**check_after == ';' ||  **check_before == ';')
-		return (print_error("Error, we did not do the bonus!"));
+		return (print_blame_error("Syntax error, unexpected token", "|6"));
 	return (TRUE);
 }
 
-int	validate_quotes(char **token)
+int	validate_quotes(char **token) //validates AND moves until the quotes are closed, skipping any tokens etc inside quote
 {
 	char	quote_to_match;
 
@@ -74,29 +74,32 @@ static int	validate_token(char **token, char *str, char token_id)
 	return (valid);
 }
 
+
 int	validate_syntax(char *str, t_eggcarton *prog_info)
 {
-	char	token_id;
+	char 	token_id;
 	char	*token;
 	int		valid;
 
 	token = str;
 	valid = TRUE;
+
 	while (*token && valid)
 	{
 		printf("TOKEN at top of loop: %s\n", token);//
-		while (*token && ft_strchr(TOKENS, *token) == NULL && \
-		ft_strchr(QUOTES, *token) == NULL)
+
+		while (*token && ft_strchr(TOKENS, *token) == NULL && ft_strchr(QUOTES, *token) == NULL) //skips until either a token or a quote
 			token++;
 		if (!*token)
-			break ;
+ 			break ;
 		token_id = identify_token(token);
 		valid = validate_token(&token, str, token_id);
 		if (valid && *token && !((token_id == REDIRECT_IN || token_id == REDIRECT_OUT || \
-		token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)) && ft_strchr(QUOTES, *token))
-			token++;
+ 		token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE))) // if it is a valid syntax, 
+ 			token++;
 	}
 	if (valid == FALSE)
 		ht_update_value(prog_info->environment, "?", ft_strdup("258"));
-	return (valid);
+ 	return (valid);
 }
+
