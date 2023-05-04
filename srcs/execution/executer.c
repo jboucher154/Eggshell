@@ -84,6 +84,7 @@ void	do_commands(t_eggcarton *prog_info)
 	int	index;
 
 	index = 0;
+	initialize_child_signals();
 	while (index < prog_info->pipe_count + 1)
 	{
 		if (should_run_in_parent(prog_info, index) == TRUE)

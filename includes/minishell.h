@@ -265,9 +265,14 @@ void	print_array(char **array);
 
 //validate_syntax.c
 
+//exit.c
+void	exit_command(t_eggcarton *prog_info, t_child *cmd);
+void	clean_and_restore(t_eggcarton *prog_info);
+
 //signal.c
 void	signal_handler(int sig); //, t_eggcarton *prog_info
 void	initialize_signals(void);
+void	initialize_child_signals(void);
 
 //eggshell.c
 int		eggshell(t_eggcarton *prog_info);
