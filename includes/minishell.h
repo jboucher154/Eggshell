@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 14:13:31 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:45:47 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,8 +253,8 @@ t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
 void	echo_command(char **args);
 void	pwd_command(void);
 void	cd_command(char	**args, t_eggcarton *prog_info);
-void	unset_command(char **args, t_hash_table *ht_env);
-void	export_command(char **args, t_hash_table *ht_env);
+void	unset_command(char **args, t_eggcarton *prog_info);
+void	export_command(char **args, t_eggcarton *prog_info);
 void	print_enviroment(t_hash_table	*ht_env);
 void	exit_command(t_eggcarton *prog_info, t_child *cmd);
 
@@ -295,6 +295,7 @@ void	close_redirections(int fd_in, int fd_out);
 void	echoctl_switch(int toggle);
 int		print_errno_error(void);
 int		print_blame_error(char *error_msg, char *to_blame);
+void	update_environment_array(t_eggcarton *prog_info);
 
 //initialize.c
 int		initialize_eggcarton(t_eggcarton *prog, char **env, \

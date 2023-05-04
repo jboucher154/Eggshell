@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_builtins.c                                     :+:      :+:    :+:   */
+/*   utilities_environment.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/02 14:14:27 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/04 14:47:45 by jebouche         ###   ########.fr       */
+/*   Created: 2023/05/04 14:37:52 by jebouche          #+#    #+#             */
+/*   Updated: 2023/05/04 14:44:49 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_enviroment(t_hash_table	*ht_env)
+void	update_environment_array(t_eggcarton *prog_info)
 {
-	ht_print_env(ht_env);
-}
+	char **new_enviornmnet;
 
-void	unset_command(char **args, t_eggcarton *prog_info)
-{
-	int	index;
-
-	index = 1;
-	while (args[index] != '\0')
-	{	
-		ht_remove(prog_info->environment, args[index]);
-		index++;
+	new_enviornmnet = ht_export_to_array(prog_info->environment);
+	if (!new_enviornmnet)
+	{
+		print_error("malloc error: environment not updated");
+		return ;
 	}
-	update_environment_array(prog_info);
+	clean_str_array(prog_info->array_env);
+	prog_info->array_env  = new_enviornmnet;
 }
-

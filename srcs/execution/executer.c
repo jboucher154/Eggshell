@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 14:19:13 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:49:48 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 	if (!ft_strncmp("cd", cmd->args[0], 3))
 		cd_command(cmd->args, prog_info);
 	if (!ft_strncmp("export", cmd->args[0], 6))
-		export_command(cmd->args, prog_info->environment);
+		export_command(cmd->args, prog_info);
 	if (!ft_strncmp("unset", cmd->args[0], 5))
-		unset_command(cmd->args, prog_info->environment);
+		unset_command(cmd->args, prog_info);
 	if ((!ft_strncmp("echo", cmd->args[0], 4) || \
 	!ft_strncmp("ECHO", cmd->args[0], 4)))
 		echo_command(cmd->args);

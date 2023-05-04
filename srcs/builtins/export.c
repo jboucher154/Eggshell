@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:38:37 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 09:28:18 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:49:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	set_new_env_variable(char *arg, t_hash_table *environment, int *error_occur
 	free(key);
 }
 
-void	export_command(char **args, t_hash_table *environment)
+void	export_command(char **args, t_eggcarton *prog_info)
 {
 	int	index;
 	int	added;
@@ -68,12 +68,14 @@ void	export_command(char **args, t_hash_table *environment)
 	{
 		if (args[index][0])
 		{
-			set_new_env_variable(args[index], environment, &error);
+			set_new_env_variable(args[index], prog_info->environment, &error);
 			added++;
 		}
 		index++;
 	}
 	if (added == 0)
-		ht_print_export(environment);
-	ht_update_value(environment, "?", ft_itoa(error));
+		ht_print_export(prog_info->environment);
+	else
+		update_environment_array(prog_info);
+	ht_update_value(prog_info->environment, "?", ft_itoa(error));
 }
