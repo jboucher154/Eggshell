@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 17:16:05 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 09:38:30 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	validate_syntax(char *str, t_eggcarton *prog_info)
 		token_id = identify_token(token);
 		valid = validate_token(&token, str, token_id);
 		if (valid && *token && !((token_id == REDIRECT_IN || token_id == REDIRECT_OUT || \
-		token_id == REDIRECT_OUT_APPEND) && ft_strchr(QUOTES, *token)))
+		token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)) && ft_strchr(QUOTES, *token))
 			token++;
 	}
 	if (valid == FALSE)

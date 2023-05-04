@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:14:19 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 17:18:36 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 09:38:35 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	validate_redirect_out_append(char **token)
 		return (print_error("syntax error near unexpected token `newline'"));
 	if (**token == '>' || **token == '<')
 		return (print_error("Syntax error, unexpected token"));
-	if (**token == '|') //added this...
-		return (print_error("Syntax error, unexpected token"));
+	// if (**token == '|') //added this... <<|
+	// 	return (print_error("Syntax error, unexpected token"));
 	return (TRUE);
 }
