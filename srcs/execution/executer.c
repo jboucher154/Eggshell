@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 10:31:08 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:19:13 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,14 +111,6 @@ void	executer(t_cmd **cmd, t_eggcarton *prog_info)
 	int	index;
 
 	index = 0;
-	//maybe add flag that indicates when it needs to be done?
-	clean_str_array(prog_info->og_env);
-	prog_info->og_env = ht_export_to_array(prog_info->environment);
-	if (!prog_info->og_env)
-	{
-		print_error("malloc error");
-		return ;
-	}
 	if (create_pipes(prog_info) == ERROR)
 	{
 		print_error("pipe creation failed");
