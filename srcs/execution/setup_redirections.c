@@ -6,11 +6,22 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:43:15 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 15:56:55 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 16:01:23 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_filename(char *fname)
+{
+	if (!fname || !fname[0])
+	{
+		print_error("ambiguous redirect");
+		return (ERROR);
+	}
+	else
+		return (SUCCESS);
+}
 
 void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, \
 int index)
@@ -18,6 +29,8 @@ int index)
 	int		fd;
 
 	fd = OPEN_ERROR;
+	if (check_filename(redirection->filename) == ERROR)
+		return ;
 	if (redirection->token_id == REDIRECT_IN)
 	{
 		fd = open(redirection->filename, O_RDONLY);
