@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:46:40 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 18:10:55 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:15:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char const *s3)
  * on success and NULL on failure. If the third string is NULL, it will join
  * only the first two strings.
  */
-char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3)
+static char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3)
 {
 	char	*joined;
 	size_t	len;
@@ -72,28 +72,33 @@ char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3)
 	return (joined);
 }
 
-void	add_joined_key_values(t_hash_item *to_join, int *export_index, char **export_array)
+static void	add_joined_key_values(t_hash_item *to_join, int *export_index, \
+char **export_array)
 {
 	while (to_join)
 	{
-		export_array[*export_index] = ft_strjoin_three(to_join->key, "=", to_join->value);//do we do all, even the ? or vars without value?
-		if (!export_array[*export_index])
+		if (to_join->key[0] != '?' && to_join->value != NULL)
 		{
-			while (*export_index <= 0)
+			export_array[*export_index] = ft_strjoin_three(to_join->key, \
+			"=", to_join->value);
+			if (!export_array[*export_index])
 			{
-				(*export_index)--;
-				free(export_array[*export_index]);
-				return ;
+				while (*export_index <= 0)
+				{
+					(*export_index)--;
+					free(export_array[*export_index]);
+					return ;
+				}
 			}
+			(*export_index)++;
 		}
-		(*export_index)++;
 		to_join = to_join->next;
 	}
 }
 
-char **ht_export_to_array(t_hash_table *hash_table)
+char	**ht_export_to_array(t_hash_table *hash_table)
 {
-	char 	**export_array;
+	char	**export_array;
 	int		export_index;
 	size_t	index;
 
@@ -107,7 +112,8 @@ char **ht_export_to_array(t_hash_table *hash_table)
 	{
 		if (hash_table->table[index])
 		{
-			add_joined_key_values(hash_table->table[index], &export_index, export_array);
+			add_joined_key_values(hash_table->table[index], &export_index, \
+			export_array);
 			if (export_index == 0)
 			{
 				free(export_array);
