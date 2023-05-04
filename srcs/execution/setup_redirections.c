@@ -27,10 +27,13 @@ void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, \
 int index)
 {
 	int		fd;
-
 	fd = OPEN_ERROR;
-	if (check_filename(redirection->filename) == ERROR)
+	if (redirection->token_id != REDIRECT_HERE && check_filename(redirection->filename) == ERROR)
 		return ;
+	if (redirection->token_id == REDIRECT_HERE) // THIS IS THE WRONG PLACE TO CALL THIS??!
+	{
+		heredoc_bultin(prog_info, redirection);
+	}
 	if (redirection->token_id == REDIRECT_IN)
 	{
 		fd = open(redirection->filename, O_RDONLY);

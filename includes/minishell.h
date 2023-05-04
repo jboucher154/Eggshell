@@ -240,6 +240,7 @@ void	setup_pipes(t_eggcarton *prog_info, int index);
 void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, \
 		int index);
 
+
 //reset.c
 void	clean_str_array(char **array);
 void	close_pipes(int *pipes, int pipe_count);
@@ -249,7 +250,7 @@ void	reset_program(t_eggcarton *prog_info, t_cmd **cmd);
 //parser.c
 t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
 
-//builtins.c
+//builtins
 void	echo_command(char **args);
 void	pwd_command(void);
 void	cd_command(char	**args, t_eggcarton *prog_info);
@@ -257,6 +258,7 @@ void	unset_command(char **args, t_eggcarton *prog_info);
 void	export_command(char **args, t_eggcarton *prog_info);
 void	print_enviroment(t_hash_table	*ht_env);
 void	exit_command(t_eggcarton *prog_info, t_child *cmd);
+void	heredoc_bultin(t_eggcarton *prog_info, t_redirection *redirection);
 
 //print tree helpers
 void	print_children(t_child **childs);

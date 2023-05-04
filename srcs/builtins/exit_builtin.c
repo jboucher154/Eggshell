@@ -18,6 +18,7 @@ void	clean_and_restore(t_eggcarton *prog_info)
 	free_children(prog_info->children);
 	ht_destroy(&(prog_info->environment));
 	ht_destroy(&(prog_info->command_table));
+	clean_str_array(prog_info->array_env);
 	tcsetattr(STDIN_FILENO, TCSANOW, prog_info->saved_term);
 }
 

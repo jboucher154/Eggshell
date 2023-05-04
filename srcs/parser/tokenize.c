@@ -42,7 +42,6 @@ char	identify_token(char *token_start)
 	}
 	return (token_id);
 }
-
 //return the next non-whitespace character's identity
 char	move_to_token(char **parsed_string, char *end)
 {

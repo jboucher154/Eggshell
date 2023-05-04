@@ -27,14 +27,12 @@ int	validate_redirect(char **token, char token_id)
 
 int	validate_redirect_out_append(char **token)
 {
+	printf("*****token at top of validate redirect out append: %s*****\n", *token);//
 	(*token) += 2;
-	printf("token at top of validate redirect out append: %s\n", *token);//
 	move_pointer_past_ws(token);
 	if (!(**token))
 		return (print_error("syntax error near unexpected token `newline'"));
 	if (**token == '>' || **token == '<')
 		return (print_error("Syntax error, unexpected token"));
-	// if (**token == '|') //added this... <<|
-	// 	return (print_error("Syntax error, unexpected token"));
 	return (TRUE);
 }
