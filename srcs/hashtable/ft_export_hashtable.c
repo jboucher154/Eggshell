@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:46:40 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 10:15:28 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 13:55:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ char	**ht_export_to_array(t_hash_table *hash_table)
 
 	index = 0;
 	export_index = 0;
-	export_array = (char **) malloc(sizeof(char *) * (hash_table->filled + 1));
+	// export_array = (char **) malloc(sizeof(char *) * (hash_table->filled + 1));
+	export_array = ft_calloc((hash_table->filled + 1), sizeof(char *));
 	if (!export_array)
 		return (NULL);
 	export_array[hash_table->filled] = NULL;
