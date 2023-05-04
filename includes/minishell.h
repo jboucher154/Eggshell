@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 17:32:15 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:13:31 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ typedef struct s_eggcarton
 	struct termios		*saved_term;
 	struct s_hash_table	*environment;
 	struct s_hash_table	*command_table;
-	char				**og_env;
+	char				**array_env;
 	int					cmd_count;
 	int					pipe_count;
 	int					*pipes;
@@ -228,7 +228,7 @@ void	executer(t_cmd **cmd, t_eggcarton *prog_info);
 void	do_commands(t_eggcarton *prog_info);
 void	run_builtins(t_child *cmd, t_eggcarton *prog_info);
 void	exit_child(char *error_msg, char *arg, int exit_code);
-void	pipe_child(t_eggcarton *prog_info, int index);
+void	pipe_child(t_eggcarton *prog_info, int inde);
 void	process_redirections(t_redirection *redir, t_eggcarton *prog_info, \
 		int index);
 

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:06:28 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 15:06:48 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:17:31 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,6 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 		run_builtins(prog_info->children[index], prog_info);
 	else
 		execve(prog_info->children[index]->path, \
-		prog_info->children[index]->args, prog_info->og_env);
+		prog_info->children[index]->args, prog_info->array_env);
 	exit_child("exeve failed: ", prog_info->children[index]->args[0], errno);
 }
