@@ -30,10 +30,11 @@ int index)
 	fd = OPEN_ERROR;
 	if (redirection->token_id != REDIRECT_HERE && check_filename(redirection->filename) == ERROR)
 		return ;
-	if (redirection->token_id == REDIRECT_HERE) // THIS IS THE WRONG PLACE TO CALL THIS??!
-	{
-		heredoc_bultin(prog_info, redirection);
-	}
+	if (redirection->token_id == REDIRECT_HERE) // probably the right place
+		{
+			printf("%s\n", heredoc_bultin(prog_info, redirection, index));
+			exit(0);
+		}
 	if (redirection->token_id == REDIRECT_IN)
 	{
 		fd = open(redirection->filename, O_RDONLY);

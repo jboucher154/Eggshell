@@ -80,3 +80,64 @@ void	echoctl_switch(int toggle)
 	}
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
+
+
+/*
+ * fill_joined fills the allocated joined string with the passed strings. 
+ * If the third string is NULL, it will only fill the joined string with
+ * the first two strings.
+*/
+static	void	fill_joined(char *joined, char const *s1, char const *s2, \
+char const *s3)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	temp = joined;
+	while (s1[i] != '\0')
+	{
+			*temp++ = s1[i];
+			i++;
+	}
+	i = 0;
+	while (s2[i] != '\0')
+	{
+			*temp++ = s2[i];
+			i++;
+	}
+	i = 0;
+	if (s3)
+	{
+		while (s3[i] != '\0')
+		{
+			*temp++ = s3[i];
+			i++;
+		}
+	}
+}
+
+/*
+ * ft_strjoin_three joins three strings together. It returns the joined string
+ * on success and NULL on failure. If the third string is NULL, it will join
+ * only the first two strings.
+ */
+char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3)
+{
+	char	*joined;
+	size_t	len;
+
+	if (!s1 || !s2)
+		return (NULL);
+	if (!s3)
+		len = ft_strlen(s1) + ft_strlen(s2);
+	else
+		len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
+	joined = (char *) malloc(sizeof(char) * (len + 1));
+	if (joined)
+	{
+		joined[len] = '\0';
+		fill_joined(joined, s1, s2, s3);
+	}
+	return (joined);
+}
