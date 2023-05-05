@@ -137,6 +137,7 @@ typedef struct s_redirection
 	char			*filename;
 	int				token_id;
 	int				fd;
+	int				expand_variable;
 	int				from_fd;
 }	t_redirection;
 
@@ -147,6 +148,7 @@ typedef struct s_child
 	int		pid;
 	int		redir_in;
 	int		redir_out;
+	int		heredoc_pipe[2];
 	int		pipe_in;
 	int		pipe_out;
 	char	*path;
@@ -258,7 +260,7 @@ void	unset_command(char **args, t_eggcarton *prog_info);
 void	export_command(char **args, t_eggcarton *prog_info);
 void	print_enviroment(t_hash_table	*ht_env);
 void	exit_command(t_eggcarton *prog_info, t_child *cmd);
-void	heredoc_bultin(t_eggcarton *prog_info, t_redirection *redirection);
+char	*heredoc_bultin(t_eggcarton *prog_info, t_redirection *redirection, int index);
 
 //print tree helpers
 void	print_children(t_child **childs);
@@ -289,7 +291,7 @@ char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess);
 char	*expand_env_var(t_eggcarton *prog_info, char *str, \
 		char *variable_start);
 
-//untility.c
+//utility.c
 void	move_pointer_past_ws(char **str_to_move);
 void	move_pointer_backwards_ws(char **str_to_move, char *dont_go_past);
 int		print_error(char *error_msg);
@@ -298,6 +300,7 @@ void	echoctl_switch(int toggle);
 int		print_errno_error(void);
 int		print_blame_error(char *error_msg, char *to_blame);
 void	update_environment_array(t_eggcarton *prog_info);
+char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3);
 
 //initialize.c
 int		initialize_eggcarton(t_eggcarton *prog, char **env, \

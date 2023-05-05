@@ -48,5 +48,6 @@ void			ht_print_export(t_hash_table *table);
 size_t			ht_update_value(t_hash_table *table, const char *key, \
 				void *new_value);
 char			**ht_export_to_array(t_hash_table *hash_table);
+char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3);
 
 #endif

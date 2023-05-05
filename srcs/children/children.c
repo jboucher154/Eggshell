@@ -24,6 +24,8 @@ t_child	*new_child(void)
 	child->command_present = TRUE;
 	child->redir_in = UNSET;
 	child->redir_out = UNSET;
+	child->heredoc_pipe[0] = UNSET;
+	child->heredoc_pipe[1] = UNSET;
 	child->pipe_in = UNSET;
 	child->pipe_out = UNSET;
 	return (child);
@@ -38,6 +40,8 @@ void	free_children(t_child **children)
 	{
 		close_redirections(children[index]->redir_in, \
 		children[index]->redir_out);
+		close_redirections(children[index]->heredoc_pipe[0], \
+		children[index]->heredoc_pipe[1]);
 		clean_str_array(children[index]->args);
 		free(children[index]);
 		index++;
