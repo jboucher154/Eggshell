@@ -32,8 +32,6 @@ int	main(int argc, char **argv, char **envp)
 	initialize_eggcarton(&prog_info, envp, &saved_term);
 	terminal_takeover();
 	eggshell(&prog_info);
-	ht_destroy(&(prog_info.environment));
-	ht_destroy(&(prog_info.command_table));
-	tcsetattr(STDIN_FILENO, TCSANOW, &saved_term);
-	return (0);
+	clean_and_restore(&prog_info);
+	return (0); //exit (0);
 }

@@ -24,7 +24,7 @@ t_eggcarton *prog_info)
 	**parsed_string == '>'))
 	{
 		token_id = move_to_token(parsed_string, end);
-		if (token_id == REDIRECT_OUT_APPEND)
+		if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE) // added redirect here
 			(*parsed_string) += 2;
 		else
 			(*parsed_string)++;
