@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:16:29 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/05 11:04:54 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,7 @@ t_hash_table	*ht_create(int size)
 	return (table);
 }
 
-/*
-** This function is used to get an item from the hash table
-** It returns a pointer to the item value if it was found
-** It returns NULL if the item was not found
-*/
-void	*ht_get(t_hash_table *table, const char *key)
+t_hash_item	*ht_internal_get(t_hash_table *table, const char *key)
 {
 	size_t		index;
 	t_hash_item	*item;
@@ -78,10 +73,34 @@ void	*ht_get(t_hash_table *table, const char *key)
 	while (item)
 	{
 		if (ft_strncmp(item->key, key, ft_strlen(item->key)) == 0)
-			return (item->value);
+			return (item);
 		item = item->next;
 	}
 	return (NULL);
+}
+
+/*
+** This function is used to get an item from the hash table
+** It returns a pointer to the item value if it was found
+** It returns NULL if the item was not found
+*/
+void	*ht_get(t_hash_table *table, const char *key)
+{
+	// size_t		index;
+	t_hash_item	*item;
+
+	item = ht_internal_get(table, key);
+	if (item)
+		return (item->value);
+	return (NULL);
+	// index = get_hash(key) % table->size;
+	// item = table->table[index];
+	// while (item)
+	// {
+	// 	if (ft_strncmp(item->key, key, ft_strlen(item->key)) == 0)
+	// 		return (item->value);
+	// 	item = item->next;
+	// }
 }
 
 //update value

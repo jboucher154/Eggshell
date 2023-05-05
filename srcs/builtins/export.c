@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:38:37 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 14:49:06 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/05 10:48:17 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	is_valid_var_name(char *key)
 
 	index = 0;
 	printf("KEY: %s, %zu\n", key, ft_strlen(key));//
+	if (ft_isdigit(key[0]))
+		return (FALSE);
 	while (key[index] == '_' || ft_isalpha(key[index]) || \
 	ft_isdigit(key[index])) //key[index] == '?' don't allow users to access
 		index++;

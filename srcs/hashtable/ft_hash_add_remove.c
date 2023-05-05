@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:00:55 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:01:32 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/05 11:03:02 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	ht_add(t_hash_table *table, const char *key, void *value)
 	t_hash_item	*item;
 	size_t		index;
 
-	if (ht_get(table, key) != NULL)
+	if (ht_internal_get(table, key) != NULL)
 		return (ht_update_value(table, key, value));
 	if (table->filled >= table->size / 2)
 	{
