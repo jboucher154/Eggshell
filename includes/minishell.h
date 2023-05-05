@@ -260,7 +260,7 @@ void	unset_command(char **args, t_eggcarton *prog_info);
 void	export_command(char **args, t_eggcarton *prog_info);
 void	print_enviroment(t_hash_table	*ht_env);
 void	exit_command(t_eggcarton *prog_info, t_child *cmd);
-char	*heredoc_bultin(t_eggcarton *prog_info, t_redirection *redirection, int index);
+void	heredoc_bultin(t_eggcarton *prog_info, t_redirection *redirection, int index);
 
 //print tree helpers
 void	print_children(t_child **childs);
@@ -277,6 +277,7 @@ void	clean_and_restore(t_eggcarton *prog_info);
 void	signal_handler(int sig); //, t_eggcarton *prog_info
 void	initialize_signals(void);
 void	initialize_child_signals(void);
+void	initialize_heredoc_signals(void);
 
 //eggshell.c
 int		eggshell(t_eggcarton *prog_info);

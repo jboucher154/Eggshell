@@ -77,6 +77,7 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 {
 	dup_pipes(prog_info, index);
 	dup_redirections(prog_info, index);
+	close_redirections(prog_info->children[index]->heredoc_pipe[0], prog_info->children[index]->heredoc_pipe[0]);
 	if (prog_info->children[index]->command_present == FALSE)
 		exit(0);
 	if (prog_info->children[index]->path == NULL)

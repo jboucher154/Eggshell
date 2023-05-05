@@ -65,3 +65,27 @@ void	initialize_child_signals(void)
 	sigaction(SIGQUIT, &sig_act, NULL);
 }
 
+static void	heredoc_signal_handler(int sig)
+{
+	if (sig == SIGINT)
+		write(1, "ctrl+c\n", 9);
+	if (sig == SIGQUIT)
+		write(1, "ctrl+D\n", 9);
+	return ;
+}
+
+void	initialize_heredoc_signals(void)
+{
+	struct sigaction	sig_act;
+	struct sigaction	sig_quit;
+
+	ft_bzero(&sig_act, sizeof(sig_act));
+	sig_act.sa_handler = &heredoc_signal_handler;
+	ft_bzero(&sig_quit, sizeof(sig_quit));
+	sig_quit.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sig_act, NULL);
+	sigaction(SIGTSTP, &sig_act, NULL);
+	sigaction(SIGQUIT, &sig_quit, NULL);
+}
+
+

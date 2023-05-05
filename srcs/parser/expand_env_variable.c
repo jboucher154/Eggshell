@@ -56,7 +56,7 @@ int	find_end_of_var(char *varaible_start)
 	int	index;
 
 	index = 1;
-	if (varaible_start[index] == '?')
+	if (varaible_start[index] == '?' || ft_isdigit(varaible_start[index]))
 		return (index + 1);
 	while (varaible_start[index] == '_' || ft_isalpha(varaible_start[index]) || \
 	ft_isdigit(varaible_start[index])) //|| varaible_start[index] == '?'
