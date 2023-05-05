@@ -64,6 +64,9 @@ t_eggcarton *prog_info)
 		return (NULL);
 	new->type = REDIRECTION_CMD;
 	new->cmd = (t_cmd *) cmd;
+	new->expand_variable = TRUE;
+	if (ft_strchr(QUOTES, **file_start))
+		new->expand_variable = FALSE;
 	new->filename = get_arg(file_start, prog_info);
 	move_pointer_past_ws(file_start);
 	new->token_id = token_id;
