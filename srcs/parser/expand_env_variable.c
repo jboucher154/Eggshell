@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 18:45:47 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/05 12:32:39 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ int	find_end_of_var(char *varaible_start)
 	int	index;
 
 	index = 1;
+	if (varaible_start[index] == '?')
+		return (index + 1);
 	while (varaible_start[index] == '_' || ft_isalpha(varaible_start[index]) || \
-	ft_isdigit(varaible_start[index]) || varaible_start[index] == '?')
+	ft_isdigit(varaible_start[index])) //|| varaible_start[index] == '?'
 		index++;
 	return (index);
 }
