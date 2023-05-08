@@ -67,14 +67,8 @@ void	initialize_child_signals(void)
 
 static void	heredoc_signal_handler(int sig)
 {
-	if (sig == SIGINT) //this needs extensive testing, also the correct pipes names...
-	{
-		close(STDIN_FILENO);
-		write(STDERR_FILENO, "\n", 1);
-	}
-	if (sig == SIGQUIT)
-		write(1, "ctrl+D\n", 9);
-	return ;
+    if (sig == SIGINT)
+		exit (0);
 }
 
 void	initialize_heredoc_signals(void)
