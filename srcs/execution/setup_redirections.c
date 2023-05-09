@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:43:15 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 16:01:23 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:13:19 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	open_file(t_redirection *redirection)
 	}
 	else if (redirection->token_id == REDIRECT_OUT_APPEND)
 	{
-		fd = open(redirection->filename, O_WRONLY | O_CREAT, 0644);
+		fd = open(redirection->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	}
 	if (fd == OPEN_ERROR)
 		print_errno_error();
