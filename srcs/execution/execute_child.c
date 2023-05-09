@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:06:28 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 14:17:31 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/09 18:48:45 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ void	exit_child(char *error_msg, char *arg, int exit_code)
  */
 static void	bail_on_child(char *cmd)
 {
+	if (cmd && cmd[0] == '.')
+	{
+		if (access(cmd, F_OK) != 0)
+			exit_child("no such file or directory: ", cmd, CMD_ERROR);
+		else if (access(cmd, X_OK) != 0)
+			exit_child("Permission denied: ", cmd, 126); //permision denied, make macro?
+	}
 	if (cmd == NULL)
 		exit_child("command not found: ", " ", CMD_ERROR);
 	else
