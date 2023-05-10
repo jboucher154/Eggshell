@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:16:07 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 14:14:44 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/10 13:10:29 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	set_shell_level(t_hash_table *environment)
 		return (SUCCESS);
 	}
 	int_level = ft_atoi(level) + 1;
+	if (int_level > 1000)// do we want an error message here?
+		int_level = 1;
 	new_level = ft_itoa(int_level);
 	if (!new_level)
 		return (ERROR);
