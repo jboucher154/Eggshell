@@ -122,6 +122,8 @@ void	executer(t_cmd **cmd, t_eggcarton *prog_info)
 	tree_iterator(*cmd, prog_info, &index);
 	clean_tree(*cmd);
 	*cmd = NULL;
-	do_commands(prog_info);
+	if (prog_info->should_execute == TRUE)
+		do_commands(prog_info);
+	prog_info->should_execute = TRUE;
 	free_children(prog_info->children);
 }

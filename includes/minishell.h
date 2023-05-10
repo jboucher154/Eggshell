@@ -166,6 +166,7 @@ typedef struct s_eggcarton
 	int					pipe_count;
 	int					*pipes;
 	struct s_child		**children;
+	int					should_execute;
 }	t_eggcarton;
 
 //struct for quote tracking
@@ -260,7 +261,7 @@ void	unset_command(char **args, t_eggcarton *prog_info);
 void	export_command(char **args, t_eggcarton *prog_info);
 void	print_enviroment(t_hash_table	*ht_env);
 void	exit_command(t_eggcarton *prog_info, t_child *cmd);
-void	heredoc_bultin(t_eggcarton *prog_info, t_redirection *redirection, int index);
+void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int index);
 
 //print tree helpers
 void	print_children(t_child **childs);
