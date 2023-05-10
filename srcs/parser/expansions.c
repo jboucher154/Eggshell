@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:46:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 18:44:31 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/10 10:24:05 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,14 @@ char quote_type_value)
 static int	yes_expand(t_quote_tracker *q_info, char *to_assess, int index)
 {
 	if (((q_info->in_quote == TRUE && q_info->quote_type != '\'') || \
-	q_info->in_quote == FALSE) && (to_assess[(index) + 1] != '\0' || \
-	(to_assess[(index) + 1] && \
-	ft_strchr(WHITESPACE, to_assess[index + 1]) == NULL)))
+		q_info->in_quote == FALSE))
 	{
-		return (TRUE);
+		if (to_assess[(index) + 1] == '\0' || (to_assess[(index) + 1] && \
+			(ft_strchr(WHITESPACE, to_assess[index + 1]) || \
+			ft_strchr(QUOTES, to_assess[index + 1]))))
+			return (FALSE);
+		else
+			return (TRUE);
 	}
 	return (FALSE);
 }
