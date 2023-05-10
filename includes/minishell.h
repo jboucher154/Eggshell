@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 14:45:47 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/10 09:36:19 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,7 @@ void	export_command(char **args, t_eggcarton *prog_info);
 void	print_enviroment(t_hash_table	*ht_env);
 void	exit_command(t_eggcarton *prog_info, t_child *cmd);
 void	heredoc_bultin(t_eggcarton *prog_info, t_redirection *redirection, int index);
+int		is_valid_var_name(char *key);
 
 //print tree helpers
 void	print_children(t_child **childs);
@@ -299,7 +300,8 @@ int		print_error(char *error_msg);
 void	close_redirections(int fd_in, int fd_out);
 void	echoctl_switch(int toggle);
 int		print_errno_error(void);
-int		print_blame_error(char *error_msg, char *to_blame);
+// int		print_blame_error(char *error_msg, char *to_blame);
+int		print_blame_error(char *program, char *error_msg, char *to_blame);
 void	update_environment_array(t_eggcarton *prog_info);
 char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3);
 

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:20:14 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 17:34:46 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/10 09:30:36 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,14 @@ int	print_error(char *error_msg)
 	return (FALSE);
 }
 
-int	print_blame_error(char *error_msg, char *to_blame)
+int	print_blame_error(char *program, char *error_msg, char *to_blame)
 {
 	ft_putstr_fd("\033[31mEggShell🥚: ", 2);
+	if (program)
+	{
+		ft_putstr_fd(program, 2);
+		ft_putstr_fd(": ", 2);
+	}
 	ft_putstr_fd(to_blame, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(error_msg, 2);

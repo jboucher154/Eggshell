@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:38:37 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/05 10:48:17 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/10 09:32:34 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	is_valid_var_name(char *key)
 
 	index = 0;
 	printf("KEY: %s, %zu\n", key, ft_strlen(key));//
-	if (ft_isdigit(key[0]))
+	if (ft_isdigit(key[0]) || !key[0])
 		return (FALSE);
 	while (key[index] == '_' || ft_isalpha(key[index]) || \
 	ft_isdigit(key[index])) //key[index] == '?' don't allow users to access
@@ -41,7 +41,7 @@ void	set_new_env_variable(char *arg, t_hash_table *environment, int *error_occur
 	key = ft_substr(arg, 0, arg_index);
 	if (is_valid_var_name(key) == FALSE)
 	{
-		print_blame_error("not a valid identifier", key);
+		print_blame_error("export", "not a valid identifier", key);
 		free(key);
 		(*error_occured) = 1;
 		return ;
