@@ -6,29 +6,43 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/09 19:19:47 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/10 12:56:44 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "ft_hash.h"
 
+int	check_if_flag(char *to_check)
+{
+	size_t	index;
+
+	index = 1;
+	if (!to_check || !to_check[0] || to_check[0] != '-')
+		return (FALSE);
+	while (to_check[index] == 'n')
+		index++;
+	if (index != ft_strlen(to_check))
+		return (FALSE);
+	return (TRUE);
+}
+
 void	echo_command(char **args)
 {
 	int		new_line;
+	int		index;
 
 	new_line = 0;
-	args++;
-	if (!ft_strncmp("-n", *args, 2))
+	index = 1;
+	while (check_if_flag(args[index]) == TRUE)
 	{
 		new_line = 1;
-		while (!ft_strncmp("-n", *args, 2))
-			args++;
+		index++;
 	}
-	while (*args != '\0')
+	while (args[index] != NULL)
 	{
-		printf("%s ", *args);
-		args++;
+		printf("%s ", args[index]);
+		index++;
 	}
 	if (new_line != 1)
 		printf("\n");
