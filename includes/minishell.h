@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/10 15:43:08 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/10 15:45:25 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,6 +262,7 @@ void	export_command(char **args, t_eggcarton *prog_info);
 void	print_enviroment(t_hash_table	*ht_env);
 void	exit_command(t_eggcarton *prog_info, t_child *cmd);
 void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int index);
+int		is_valid_var_name(char *key);
 
 //print tree helpers
 void	print_children(t_child **childs);
