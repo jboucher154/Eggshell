@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/03 15:20:25 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:19:47 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	cd_command(char	**args, t_eggcarton *prog_info)
 	{
 		error = strerror(errno);
 		print_error(error);
-		ht_update_value(prog_info->environment, "?", ft_itoa(errno));
+		ht_update_value(prog_info->environment, "?", ft_itoa(1));
 	}
 	current_wd = getcwd(NULL, 0);
 	ht_update_value(prog_info->environment, "PWD", (void *) current_wd);
