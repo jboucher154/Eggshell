@@ -48,9 +48,7 @@ static void	child_signal_handler(int sig)
 	if (sig == SIGINT)
 		write(1, "\n", 1);
 	if (sig == SIGQUIT)
-	{
 		write(1, " Quit: 3\n", 9);
-	}
 	return ;
 }
 
@@ -68,7 +66,7 @@ void	initialize_child_signals(void)
 static void	heredoc_signal_handler(int sig)
 {
     if (sig == SIGINT)
-		exit (0);
+		exit (5);
 }
 
 void	initialize_heredoc_signals(void)

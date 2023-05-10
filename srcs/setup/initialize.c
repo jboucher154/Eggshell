@@ -84,5 +84,6 @@ int	initialize_eggcarton(t_eggcarton *prog, char **env, struct termios *term)
 	prog->pipe_count = 0;
 	prog->pipes = NULL;
 	prog->children = NULL;
+	prog->should_execute = TRUE;
 	return (SUCCESS);
 }

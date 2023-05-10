@@ -59,7 +59,6 @@ void	close_file(t_eggcarton *prog_info, int index, int redir_type)
 	}
 }
 
-
 void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, \
 int index)
 {
@@ -69,7 +68,7 @@ int index)
 		return ;
 	if (redirection->token_id == REDIRECT_HERE)
 	{
-		heredoc_bultin(prog_info, redirection, index);
+		heredoc_builtin(prog_info, redirection, index);
 		if (prog_info->children[index]->heredoc_pipe[0] != UNSET)
 		{
 			close(prog_info->children[index]->redir_in);
