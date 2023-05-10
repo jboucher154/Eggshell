@@ -60,6 +60,7 @@ void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int ind
 			{
 				joined = ft_strjoin_three(input, line_read, "\n");
 				free(input);
+				free(line_read);
 				input = joined;
 			}
 			line_read = heredoc_get();
