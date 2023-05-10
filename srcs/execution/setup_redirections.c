@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:43:15 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/10 12:58:35 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/10 12:59:15 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	open_file(t_redirection *redirection)
 }
 
 void	close_file(t_eggcarton *prog_info, int index, int redir_type)
+{
 	if (redir_type == REDIRECT_IN)
 	{
 		if (prog_info->children[index]->redir_in != UNSET)
