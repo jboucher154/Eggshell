@@ -50,7 +50,7 @@ void	exit_command(t_eggcarton *prog_info, t_child *cmd)
 	}
 	else
 		exit_code = ft_atoi(ht_get(prog_info->environment, "?"));
-	if (exit_code == 0)
+	if (exit_code == 0 && cmd->pid == UNSET)
 		printf("Exit🐥\n");
 	if (exit_code != 0)
 	{

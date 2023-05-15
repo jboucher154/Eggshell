@@ -65,8 +65,24 @@ void	cd_command(char	**args, t_eggcarton *prog_info)
 
 	current_wd = getcwd(NULL, 0);
 	ht_update_value(prog_info->environment, "OLDPWD", (void *) current_wd);
+	if (args[2] != '\0')
+	{
+		print_error("HOME not set");
+		ht_update_value(prog_info->environment, "?", ft_itoa(1));
+		return ;
+	}
 	if (args[1] == '\0')
-		to = getenv("HOME");
+	{	
+		to = ht_get(prog_info->environment, "HOME");
+		if (to == '\0')
+		{
+			print_error("HOME not set");
+			ht_update_value(prog_info->environment, "?", ft_itoa(1));
+			return;
+		}
+		if (to[0] == '\0')
+			return;
+	}
 	else
 		to = args[1];
 	if (chdir(to) == -1)

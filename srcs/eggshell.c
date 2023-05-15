@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /* Read a string, and return a pointer to it */
-static char	*ft_gets(void)
+static char *ft_gets(void)
 {
 	char	*line_read;
 
@@ -29,7 +29,6 @@ static char	*ft_gets(void)
 	return (line_read);
 }
 
-//add clean program exit when exited
 static int	parse_and_execute(char **line, t_eggcarton *prog_info)
 {
 	t_cmd	*cmd_tree;

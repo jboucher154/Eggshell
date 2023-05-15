@@ -97,5 +97,5 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 	else
 		execve(prog_info->children[index]->path, \
 		prog_info->children[index]->args, prog_info->array_env);
-	exit_child("exeve failed: ", prog_info->children[index]->args[0], errno);
+	exit_child("execve failed : ", prog_info->children[index]->args[0], errno);
 }
