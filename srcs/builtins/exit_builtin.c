@@ -22,6 +22,8 @@ void	clean_and_restore(t_eggcarton *prog_info)
 	ht_destroy(&(prog_info->environment));
 	ht_destroy(&(prog_info->command_table));
 	clean_str_array(prog_info->array_env);
+	if (prog_info->pipes)
+		free(prog_info->pipes);
 	tcsetattr(STDIN_FILENO, TCSANOW, prog_info->saved_term);
 }
 
@@ -56,5 +58,7 @@ void	exit_command(t_eggcarton *prog_info, t_child *cmd)
 		printf("%d\n", exit_code);
 	}
 	clean_and_restore(prog_info);
+	// while (1)
+	// 	 ;
 	exit (exit_code);
 }
