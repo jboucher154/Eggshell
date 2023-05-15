@@ -12,11 +12,12 @@
 
 #include "minishell.h"
 
-int	check_filename(char *fname)
+int	check_filename(char *fname, t_eggcarton *prog_info)
 {
 	if (!fname || !fname[0])
 	{
 		print_error("ambiguous redirect");
+		ht_update_value(prog_info->environment, "?", ft_itoa(1));
 		return (ERROR);
 	}
 	else
@@ -64,7 +65,7 @@ int index)
 {
 	int		fd;
 	fd = OPEN_ERROR;
-	if (redirection->token_id != REDIRECT_HERE && check_filename(redirection->filename) == ERROR)
+	if (redirection->token_id != REDIRECT_HERE && check_filename(redirection->filename, prog_info) == ERROR)
 		return ;
 	if (redirection->token_id == REDIRECT_HERE)
 	{
