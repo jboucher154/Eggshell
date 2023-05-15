@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/04 14:49:48 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:09:48 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ void	executer(t_cmd **cmd, t_eggcarton *prog_info)
 	tree_iterator(*cmd, prog_info, &index);
 	clean_tree(*cmd);
 	*cmd = NULL;
+	printf("before do_commands\n");//
 	if (prog_info->should_execute == TRUE)
 		do_commands(prog_info);
 	prog_info->should_execute = TRUE;

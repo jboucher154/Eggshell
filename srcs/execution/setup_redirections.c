@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:43:15 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/10 12:59:15 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:35:45 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int index)
 		{
 			close(prog_info->children[index]->redir_in);
 			prog_info->children[index]->redir_in = prog_info->children[index]->heredoc_pipe[0];
+			close(prog_info->children[index]->heredoc_pipe[1]);// added this in to try and fix hanging process...
 		}
 		return ;
 	}
@@ -92,12 +93,14 @@ int index)
 {
 	if (redir && (redir->cmd == NULL || redir->cmd->type == EXECUTABLE_CMD))
 	{
+		//add check here if redirection should be setup
 		setup_redirection(redir, prog_info, index);
 		return ;
 	}
 	else if (redir && redir->cmd->type == REDIRECTION_CMD)
 	{
 		process_redirections(((t_redirection *)redir->cmd), prog_info, index);
+		//add check here if redirection should be setup
 		setup_redirection(redir, prog_info, index);
 	}
 }

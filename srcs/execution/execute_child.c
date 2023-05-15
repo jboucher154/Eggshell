@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:06:28 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/11 17:37:07 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:30:42 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 	else if (prog_info->children[index]->redir_in == OPEN_ERROR || \
 		prog_info->children[index]->redir_out == OPEN_ERROR)
 		exit(1);
+	printf("before child executes commands\n");//
 	if (prog_info->children[index]->path[0] == ':')
 		run_builtins(prog_info->children[index], prog_info);
 	else

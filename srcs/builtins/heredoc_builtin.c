@@ -26,7 +26,8 @@ static void	pass_to_child(t_eggcarton *prog_info, char *input, int index)
 	}
 	(void) input;
 	write(prog_info->children[index]->heredoc_pipe[1], input, ft_strlen(input));
-	close(prog_info->children[index]->heredoc_pipe[1]);
+	close_redirections(prog_info->children[index]->heredoc_pipe[0], prog_info->children[index]->heredoc_pipe[1]);
+	// close(prog_info->children[index]->heredoc_pipe[1]);
 }
 
 void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int index)
@@ -72,11 +73,12 @@ void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int ind
 			pass_to_child(prog_info, input, index);
 			free(input);
 		}
+		printf("Exit heredoc child now!\n");//
 		exit (0);
 	}
 		signal(SIGINT, SIG_IGN);
 		waitpid(pid, &exit_status, 0);
-		if (exit_status > 0)
+		if (WEXITSTATUS(exit_status) > 0)
 		{
 			prog_info->should_execute = FALSE;
 			ht_update_value(prog_info->environment, "?", ft_strdup("1"));
