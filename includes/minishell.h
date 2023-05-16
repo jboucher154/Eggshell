@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/10 16:23:34 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/16 13:34:42 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ typedef struct s_child
 	int		pid;
 	int		redir_in;
 	int		redir_out;
-	int		heredoc_pipe[2];
+	int		heredoc_fd;//
 	int		pipe_in;
 	int		pipe_out;
 	char	*path;

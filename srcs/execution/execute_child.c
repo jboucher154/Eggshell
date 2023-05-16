@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:06:28 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/15 16:30:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/16 16:06:05 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 {
 	dup_pipes(prog_info, index);
 	dup_redirections(prog_info, index);
-	close_redirections(prog_info->children[index]->heredoc_pipe[0], prog_info->children[index]->heredoc_pipe[0]);
 	if (prog_info->children[index]->command_present == FALSE)
 		exit(0);
 	if (prog_info->children[index]->path == NULL)

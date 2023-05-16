@@ -15,20 +15,20 @@ static char	*heredoc_get(void)
 	return (line_read);
 }
 
-static void	pass_to_child(t_eggcarton *prog_info, char *input, int index)
-{	
-	if (pipe(prog_info->children[index]->heredoc_pipe) == -1)
-	{
-		print_error("pipe creation failed");
-		prog_info->children[index]->heredoc_pipe[1] = UNSET;
-		prog_info->children[index]->heredoc_pipe[0] = UNSET;
-		return ;
-	}
-	(void) input;
-	write(prog_info->children[index]->heredoc_pipe[1], input, ft_strlen(input));
-	close_redirections(prog_info->children[index]->heredoc_pipe[0], prog_info->children[index]->heredoc_pipe[1]);
-	// close(prog_info->children[index]->heredoc_pipe[1]);
-}
+// static void	pass_to_child(t_eggcarton *prog_info, char *input, int index)
+// {	
+// 	if (pipe(prog_info->children[index]->heredoc_pipe) == -1)
+// 	{
+// 		print_error("pipe creation failed");
+// 		prog_info->children[index]->heredoc_pipe[1] = UNSET;
+// 		prog_info->children[index]->heredoc_pipe[0] = UNSET;
+// 		return ;
+// 	}
+// 	(void) input;
+// 	write(prog_info->children[index]->heredoc_pipe[1], input, ft_strlen(input));
+// 	close_redirections(prog_info->children[index]->heredoc_pipe[0], prog_info->children[index]->heredoc_pipe[1]);
+// 	// close(prog_info->children[index]->heredoc_pipe[1]);
+// }
 
 void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int index)
 {    
@@ -37,19 +37,19 @@ void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int ind
 	char 	*joined;
 	int		pid;
 	int		exit_status;
+	
 	exit_status = 0;
-	if (pipe(prog_info->children[index]->heredoc_pipe) == -1)
-	{
-		print_error("pipe creation failed");
-		prog_info->children[index]->heredoc_pipe[1] = UNSET;
-		prog_info->children[index]->heredoc_pipe[0] = UNSET;
+	//how to path the here_doc?
+	prog_info->children[index]->heredoc_fd = open("here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (prog_info->children[index]->heredoc_fd == -1)
 		return ;
-	}
 	pid = fork();
 	if (pid == -1)
 		return ;
 	if (pid == 0)
 	{
+		close_pipes(prog_info->pipes, prog_info->pipe_count);
+		close_redirections(prog_info->children[index]->redir_in, prog_info->children[index]->redir_out);
 		initialize_heredoc_signals();
 		input = ft_calloc(1, sizeof(char));
 		line_read = heredoc_get();
@@ -70,9 +70,12 @@ void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int ind
 		{
 			if (redirection->expand_variable == TRUE)
 				input = check_for_expansions(prog_info, input);
-			pass_to_child(prog_info, input, index);
+			write(prog_info->children[index]->heredoc_fd, input, ft_strlen(input));
+			// close(prog_info->children[index]->heredoc_fd);//// EVERYTHING!!!!
+			// pass_to_child(prog_info, input, index);
 			free(input);
 		}
+		close(prog_info->children[index]->heredoc_fd);
 		printf("Exit heredoc child now!\n");//
 		exit (0);
 	}

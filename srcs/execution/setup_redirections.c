@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:43:15 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/15 16:35:45 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/16 16:13:27 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,10 @@ int index)
 	if (redirection->token_id == REDIRECT_HERE)
 	{
 		heredoc_builtin(prog_info, redirection, index);
-		if (prog_info->children[index]->heredoc_pipe[0] != UNSET)
-		{
-			close(prog_info->children[index]->redir_in);
-			prog_info->children[index]->redir_in = prog_info->children[index]->heredoc_pipe[0];
-			close(prog_info->children[index]->heredoc_pipe[1]);// added this in to try and fix hanging process...
-		}
+		prog_info->children[index]->heredoc_fd = open("here_doc", O_RDONLY); //error if open -1?
+		close(prog_info->children[index]->redir_in);
+		prog_info->children[index]->redir_in = prog_info->children[index]->heredoc_fd;
+		// close(prog_info->children[index]->heredoc_pipe[1]);// added this in to try and fix hanging process...
 		return ;
 	}
 	fd = open_file(redirection);
