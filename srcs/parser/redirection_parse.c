@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 14:42:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 16:57:07 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:44:22 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_eggcarton *prog_info)
 	**parsed_string == '>'))
 	{
 		token_id = move_to_token(parsed_string, end);
-		if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE) // added redirect here
+		if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)
 			(*parsed_string) += 2;
 		else
 			(*parsed_string)++;

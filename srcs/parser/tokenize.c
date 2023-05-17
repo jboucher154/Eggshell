@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 10:51:35 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:15:15 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:44:36 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	identify_token(char *token_start)
 	}
 	return (token_id);
 }
+
 //return the next non-whitespace character's identity
 char	move_to_token(char **parsed_string, char *end)
 {

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:29:53 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:42:54 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,10 +302,10 @@ int		print_error(char *error_msg);
 void	close_redirections(int fd_in, int fd_out);
 void	echoctl_switch(int toggle);
 int		print_errno_error(void);
-// int		print_blame_error(char *error_msg, char *to_blame);
 int		print_blame_error(char *program, char *error_msg, char *to_blame);
 void	update_environment_array(t_eggcarton *prog_info);
 char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3);
+void	ft_free_two(char *to_free1, char *to_free2);
 
 //initialize.c
 int		initialize_eggcarton(t_eggcarton *prog, char **env, \

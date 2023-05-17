@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:20:14 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/10 09:30:36 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:42:32 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,4 +145,18 @@ char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3)
 		fill_joined(joined, s1, s2, s3);
 	}
 	return (joined);
+}
+
+void	ft_free_two(char *to_free1, char *to_free2)
+{
+	if (to_free1)
+	{
+		free(to_free1);
+		to_free1 = NULL;
+	}
+	if (to_free2)
+	{
+		free(to_free2);
+		to_free2 = NULL;
+	}
 }

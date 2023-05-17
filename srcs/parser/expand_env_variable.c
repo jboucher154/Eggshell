@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 14:17:58 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:43:11 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,33 +73,32 @@ static size_t	new_str_len(char *str, char *variable, char *value)
 }
 
 //expands the variable
-char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start, int *index)
+char	*expand_env_var(t_eggcarton *prog_info, char *str, char *var_start, \
+int *index)
 {
-	char	*variable;
+	char	*var;
 	char	*value;
 	char	*new_str;
 
-	if (variable_start == NULL)
+	if (var_start == NULL)
 		return (str);
-	variable = ft_substr(variable_start, 0, find_end_of_var(variable_start));
-	if (variable == NULL)
+	var = ft_substr(var_start, 0, find_end_of_var(var_start));
+	if (var == NULL)
 	{
 		print_error("malloc failed during expansion");
 		return (str);
 	}
-	value = ht_get(prog_info->environment, variable + 1);
-	new_str = (char *) malloc(sizeof(char) * \
-	(new_str_len(str, variable, value) + 1));
+	value = ht_get(prog_info->environment, var + 1);
+	new_str = malloc(sizeof(char) * (new_str_len(str, var, value) + 1));
 	if (!new_str)
 	{
-		free(variable);
+		free(var);
 		print_error("variable expansion failed");
 		return (str);
 	}
-	insert_new_value(str, new_str, variable, value);
+	insert_new_value(str, new_str, var, value);
 	if (value)
 		(*index) += ft_strlen(value);
-	free(variable);
-	free(str);
+	ft_free_two(var, str);
 	return (new_str);
 }
