@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:03:01 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 18:07:13 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:33:39 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,3 @@ size_t	ht_rehash(t_hash_table *table)
 	table->table = new;
 	return (SUCCESS);
 }
-
-		// item = old_table[i];
-		// while (item)
-		// {
-		// 	tmp = item;
-		// 	item = item->next;
-		// 	rehash_add(table, tmp);
-		// }
