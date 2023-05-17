@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:06:28 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/16 16:06:05 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 13:38:35 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ static void	bail_on_child(char *cmd)
 {
 	if (cmd && cmd[0] == '.')//added the strchr //&& ft_strchr(cmd, '/')
 	{
-		if (access(cmd, F_OK) != 0)
+		if (!ft_strncmp(".", cmd, 1))
+			exit_child("filename argument required: ", cmd, 2);
+		else if (access(cmd, F_OK) != 0)
 			exit_child("no such file or directory: ", cmd, CMD_ERROR);
 		else if (access(cmd, X_OK) != 0)
 			exit_child("Permission denied: ", cmd, 126); //permision denied, make macro?
@@ -86,11 +88,11 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 	dup_redirections(prog_info, index);
 	if (prog_info->children[index]->command_present == FALSE)
 		exit(0);
-	if (prog_info->children[index]->path == NULL)
+	if (prog_info->children[index]->path == NULL || !ft_strncmp(".", prog_info->children[index]->path, 1) || !ft_strncmp("..", prog_info->children[index]->path, 2))
 		bail_on_child(prog_info->children[index]->args[0]);
 	else if (prog_info->children[index]->redir_in == OPEN_ERROR || \
 		prog_info->children[index]->redir_out == OPEN_ERROR)
-		exit(1);
+		exit(1);//
 	printf("before child executes commands\n");//
 	if (prog_info->children[index]->path[0] == ':')
 		run_builtins(prog_info->children[index], prog_info);
