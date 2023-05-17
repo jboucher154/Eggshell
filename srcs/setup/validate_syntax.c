@@ -6,13 +6,12 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/10 09:37:32 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:47:01 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//needs work....
 int	validate_pipe(char **token, char *str)
 {
 	char	*check_before;

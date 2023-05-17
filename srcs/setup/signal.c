@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:14:03 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:03:45 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:46:00 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	child_signal_handler(int sig)
 void	initialize_child_signals(void)
 {
 	struct sigaction	sig_act;
-	
+
 	sig_act.sa_handler = &child_signal_handler;
 	ft_bzero(&sig_act, sizeof(sig_act));
 	sig_act.sa_handler = &child_signal_handler;
@@ -65,7 +65,7 @@ void	initialize_child_signals(void)
 
 static void	heredoc_signal_handler(int sig)
 {
-    if (sig == SIGINT)
+	if (sig == SIGINT)
 		exit (5);
 }
 
@@ -82,5 +82,3 @@ void	initialize_heredoc_signals(void)
 	sigaction(SIGTSTP, &sig_act, NULL);
 	sigaction(SIGQUIT, &sig_quit, NULL);
 }
-
-
