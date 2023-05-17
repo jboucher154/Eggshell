@@ -70,7 +70,7 @@ int index)
 	if (redirection->token_id == REDIRECT_HERE)
 	{
 		heredoc_builtin(prog_info, redirection, index);
-		prog_info->children[index]->heredoc_fd = open("here_doc", O_RDONLY); //error if open -1?
+		prog_info->children[index]->heredoc_fd = open(HEREDOC_TEMP, O_RDONLY); //error if open -1?
 		close(prog_info->children[index]->redir_in);
 		prog_info->children[index]->redir_in = prog_info->children[index]->heredoc_fd;
 		// close(prog_info->children[index]->heredoc_pipe[1]);// added this in to try and fix hanging process...

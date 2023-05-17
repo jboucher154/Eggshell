@@ -20,6 +20,7 @@
 # define UNSET	-2
 # define OPEN_ERROR -1
 # define CMD_ERROR 127
+# define HEREDOC_TEMP ".heredoc"
 // # define 
 //tokens
 # define TOKENS "|<>&;" //"|&<>();"

@@ -40,7 +40,7 @@ void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int ind
 	
 	exit_status = 0;
 	//how to path the here_doc?
-	prog_info->children[index]->heredoc_fd = open("here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	prog_info->children[index]->heredoc_fd = open(HEREDOC_TEMP, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (prog_info->children[index]->heredoc_fd == -1)
 		return ;
 	pid = fork();

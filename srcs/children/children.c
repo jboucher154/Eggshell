@@ -42,7 +42,7 @@ void	free_children(t_child **children)
 		close_redirections(children[index]->redir_in, \
 		children[index]->redir_out);
 		if (children[index]->heredoc_fd != UNSET)
-			unlink("here_doc");
+			unlink(HEREDOC_TEMP);
 		// close_redirections(children[index]->heredoc_pipe[0], \
 		// children[index]->heredoc_pipe[1]);
 		clean_str_array(children[index]->args);
