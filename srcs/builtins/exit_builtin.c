@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit_builtin.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/17 15:09:18 by jebouche          #+#    #+#             */
+/*   Updated: 2023/05/17 15:10:23 by jebouche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "ft_hash.h"
 
@@ -17,7 +29,7 @@ static int	only_digits(char *to_check)
 
 void	clean_and_restore(t_eggcarton *prog_info)
 {
-	if (prog_info->children )
+	if (prog_info->children)
 		free_children(prog_info->children);
 	ht_destroy(&(prog_info->environment));
 	ht_destroy(&(prog_info->command_table));
@@ -58,7 +70,8 @@ void	exit_command(t_eggcarton *prog_info, t_child *cmd)
 		printf("%d\n", exit_code);
 	}
 	clean_and_restore(prog_info);
-	// while (1)
-	// 	 ;
 	exit (exit_code);
 }
+
+	// while (1)
+	// 	 ;

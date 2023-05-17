@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:38:37 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 14:27:54 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:10:44 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	is_valid_var_name(char *key)
 	size_t	index;
 
 	index = 0;
-	printf("KEY: %s, %zu\n", key, ft_strlen(key));//
 	if (ft_isdigit(key[0]) || !key[0])
 		return (FALSE);
 	while (key[index] == '_' || ft_isalpha(key[index]) || \
@@ -30,7 +29,8 @@ int	is_valid_var_name(char *key)
 		return (FALSE);
 }
 
-void	set_new_env_variable(char *arg, t_hash_table *environment, int *error_occured)
+void	set_new_env_variable(char *arg, t_hash_table *environment, \
+int *error_occured)
 {
 	int		arg_index;
 	char	*key;

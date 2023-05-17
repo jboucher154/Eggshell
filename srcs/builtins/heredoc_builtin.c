@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_builtin.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/17 15:11:03 by jebouche          #+#    #+#             */
+/*   Updated: 2023/05/17 15:25:58 by jebouche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-
-static char	*heredoc_get(void)
+static char	*heredoc_getline(void)
 {
 	char	*line_read;
 
@@ -15,32 +26,62 @@ static char	*heredoc_get(void)
 	return (line_read);
 }
 
-// static void	pass_to_child(t_eggcarton *prog_info, char *input, int index)
-// {	
-// 	if (pipe(prog_info->children[index]->heredoc_pipe) == -1)
-// 	{
-// 		print_error("pipe creation failed");
-// 		prog_info->children[index]->heredoc_pipe[1] = UNSET;
-// 		prog_info->children[index]->heredoc_pipe[0] = UNSET;
-// 		return ;
-// 	}
-// 	(void) input;
-// 	write(prog_info->children[index]->heredoc_pipe[1], input, ft_strlen(input));
-// 	close_redirections(prog_info->children[index]->heredoc_pipe[0], prog_info->children[index]->heredoc_pipe[1]);
-// 	// close(prog_info->children[index]->heredoc_pipe[1]);
-// }
+static char	*gather_here_doc(t_redirection *redirection)
+{
+	char	*line_read;
+	char	*input;
+	char	*joined;
 
-void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int index)
-{    
-    char	*line_read;
-	char	*input = NULL;
-	char 	*joined;
+	input = ft_calloc(1, sizeof(char));
+	line_read = heredoc_getline();
+	while (line_read != NULL)
+	{
+		if (line_read && line_read[0] && !ft_strncmp(redirection->filename, \
+		line_read, ft_strlen(line_read)))
+			break ;
+		else if (line_read)
+		{
+			joined = ft_strjoin_three(input, line_read, "\n");
+			free(input);
+			free(line_read);
+			input = joined;
+		}
+		if (!input)
+			break ;//
+		line_read = heredoc_getline();
+	}
+	return (input);
+}
+
+static void	run_here_child(t_eggcarton *prog_info, t_redirection *redirection, \
+int index)
+{
+	char	*input;
+
+	close_pipes(prog_info->pipes, prog_info->pipe_count);
+	close_redirections(prog_info->children[index]->redir_in, \
+	prog_info->children[index]->redir_out);
+	input = gather_here_doc(redirection);
+	if (input)
+	{
+		if (redirection->expand_variable == TRUE)
+			input = check_for_expansions(prog_info, input);
+		write(prog_info->children[index]->heredoc_fd, input, ft_strlen(input));
+		free(input);
+	}
+	close(prog_info->children[index]->heredoc_fd);
+	exit (0);
+}
+
+void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, \
+int index)
+{
 	int		pid;
 	int		exit_status;
-	
+
 	exit_status = 0;
-	//how to path the here_doc?
-	prog_info->children[index]->heredoc_fd = open(HEREDOC_TEMP, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	prog_info->children[index]->heredoc_fd = open(HEREDOC_TEMP, \
+	O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (prog_info->children[index]->heredoc_fd == -1)
 		return ;
 	pid = fork();
@@ -48,42 +89,15 @@ void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int ind
 		return ;
 	if (pid == 0)
 	{
-		close_pipes(prog_info->pipes, prog_info->pipe_count);
-		close_redirections(prog_info->children[index]->redir_in, prog_info->children[index]->redir_out);
 		initialize_heredoc_signals();
-		input = ft_calloc(1, sizeof(char));
-		line_read = heredoc_get();
-		while (line_read != NULL)
-		{
-			if (line_read && line_read[0] && !ft_strncmp(redirection->filename, line_read, ft_strlen(line_read)))
-				break ;
-			else if (line_read)
-			{
-				joined = ft_strjoin_three(input, line_read, "\n");
-				free(input);
-				free(line_read);
-				input = joined;
-			}
-			line_read = heredoc_get();
-		}
-		if (input)
-		{
-			if (redirection->expand_variable == TRUE)
-				input = check_for_expansions(prog_info, input);
-			write(prog_info->children[index]->heredoc_fd, input, ft_strlen(input));
-			// close(prog_info->children[index]->heredoc_fd);//// EVERYTHING!!!!
-			// pass_to_child(prog_info, input, index);
-			free(input);
-		}
-		close(prog_info->children[index]->heredoc_fd);
-		printf("Exit heredoc child now!\n");//
-		exit (0);
+		run_here_child(prog_info, redirection, index);
 	}
-		signal(SIGINT, SIG_IGN);
-		waitpid(pid, &exit_status, 0);
-		if (WEXITSTATUS(exit_status) > 0)
-		{
-			prog_info->should_execute = FALSE;
-			ht_update_value(prog_info->environment, "?", ft_strdup("1"));
-		}
+	close(prog_info->children[index]->heredoc_fd);
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, &exit_status, 0);
+	if (WEXITSTATUS(exit_status) > 0)
+	{
+		prog_info->should_execute = FALSE;
+		ht_update_value(prog_info->environment, "?", ft_strdup("1"));
+	}
 }

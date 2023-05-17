@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:14:27 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/10 09:48:18 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:09:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	unset_command(char **args, t_eggcarton *prog_info)
 			ht_update_value(prog_info->environment, "?", ft_itoa(1));
 		}
 		if (!strncmp(args[index], "PWD", 3))
-			{
-				index++;
-				continue;
-			}
+		{
+			index++;
+			continue ;
+		}
 		else
 			ht_remove(prog_info->environment, args[index]);
 		index++;
