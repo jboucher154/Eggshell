@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 14:15:37 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:29:53 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,6 @@ void	setup_pipes(t_eggcarton *prog_info, int index);
 void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, \
 		int index);
 
-
 //reset.c
 void	clean_str_array(char **array);
 void	close_pipes(int *pipes, int pipe_count);
@@ -262,7 +261,8 @@ void	unset_command(char **args, t_eggcarton *prog_info);
 void	export_command(char **args, t_eggcarton *prog_info);
 void	print_enviroment(t_hash_table	*ht_env);
 void	exit_command(t_eggcarton *prog_info, t_child *cmd);
-void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, int index);
+void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, \
+		int index);
 int		is_valid_var_name(char *key);
 
 //print tree helpers

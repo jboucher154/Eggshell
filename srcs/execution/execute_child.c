@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:06:28 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 13:43:20 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:28:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	exit_child(char *error_msg, char *arg, int exit_code)
  */
 static void	bail_on_child(char *cmd)
 {
-	if (cmd && cmd[0] == '.')//added the strchr //&& ft_strchr(cmd, '/')
+	if (cmd && cmd[0] == '.')
 	{
 		if (cmd[1] == '\0')
 			exit_child("filename argument required: ", cmd, 2);
@@ -88,12 +88,13 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 	dup_redirections(prog_info, index);
 	if (prog_info->children[index]->command_present == FALSE)
 		exit(0);
-	if (prog_info->children[index]->path == NULL || !ft_strncmp(".", prog_info->children[index]->path, 1) || !ft_strncmp("..", prog_info->children[index]->path, 2))
+	if (prog_info->children[index]->path == NULL || \
+		!ft_strncmp(".", prog_info->children[index]->path, 1) || \
+		!ft_strncmp("..", prog_info->children[index]->path, 2))
 		bail_on_child(prog_info->children[index]->args[0]);
 	else if (prog_info->children[index]->redir_in == OPEN_ERROR || \
 		prog_info->children[index]->redir_out == OPEN_ERROR)
 		exit(1);//
-	printf("before child executes commands\n");//
 	if (prog_info->children[index]->path[0] == ':')
 		run_builtins(prog_info->children[index], prog_info);
 	else

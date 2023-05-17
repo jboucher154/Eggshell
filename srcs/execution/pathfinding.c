@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:35:22 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 13:33:33 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:30:41 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 		else
 		{
 			paths = get_paths(prog_info);
-			if (!paths) //added for unset path; ls case
+			if (!paths)
 				return (NULL);
 			path = find_correct_path(fname, paths);
 			clean_str_array(paths);

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/15 16:09:48 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:30:27 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,7 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 	if (!ft_strncmp("exit", cmd->args[0], 4))
 		exit_command(prog_info, cmd);
 	if (cmd->pid == 0)
-	{
-		printf("I am a child and will exit now!\n");// leave for now
 		exit(EXIT_SUCCESS);
-	}
-	printf("I'm not a child!\n");// leave for now
 }
 
 //may need to update env variable based on exit status of last child
@@ -122,7 +118,6 @@ void	executer(t_cmd **cmd, t_eggcarton *prog_info)
 	tree_iterator(*cmd, prog_info, &index);
 	clean_tree(*cmd);
 	*cmd = NULL;
-	printf("before do_commands\n");//
 	if (prog_info->should_execute == TRUE)
 		do_commands(prog_info);
 	prog_info->should_execute = TRUE;
