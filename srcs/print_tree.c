@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 11:28:46 by jebouche          #+#    #+#             */
-/*   Updated: 2023/04/27 10:49:37 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:57:45 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	print_array(char **array)
 }
 
 //if we want a temp variable here it could be a union....
-void	print_tree(t_cmd *cmd, int	depth)
+void	print_tree(t_cmd *cmd, int depth)
 {
 	if (!cmd)
 		return ;
@@ -46,7 +46,8 @@ void	print_tree(t_cmd *cmd, int	depth)
 	}
 	else if (cmd->type == EXECUTABLE_CMD)
 	{
-		printf("EXECUTABLE CMD found: %s, depth: %i\n", ((t_executable_cmd *)cmd)->args[0] ,depth);
+		printf("EXECUTABLE CMD found: %s, depth: %i\n", \
+		((t_executable_cmd *)cmd)->args[0] ,depth);
 		print_array(((t_executable_cmd *)cmd)->args);
 	}
 	else
@@ -62,15 +63,14 @@ void	print_children(t_child **children)
 	i = 0;
 	while (children[i] != NULL)
 	{
-		printf("CHILD %i: \n redir in: %i\n redir out: %i\n pipe in: %i\n pipe out%i\n", i, \
-		children[i]->redir_in, children[i]->redir_out, children[i]->pipe_in, children[i]->pipe_out);
-		// if (children[i]->path)
+		printf("CHILD %i: \n redir in: %i\n redir out: \
+		%i\n pipe in: %i\n pipe out%i\n", i, \
+		children[i]->redir_in, children[i]->redir_out, children[i]->pipe_in, \
+		children[i]->pipe_out);
 		printf("PATH: %s\n", children[i]->path);
 		printf("command present: %i\n", children[i]->command_present);
-		
 		print_array(children[i]->args);
-		// printf("PIPE CHECK for child %i: in: %i out: %i\n", i, children[i]->pipe_in,children[i]->pipe_out);
-		printf("-------------------------------------------------------------\n");
+		printf("---------------------------------------------------------\n");
 		i++;
 	}
 }
