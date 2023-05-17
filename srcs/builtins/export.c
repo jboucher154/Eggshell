@@ -6,12 +6,13 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:38:37 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/10 09:32:34 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 14:27:54 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//no access to ?
 int	is_valid_var_name(char *key)
 {
 	size_t	index;
@@ -21,7 +22,7 @@ int	is_valid_var_name(char *key)
 	if (ft_isdigit(key[0]) || !key[0])
 		return (FALSE);
 	while (key[index] == '_' || ft_isalpha(key[index]) || \
-	ft_isdigit(key[index])) //key[index] == '?' don't allow users to access
+	ft_isdigit(key[index]))
 		index++;
 	if (index == ft_strlen(key))
 		return (TRUE);
@@ -51,7 +52,7 @@ void	set_new_env_variable(char *arg, t_hash_table *environment, int *error_occur
 	else
 	{
 		arg_index++;
-		value = ft_strdup(arg + arg_index);
+		value = ft_strtrim(arg + arg_index, WHITESPACE);
 	}
 	ht_add(environment, key, value);
 	free(key);
