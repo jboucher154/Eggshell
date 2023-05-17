@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:46:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/10 10:24:05 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 14:17:54 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,9 @@ char	*check_for_expansions(t_eggcarton *prog_info, char *to_assess)
 			update_quote_info(&q_info, FALSE, UNSET);
 		else if (to_assess[i] == '$' && yes_expand(&q_info, to_assess, i))
 		{
-			to_assess = expand_env_var(prog_info, to_assess, to_assess + i);
+			to_assess = expand_env_var(prog_info, to_assess, to_assess + i, &i);
 			if (to_assess == NULL)
 				return (NULL);
-			i = 0;
 			continue ;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/05 12:32:39 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 14:17:58 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	find_end_of_var(char *varaible_start)
 	if (varaible_start[index] == '?' || ft_isdigit(varaible_start[index]))
 		return (index + 1);
 	while (varaible_start[index] == '_' || ft_isalpha(varaible_start[index]) || \
-	ft_isdigit(varaible_start[index])) //|| varaible_start[index] == '?'
+	ft_isdigit(varaible_start[index]))
 		index++;
 	return (index);
 }
@@ -73,7 +73,7 @@ static size_t	new_str_len(char *str, char *variable, char *value)
 }
 
 //expands the variable
-char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
+char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start, int *index)
 {
 	char	*variable;
 	char	*value;
@@ -97,6 +97,8 @@ char	*expand_env_var(t_eggcarton *prog_info, char *str, char *variable_start)
 		return (str);
 	}
 	insert_new_value(str, new_str, variable, value);
+	if (value)
+		(*index) += ft_strlen(value);
 	free(variable);
 	free(str);
 	return (new_str);

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/16 13:34:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 14:15:37 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,7 @@ t_child	*new_child(void);
 //expansions.c
 char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess);
 char	*expand_env_var(t_eggcarton *prog_info, char *str, \
-		char *variable_start);
+		char *variable_start, int *index);
 
 //utility.c
 void	move_pointer_past_ws(char **str_to_move);
