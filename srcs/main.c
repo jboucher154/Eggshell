@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:55:14 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/10 16:26:57 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:57:02 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	terminal_takeover(void)
 {
-	struct	termios takeover_term;
+	struct termios	takeover_term;
 
 	tcgetattr(STDIN_FILENO, &takeover_term);
 	tcsetattr(STDIN_FILENO, TCSANOW, &takeover_term);
@@ -33,7 +33,5 @@ int	main(int argc, char **argv, char **envp)
 	terminal_takeover();
 	eggshell(&prog_info);
 	clean_and_restore(&prog_info);
-	// while (1)
-	// 	;
 	return (0); //exit (0);
 }

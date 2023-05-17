@@ -6,14 +6,14 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:25:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/16 16:20:10 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:56:39 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Read a string, and return a pointer to it */
-static char *ft_gets(void)
+static char	*ft_gets(void)
 {
 	char	*line_read;
 
@@ -55,7 +55,7 @@ int	eggshell(t_eggcarton *prog_info)
 	{
 		initialize_signals();
 		line = ft_gets();
-        if (line == NULL)
+		if (line == NULL)
 		{
 			status = 1;
 			write(1, "Exit\n", 5);
