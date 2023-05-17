@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:06:28 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 13:38:35 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 13:43:20 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	bail_on_child(char *cmd)
 {
 	if (cmd && cmd[0] == '.')//added the strchr //&& ft_strchr(cmd, '/')
 	{
-		if (!ft_strncmp(".", cmd, 1))
+		if (cmd[1] == '\0')
 			exit_child("filename argument required: ", cmd, 2);
 		else if (access(cmd, F_OK) != 0)
 			exit_child("no such file or directory: ", cmd, CMD_ERROR);
