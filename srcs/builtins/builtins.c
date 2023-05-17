@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/10 12:56:44 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:03:05 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,18 @@ void	cd_command(char	**args, t_eggcarton *prog_info)
 	char	*error;
 
 	current_wd = getcwd(NULL, 0);
-	ht_update_value(prog_info->environment, "OLDPWD", (void *) current_wd);
-	if (args[2] != '\0')
-	{
-		print_error("HOME not set");
-		ht_update_value(prog_info->environment, "?", ft_itoa(1));
-		return ;
-	}
-	if (args[1] == '\0')
+	ht_update_value(prog_info->environment, "OLDPWD", current_wd);
+	//DO WE NEED THIS CHECK? IF WE DO I DON'T THINK HOME NOT SET IS THE RIGHT MESSAGE. HOME CAN BE SET IN THIS CASE
+	// if (args[2] != NULL)
+	// {
+	// 	print_error("HOME not set");
+	// 	ht_update_value(prog_info->environment, "?", ft_itoa(1));
+	// 	return ;
+	// }
+	if (args[1] == NULL)
 	{	
 		to = ht_get(prog_info->environment, "HOME");
-		if (to == '\0')
+		if (!to) // (to == '\0')
 		{
 			print_error("HOME not set");
 			ht_update_value(prog_info->environment, "?", ft_itoa(1));
@@ -85,14 +86,19 @@ void	cd_command(char	**args, t_eggcarton *prog_info)
 	}
 	else
 		to = args[1];
+	if (access(to, F_OK)) //
+		printf("CD :  NOT EXIST!!!\n");//
 	if (chdir(to) == -1)
 	{
+		printf("chdir failed!!!\n");//
 		error = strerror(errno);
 		print_error(error);
+		printf("update value!!\n");//
 		ht_update_value(prog_info->environment, "?", ft_itoa(1));
 	}
 	current_wd = getcwd(NULL, 0);
-	ht_update_value(prog_info->environment, "PWD", (void *) current_wd);
+	ht_update_value(prog_info->environment, "PWD", current_wd);
 	return ;
 }
-
+// the update isn't staying for the value updates because 
+// it needs to be an exit value for the child processes
