@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:25:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:56:39 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/17 16:01:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ static char	*ft_gets(void)
 	return (line_read);
 }
 
+// print_tree(cmd_tree, 0); //
 static int	parse_and_execute(char **line, t_eggcarton *prog_info)
 {
 	t_cmd	*cmd_tree;
 
 	cmd_tree = NULL;
 	cmd_tree = parser(*line, prog_info);
-	print_tree(cmd_tree, 0); //
 	free(*line);
-	*line  = NULL;
+	*line = NULL;
 	if (cmd_tree)
 		executer(&cmd_tree, prog_info);
 	reset_program(prog_info, &cmd_tree);
