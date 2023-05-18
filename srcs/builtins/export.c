@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:38:37 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 13:51:09 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:00:17 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,8 @@ void	export_command(char **args, t_eggcarton *prog_info)
 	error = 0;
 	while (args[index])
 	{
-		if (args[index]) // removed [0]
-		{
-			set_new_env_variable(args[index], prog_info->environment, &error);
-			added++;
-		}
+		set_new_env_variable(args[index], prog_info->environment, &error);
+		added++;
 		index++;
 	}
 	if (added == 0)
