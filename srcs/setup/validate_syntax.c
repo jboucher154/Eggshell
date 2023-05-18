@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:47:01 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 10:48:32 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	validate_token(char **token, char *str, char token_id)
 	else if (**token == ';' || **token == '&')
 		valid = print_error("Error, we did not do the bonus!");
 	else if (token_id == REDIRECT_OUT || token_id == REDIRECT_IN)
-		valid = validate_redirect(token, token_id);
+		valid = validate_redirect(token);
 	else if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)
 		valid = validate_redirect_out_append(token);
 	return (valid);

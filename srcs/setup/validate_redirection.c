@@ -6,19 +6,14 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:14:19 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 16:02:54 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 10:48:13 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// if ((token_id == REDIRECT_IN && **token == '>') ||
-// 	(token_id == REDIRECT_OUT && **token == '<'))
-// 	return (print_error("Syntax error, unexpected token"));
-
-int	validate_redirect(char **token, char token_id)
+int	validate_redirect(char **token)
 {
-	(void) token_id;//
 	(*token)++;
 	move_pointer_past_ws(token);
 	if (!(**token))

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:42:54 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 10:48:24 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ void	rl_replace_line(const char *text, int clear_undo);
 //validate_syntax.c
 int		validate_syntax(char *str, t_eggcarton *prog_info);
 int		validate_pipe(char **token, char *str);
-int		validate_redirect(char **token_start, char token_id);
+int		validate_redirect(char **token_start);
 int		validate_redirect_out_append(char **token);
 int		validate_quotes(char **token);
 
