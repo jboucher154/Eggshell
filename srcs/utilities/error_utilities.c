@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 15:52:52 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:53:01 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 11:32:31 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,23 @@ int	print_errno_error(void)
 
 	error = strerror(errno);
 	printf("%sEggShell🥚:%s%s\n", RED, error, KNRM);
+	return (ERROR);
+}
+
+int	print_errno_blame(char *program, char *to_blame)
+{
+	char	*error;
+
+	error = strerror(errno);
+	ft_putstr_fd("\033[31mEggShell🥚: ", 2);
+	if (program)
+	{
+		ft_putstr_fd(program, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	ft_putstr_fd(to_blame, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(error, 2);
+	ft_putstr_fd("\x1B[0m\n", 2);
 	return (ERROR);
 }

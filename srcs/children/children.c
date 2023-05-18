@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:44:45 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:27:23 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 13:01:45 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_child	*new_child(void)
 	child->command_present = TRUE;
 	child->redir_in = UNSET;
 	child->redir_out = UNSET;
-	child->heredoc_fd = UNSET;
+	child->here_doc = NULL;
 	child->pipe_in = UNSET;
 	child->pipe_out = UNSET;
 	return (child);
@@ -39,8 +39,12 @@ void	free_children(t_child **children)
 	{
 		close_redirections(children[index]->redir_in, \
 		children[index]->redir_out);
-		if (children[index]->heredoc_fd != UNSET)
-			unlink(HEREDOC_TEMP);
+		if (children[index]->here_doc != NULL)
+		{
+			unlink(children[index]->here_doc);
+			free(children[index]->here_doc);
+			children[index]->here_doc = NULL;
+		}
 		clean_str_array(children[index]->args);
 		free(children[index]);
 		index++;

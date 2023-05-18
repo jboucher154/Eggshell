@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:43:15 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:32:01 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 13:01:00 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	open_file(t_redirection *redirection)
 		fd = open(redirection->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	}
 	if (fd == OPEN_ERROR)
-		print_errno_error();
+		print_errno_blame(NULL, redirection->filename);
 	return (fd);
 }
 
@@ -72,11 +72,11 @@ int index)
 	if (redirection->token_id == REDIRECT_HERE)
 	{
 		heredoc_builtin(prog_info, redirection, index);
-		prog_info->children[index]->heredoc_fd = \
-		open(HEREDOC_TEMP, O_RDONLY); //error if open -1?
+		fd = open(prog_info->children[index]->here_doc, O_RDONLY);
+		if (fd == OPEN_ERROR)
+			print_errno_blame(NULL, prog_info->children[index]->here_doc);
 		close(prog_info->children[index]->redir_in);
-		prog_info->children[index]->redir_in = \
-		prog_info->children[index]->heredoc_fd;
+		prog_info->children[index]->redir_in = fd;
 		return ;
 	}
 	fd = open_file(redirection);
@@ -94,14 +94,15 @@ int index)
 {
 	if (redir && (redir->cmd == NULL || redir->cmd->type == EXECUTABLE_CMD))
 	{
-		//add check here if redirection should be setup
 		setup_redirection(redir, prog_info, index);
 		return ;
 	}
 	else if (redir && redir->cmd->type == REDIRECTION_CMD)
 	{
 		process_redirections(((t_redirection *)redir->cmd), prog_info, index);
-		//add check here if redirection should be setup
+		if (prog_info->children[index]->redir_in == OPEN_ERROR || \
+			prog_info->children[index]->redir_out == OPEN_ERROR)
+			return ;
 		setup_redirection(redir, prog_info, index);
 	}
 }

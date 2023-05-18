@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 15:11:03 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:25:58 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 13:08:42 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*gather_here_doc(t_redirection *redirection)
 }
 
 static void	run_here_child(t_eggcarton *prog_info, t_redirection *redirection, \
-int index)
+int index, int fd)
 {
 	char	*input;
 
@@ -66,23 +66,29 @@ int index)
 	{
 		if (redirection->expand_variable == TRUE)
 			input = check_for_expansions(prog_info, input);
-		write(prog_info->children[index]->heredoc_fd, input, ft_strlen(input));
+		write(fd, input, ft_strlen(input));
 		free(input);
 	}
-	close(prog_info->children[index]->heredoc_fd);
+	close(fd);
 	exit (0);
 }
 
 void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, \
 int index)
 {
-	int		pid;
-	int		exit_status;
+	int	pid;
+	int	exit_status;
+	int	fd;
 
 	exit_status = 0;
-	prog_info->children[index]->heredoc_fd = open(HEREDOC_TEMP, \
-	O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (prog_info->children[index]->heredoc_fd == -1)
+	prog_info->children[index]->here_doc = ft_strjoin(HEREDOC_TEMP, ft_itoa(index));
+	if (!prog_info->children[index]->here_doc)
+	{
+		print_errno_error();
+		return ;
+	}
+	fd = open(prog_info->children[index]->here_doc, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
 		return ;
 	pid = fork();
 	if (pid == -1)
@@ -90,9 +96,9 @@ int index)
 	if (pid == 0)
 	{
 		initialize_heredoc_signals();
-		run_here_child(prog_info, redirection, index);
+		run_here_child(prog_info, redirection, index, fd);
 	}
-	close(prog_info->children[index]->heredoc_fd);
+	close(fd);
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &exit_status, 0);
 	if (WEXITSTATUS(exit_status) > 0)

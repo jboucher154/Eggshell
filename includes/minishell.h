@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 10:48:24 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 13:01:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ typedef struct s_child
 	int		pid;
 	int		redir_in;
 	int		redir_out;
-	int		heredoc_fd;//
+	char	*here_doc;
 	int		pipe_in;
 	int		pipe_out;
 	char	*path;
@@ -306,6 +306,7 @@ int		print_blame_error(char *program, char *error_msg, char *to_blame);
 void	update_environment_array(t_eggcarton *prog_info);
 char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3);
 void	ft_free_two(char *to_free1, char *to_free2);
+int		print_errno_blame(char *program, char *to_blame);
 
 //initialize.c
 int		initialize_eggcarton(t_eggcarton *prog, char **env, \
