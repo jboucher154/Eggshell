@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:54:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 14:55:44 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 18:57:10 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ t_executable_cmd	*new_executable_cmd(void)
 		return (NULL);
 	new->type = EXECUTABLE_CMD;
 	new->cmd_path = NULL;
-	new->args = (char **) malloc(sizeof(char *) * 11);
+	new->args = ft_calloc(11, sizeof(char *));
+	// new->args = (char **) malloc(sizeof(char *) * 11);
 	if (!new->args)
 	{
 		free(new);
@@ -73,9 +74,7 @@ t_eggcarton *prog_info)
 	{
 		new->filename = get_arg(file_start, prog_info, TRUE);
 		if (!new->filename || !new->filename[0])
-		{
 			print_error("ambiguous redirect");
-		}
 	}
 	move_pointer_past_ws(file_start);
 	new->token_id = token_id;

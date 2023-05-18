@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:43:11 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 18:48:02 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int *index)
 		return (str);
 	}
 	value = ht_get(prog_info->environment, var + 1);
-	new_str = malloc(sizeof(char) * (new_str_len(str, var, value) + 1));
+	new_str = ft_calloc((new_str_len(str, var, value) + 1), sizeof(char));
 	if (!new_str)
 	{
 		free(var);

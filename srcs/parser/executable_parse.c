@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 14:07:46 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 18:49:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	**resize_array(char **array, int *size)
 	char	**new;
 
 	(*size) = (*size) * 2;
-	new = (char **) malloc(sizeof(char *) * ((*size) + 1));
+	new = ft_calloc(((*size) + 1), sizeof(char *));
 	if (!new)
 		return (NULL);
 	index = 0;
@@ -30,6 +30,7 @@ char	**resize_array(char **array, int *size)
 			new[index] = NULL;
 		index++;
 	}
+	free(array);//
 	return (new);
 }
 
