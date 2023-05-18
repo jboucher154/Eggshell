@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:33:25 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:26:55 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ t_hash_table	*ht_create(int size)
 	t_hash_table	*table;
 	int				i;
 
-	table = (t_hash_table *)malloc(sizeof(t_hash_table));
+	table = ft_calloc(1, sizeof(t_hash_table));
 	if (!table)
 		return (NULL);
-	table->table = (t_hash_item **)malloc(sizeof(t_hash_item *) * (size + 1));
+	table->table = ft_calloc((size + 1), sizeof(t_hash_item *));
 	if (!table->table)
 	{
 		free(table);

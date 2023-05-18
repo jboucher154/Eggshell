@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:50:12 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:00:45 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:23:22 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	create_pipes(t_eggcarton *prog_info)
 	int		count;
 	int		pipe_ret;
 
-	prog_info->pipes = malloc(sizeof (int) * (prog_info->pipe_count * 2));
+	prog_info->pipes = ft_calloc((prog_info->pipe_count * 2), sizeof(int));
 	if (!prog_info->pipes)
 	{	
 		print_error("malloc failed");

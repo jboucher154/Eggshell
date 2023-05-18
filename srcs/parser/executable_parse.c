@@ -6,28 +6,30 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 18:49:28 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:45:48 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**resize_array(char **array, int *size)
+char	**resize_array(char **array, t_exec_parse_info *parse_info)
 {
 	int		index;
 	char	**new;
 
-	(*size) = (*size) * 2;
-	new = ft_calloc(((*size) + 1), sizeof(char *));
+	parse_info->current_size = parse_info->current_size * 2;
+	new = ft_calloc((parse_info->current_size + 1), sizeof(char *));
 	if (!new)
 		return (NULL);
 	index = 0;
-	while (index < *size)
+	while (array[index])
 	{
-		if (array[index] != NULL)
-			new[index] = array[index];
-		else
-			new[index] = NULL;
+		new[index] = array[index];
+		index++;
+	}
+	while (index <= parse_info->current_size)
+	{
+		new[index] = NULL;
 		index++;
 	}
 	free(array);//
@@ -46,7 +48,7 @@ t_eggcarton *prog_info, t_exec_parse_info *parse_info)
 	}
 	if (parse_info->cmd->arg_count == parse_info->current_size)
 		parse_info->cmd->args = resize_array(parse_info->cmd->args, \
-		&(parse_info->current_size));
+		parse_info);
 	if (!**parsed_string)
 		return (ERROR);
 	move_pointer_past_ws(parsed_string);

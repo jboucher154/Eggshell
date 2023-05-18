@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:44:45 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 13:01:45 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:22:49 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_child	*new_child(void)
 {
 	t_child	*child;
 
-	child = (t_child *) malloc(sizeof(t_child));
+	child = ft_calloc(1, sizeof(t_child));
 	if (!child)
 		return (NULL);
 	child->path = NULL;
@@ -60,7 +60,7 @@ int	create_child_array(t_eggcarton *prog_info)
 	int		child_count;
 
 	child_count = 1 + prog_info->pipe_count;
-	children = (t_child **) malloc(sizeof(t_child *) * (child_count + 1));
+	children = ft_calloc((child_count + 1), sizeof(t_child *));
 	if (!children)
 		return (print_error("malloc failed"));
 	index = 0;

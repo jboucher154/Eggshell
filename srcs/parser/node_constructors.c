@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:54:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 18:57:10 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:28:00 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_cmd	*new_pipe(t_cmd *left, t_cmd *right)
 {
 	t_pipe	*new;
 
-	new = (t_pipe *)malloc(sizeof(t_pipe));
+	new = ft_calloc(1, sizeof(t_pipe));
 	if (new == NULL)
 		return (NULL);
 	new->type = PIPE_CMD;
@@ -33,13 +33,12 @@ t_executable_cmd	*new_executable_cmd(void)
 	t_executable_cmd	*new;
 	int					index;
 
-	new = (t_executable_cmd *) malloc(sizeof(t_executable_cmd));
+	new = ft_calloc(1, sizeof(t_executable_cmd));
 	if (!new)
 		return (NULL);
 	new->type = EXECUTABLE_CMD;
 	new->cmd_path = NULL;
 	new->args = ft_calloc(11, sizeof(char *));
-	// new->args = (char **) malloc(sizeof(char *) * 11);
 	if (!new->args)
 	{
 		free(new);
@@ -60,7 +59,7 @@ t_eggcarton *prog_info)
 {
 	t_redirection	*new;
 
-	new = (t_redirection *)malloc(sizeof(t_redirection));
+	new = ft_calloc(1, sizeof(t_redirection));
 	if (new == NULL)
 		return (NULL);
 	new->type = REDIRECTION_CMD;

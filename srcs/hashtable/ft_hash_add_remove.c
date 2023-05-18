@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:00:55 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/05 11:03:02 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:24:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_hash_item	*new_hash_item(const char *key, void *value)
 {
 	t_hash_item	*item;
 
-	item = (t_hash_item *)malloc(sizeof(t_hash_item));
+	item = ft_calloc(1, sizeof(t_hash_item));
 	if (!item)
 		return (NULL);
 	item->key = ft_strdup(key);

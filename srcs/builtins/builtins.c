@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/18 15:39:08 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 20:09:35 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,14 @@ int	echo_command(char **args)
 	}
 	while (args[index] != NULL)
 	{
-		printf("%s ", args[index]);
+		ft_putstr_fd(args[index], 1);
+		ft_putchar_fd(' ', 1);
+		// printf("%s ", args[index]);
 		index++;
 	}
 	if (new_line != 1)
-		printf("\n");
+		ft_putchar_fd('\n', 1);
+		// printf("\n");
 	return (SUCCESS);
 }
 
