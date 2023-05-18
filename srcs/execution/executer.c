@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:30:27 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 10:38:43 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 	if (!ft_strncmp("exit", cmd->args[0], 4))
 		exit_command(prog_info, cmd);
 	if (cmd->pid == 0)
-		exit(EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);//
+	// else
+	// 	//update the $? var
 }
 
 //may need to update env variable based on exit status of last child
