@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/17 15:03:05 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 13:15:38 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,35 +65,24 @@ void	cd_command(char	**args, t_eggcarton *prog_info)
 
 	current_wd = getcwd(NULL, 0);
 	ht_update_value(prog_info->environment, "OLDPWD", current_wd);
-	//DO WE NEED THIS CHECK? IF WE DO I DON'T THINK HOME NOT SET IS THE RIGHT MESSAGE. HOME CAN BE SET IN THIS CASE
-	// if (args[2] != NULL)
-	// {
-	// 	print_error("HOME not set");
-	// 	ht_update_value(prog_info->environment, "?", ft_itoa(1));
-	// 	return ;
-	// }
 	if (args[1] == NULL)
 	{	
 		to = ht_get(prog_info->environment, "HOME");
-		if (!to) // (to == '\0')
+		if (!to)
 		{
 			print_error("HOME not set");
 			ht_update_value(prog_info->environment, "?", ft_itoa(1));
-			return;
+			return ;
 		}
 		if (to[0] == '\0')
-			return;
+			return ;
 	}
 	else
 		to = args[1];
-	if (access(to, F_OK)) //
-		printf("CD :  NOT EXIST!!!\n");//
 	if (chdir(to) == -1)
 	{
-		printf("chdir failed!!!\n");//
 		error = strerror(errno);
 		print_error(error);
-		printf("update value!!\n");//
 		ht_update_value(prog_info->environment, "?", ft_itoa(1));
 	}
 	current_wd = getcwd(NULL, 0);

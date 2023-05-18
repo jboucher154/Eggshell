@@ -6,23 +6,11 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:43:15 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 13:01:00 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 14:53:21 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	check_filename(char *fname, t_eggcarton *prog_info)
-{
-	if (!fname || !fname[0])
-	{
-		print_error("ambiguous redirect");
-		ht_update_value(prog_info->environment, "?", ft_itoa(1));
-		return (ERROR);
-	}
-	else
-		return (SUCCESS);
-}
 
 int	open_file(t_redirection *redirection)
 {
@@ -41,7 +29,7 @@ int	open_file(t_redirection *redirection)
 	{
 		fd = open(redirection->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	}
-	if (fd == OPEN_ERROR)
+	if (fd == OPEN_ERROR && redirection->filename && redirection->filename[0])
 		print_errno_blame(NULL, redirection->filename);
 	return (fd);
 }
@@ -65,10 +53,7 @@ int index)
 {
 	int		fd;
 
-	fd = OPEN_ERROR;//why open error?
-	if (redirection->token_id != REDIRECT_HERE && \
-		check_filename(redirection->filename, prog_info) == ERROR)
-		return ;
+	fd = OPEN_ERROR;
 	if (redirection->token_id == REDIRECT_HERE)
 	{
 		heredoc_builtin(prog_info, redirection, index);

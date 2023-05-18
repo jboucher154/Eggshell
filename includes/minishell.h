@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 13:01:28 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 14:07:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ t_cmd	*new_redirection(t_cmd *cmd, char **file_start, \
 
 //executable_parse.c
 t_executable_cmd	*new_executable_cmd(void);
-char	*get_arg(char **parsed_string, t_eggcarton *prog_info);
+char	*get_arg(char **parsed_string, t_eggcarton *prog_info, int expand);
 
 //PRINT_TREE
 void	print_tree(t_cmd *cmd, int depth);

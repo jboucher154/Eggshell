@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:54:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:05:15 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 14:50:07 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,16 @@ t_eggcarton *prog_info)
 	new->expand_variable = TRUE;
 	if (ft_strchr(QUOTES, **file_start))
 		new->expand_variable = FALSE;
-	new->filename = get_arg(file_start, prog_info);
+	if (token_id == REDIRECT_HERE)
+		new->filename = get_arg(file_start, prog_info, FALSE);
+	else
+	{
+		new->filename = get_arg(file_start, prog_info, TRUE);
+		if (!new->filename || !new->filename[0])
+		{
+			print_error("ambiguous redirect");
+		}
+	}
 	move_pointer_past_ws(file_start);
 	new->token_id = token_id;
 	if (token_id == REDIRECT_IN)

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/03 09:54:27 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 14:07:46 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ static int	find_args_and_redirections(char **parsed_string, char *end, \
 t_eggcarton *prog_info, t_exec_parse_info *parse_info)
 {
 	parse_info->cmd->args[parse_info->cmd->arg_count] = \
-	get_arg(parsed_string, prog_info);
-	if (!parse_info->cmd->args[parse_info->cmd->arg_count])
+	get_arg(parsed_string, prog_info, TRUE);
+	if (parse_info->cmd->args[parse_info->cmd->arg_count])
 	{
-		return (print_error("Malloc failed in agument parsing."));
+		(parse_info->cmd->arg_count)++;
+		// return (print_error("Malloc failed in agument parsing."));
 	}
-	(parse_info->cmd->arg_count)++;
 	if (parse_info->cmd->arg_count == parse_info->current_size)
 		parse_info->cmd->args = resize_array(parse_info->cmd->args, \
 		&(parse_info->current_size));
