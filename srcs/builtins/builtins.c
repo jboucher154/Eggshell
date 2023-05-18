@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/18 13:15:38 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:39:08 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	check_if_flag(char *to_check)
 	return (TRUE);
 }
 
-void	echo_command(char **args)
+int	echo_command(char **args)
 {
 	int		new_line;
 	int		index;
@@ -46,23 +46,27 @@ void	echo_command(char **args)
 	}
 	if (new_line != 1)
 		printf("\n");
+	return (SUCCESS);
 }
 
-void	pwd_command(void)
+int	pwd_command(void)
 {
 	char	*current_wd;
 
 	current_wd = getcwd(NULL, 0);
 	printf("%s\n", current_wd);
 	free(current_wd);
+	return (SUCCESS);
 }
 
-void	cd_command(char	**args, t_eggcarton *prog_info)
+int	cd_command(char	**args, t_eggcarton *prog_info)
 {
 	char	*current_wd;
 	char	*to;
 	char	*error;
+	int		exit_status;
 
+	exit_status = EXIT_SUCCESS;
 	current_wd = getcwd(NULL, 0);
 	ht_update_value(prog_info->environment, "OLDPWD", current_wd);
 	if (args[1] == NULL)
@@ -71,11 +75,10 @@ void	cd_command(char	**args, t_eggcarton *prog_info)
 		if (!to)
 		{
 			print_error("HOME not set");
-			ht_update_value(prog_info->environment, "?", ft_itoa(1));
-			return ;
+			return (EXIT_FAILURE);
 		}
 		if (to[0] == '\0')
-			return ;
+			return (EXIT_FAILURE);
 	}
 	else
 		to = args[1];
@@ -83,11 +86,9 @@ void	cd_command(char	**args, t_eggcarton *prog_info)
 	{
 		error = strerror(errno);
 		print_error(error);
-		ht_update_value(prog_info->environment, "?", ft_itoa(1));
+		exit_status = EXIT_FAILURE;
 	}
 	current_wd = getcwd(NULL, 0);
 	ht_update_value(prog_info->environment, "PWD", current_wd);
-	return ;
+	return (exit_status);
 }
-// the update isn't staying for the value updates because 
-// it needs to be an exit value for the child processes

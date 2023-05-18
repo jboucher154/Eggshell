@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 15:14:37 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:21:23 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,13 +254,13 @@ void	reset_program(t_eggcarton *prog_info, t_cmd **cmd);
 t_cmd	*parser(char *input_string, t_eggcarton *prog_info);
 
 //builtins
-void	echo_command(char **args);
-void	pwd_command(void);
-void	cd_command(char	**args, t_eggcarton *prog_info);
-void	unset_command(char **args, t_eggcarton *prog_info);
-void	export_command(char **args, t_eggcarton *prog_info);
-void	print_enviroment(t_hash_table	*ht_env);
-void	exit_command(t_eggcarton *prog_info, t_child *cmd);
+int		echo_command(char **args);
+int		pwd_command(void);
+int		cd_command(char	**args, t_eggcarton *prog_info);
+int		unset_command(char **args, t_eggcarton *prog_info);
+int		export_command(char **args, t_eggcarton *prog_info);
+int		print_enviroment(t_hash_table	*ht_env);
+void		exit_command(t_eggcarton *prog_info, t_child *cmd);
 void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, \
 		int index);
 int		is_valid_var_name(char *key);

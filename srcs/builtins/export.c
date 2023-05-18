@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:38:37 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 15:00:17 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:13:30 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,16 @@ int *error_occured)
 		arg_index++;
 		value = ft_strtrim(arg + arg_index, WHITESPACE);
 	}
+	if (ht_get(environment, key) != NULL && value == NULL)
+	{
+		free(key);
+		return ;
+	}
 	ht_add(environment, key, value);
 	free(key);
 }
 
-void	export_command(char **args, t_eggcarton *prog_info)
+int	export_command(char **args, t_eggcarton *prog_info)
 {
 	int	index;
 	int	added;
@@ -77,5 +82,5 @@ void	export_command(char **args, t_eggcarton *prog_info)
 		ht_print_export(prog_info->environment);
 	else
 		update_environment_array(prog_info);
-	ht_update_value(prog_info->environment, "?", ft_itoa(error));
+	return (error);
 }

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 10:38:43 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:38:36 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,29 @@
 //line count will be okay once print statements gone
 void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 {
+	int	exit_status;
+
+	exit_status = 0;
 	if (!ft_strncmp("pwd", cmd->args[0], 3) || \
 	!ft_strncmp("PWD", cmd->args[0], 3))
-		pwd_command();
+		exit_status = pwd_command();
 	if (!ft_strncmp("cd", cmd->args[0], 3))
-		cd_command(cmd->args, prog_info);
+		exit_status = cd_command(cmd->args, prog_info);
 	if (!ft_strncmp("export", cmd->args[0], 6))
-		export_command(cmd->args, prog_info);
+		exit_status = export_command(cmd->args, prog_info);
 	if (!ft_strncmp("unset", cmd->args[0], 5))
-		unset_command(cmd->args, prog_info);
+		exit_status = unset_command(cmd->args, prog_info);
 	if ((!ft_strncmp("echo", cmd->args[0], 4) || \
 	!ft_strncmp("ECHO", cmd->args[0], 4)))
-		echo_command(cmd->args);
+		exit_status = echo_command(cmd->args);
 	if (!ft_strncmp("env", cmd->args[0], 3))
-		print_enviroment(prog_info->environment);
+		exit_status = print_enviroment(prog_info->environment);
 	if (!ft_strncmp("exit", cmd->args[0], 4))
 		exit_command(prog_info, cmd);
 	if (cmd->pid == 0)
-		exit(EXIT_SUCCESS);//
-	// else
-	// 	//update the $? var
+		exit(exit_status);
+	else
+		ht_update_value(prog_info->environment, "?", ft_itoa(exit_status));
 }
 
 //may need to update env variable based on exit status of last child
