@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 10:48:32 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:17:12 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,9 @@ int	validate_pipe(char **token, char *str)
 	move_pointer_past_ws(&check_after);
 	if (*check_after == '\0' || *check_before == '\0')
 		return (print_blame_error(NULL, "Syntax error, unexpected token", "|"));
-	if (*check_before == ';' || (*check_before == '<' && check_before[-1] \
-	&& check_before[-1] == '<'))
+	if ((*check_before == '<' && check_before[-1] && check_before[-1] == '<'))
 		return (print_blame_error(NULL, "Syntax error, unexpected token", "|"));
 	if (*check_before == '<' || *check_after == '|')
-		return (print_blame_error(NULL, "Syntax error, unexpected token", "|"));
-	if (*check_after == ';' || *check_before == ';')
 		return (print_blame_error(NULL, "Syntax error, unexpected token", "|"));
 	return (TRUE);
 }
@@ -62,8 +59,6 @@ static int	validate_token(char **token, char *str, char token_id)
 		valid = validate_pipe(token, str);
 	else if (**token == '"' || **token == '\'')
 		valid = validate_quotes(token);
-	else if (**token == ';' || **token == '&')
-		valid = print_error("Error, we did not do the bonus!");
 	else if (token_id == REDIRECT_OUT || token_id == REDIRECT_IN)
 		valid = validate_redirect(token);
 	else if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)

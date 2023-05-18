@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 14:07:28 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:14:37 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define HEREDOC_TEMP ".heredoc"
 // # define 
 //tokens
-# define TOKENS "|<>&;" //"|&<>();"
+# define TOKENS "|<>" //"|&<>();"
 # define WHITESPACE " \t\n\r\a"
 # define QUOTES "'\""
 //boolean
