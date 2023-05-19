@@ -6,12 +6,15 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:55:14 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/17 15:57:02 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:02:29 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Takes over the terminal by modifying terminal attributes and 
+*  disabling echoing of control characters.
+*/
 void	terminal_takeover(void)
 {
 	struct termios	takeover_term;

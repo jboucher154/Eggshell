@@ -6,14 +6,14 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 13:46:02 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 11:26:37 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:37:50 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//need to add in NULL checks for allocated nodes
-t_cmd	*handle_pipe(char **parsed_string, char *end, t_eggcarton *prog_info)
+static t_cmd	*handle_pipe(char **parsed_string, \
+char *end, t_eggcarton *prog_info)
 {
 	t_cmd	*cmd;
 	t_cmd	*tmp;

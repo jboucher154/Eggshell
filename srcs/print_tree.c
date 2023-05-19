@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 11:28:46 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:57:45 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:41:04 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	print_tree(t_cmd *cmd, int depth)
 	else if (cmd->type == EXECUTABLE_CMD)
 	{
 		printf("EXECUTABLE CMD found: %s, depth: %i\n", \
-		((t_executable_cmd *)cmd)->args[0] ,depth);
-		print_array(((t_executable_cmd *)cmd)->args);
+		((t_exec *) cmd)->args[0] ,depth);
+		print_array(((t_exec *)cmd)->args);
 	}
 	else
 	{

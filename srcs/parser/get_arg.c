@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:07:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 14:32:24 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 12:39:50 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ char	*get_arg(char **parsed_string, t_eggcarton *prog_info, int expand)
 	arg = ft_substr(*parsed_string, 0, end - *parsed_string);
 	if (expand == TRUE)
 		arg = check_for_expansions(prog_info, arg);
-	//string is expanded, may have quotes -> '""', no -> ''
 	if (arg && arg[0] == '\0')
 	{
 		free(arg);

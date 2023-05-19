@@ -6,13 +6,12 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:16:07 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/10 13:10:29 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:58:17 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//should we update the shell program varaible $SHELL as well?
 int	set_shell_level(t_hash_table *environment)
 {
 	char	*level;
@@ -30,7 +29,7 @@ int	set_shell_level(t_hash_table *environment)
 		return (SUCCESS);
 	}
 	int_level = ft_atoi(level) + 1;
-	if (int_level > 1000) //do we need error message here?
+	if (int_level > 1000)
 		int_level = 1;
 	new_level = ft_itoa(int_level);
 	if (!new_level)
@@ -69,15 +68,21 @@ int	initialize_eggcarton(t_eggcarton *prog, char **env, struct termios *term)
 {
 	prog->environment = ht_create(150);
 	if (prog->environment == NULL)
+	{	
+		print_error("Environment initialization failed\n");
 		return (ERROR);
+	}
 	initialize_env_table(prog->environment, env);
 	if (initalize_command_table(prog) == ERROR)
-		return (EXIT_FAILURE);
+	{	
+		print_error("Command table initialization failed\n");
+		return (ERROR);
+	}
 	prog->array_env = ht_export_to_array(prog->environment);
 	if (prog->array_env == NULL)
 	{
-		ft_putstr_fd("Enviroment array creation failed!!!\n", 1);
-		return (EXIT_FAILURE);
+		print_error("Enviroment initialization failed\n");
+		return (ERROR);
 	}
 	prog->saved_term = term;
 	prog->cmd_count = 0;

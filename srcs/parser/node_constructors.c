@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:54:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 19:28:00 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:38:23 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ t_cmd	*new_pipe(t_cmd *left, t_cmd *right)
 	return ((t_cmd *) new);
 }
 
-t_executable_cmd	*new_executable_cmd(void)
+t_exec	*new_executable_cmd(void)
 {
-	t_executable_cmd	*new;
-	int					index;
+	t_exec	*new;
+	int		index;
 
-	new = ft_calloc(1, sizeof(t_executable_cmd));
+	new = ft_calloc(1, sizeof(t_exec));
 	if (!new)
 		return (NULL);
 	new->type = EXECUTABLE_CMD;

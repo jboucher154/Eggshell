@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 11:20:35 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 12:39:10 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ t_cmd	*handle_exec(char **parsed_string, char *end, t_eggcarton *prog_info)
 	if (**parsed_string == '<' || **parsed_string == '>')
 		parse_info.head_cmd = handle_redirection(parse_info.head_cmd, \
 		parsed_string, end, prog_info);
-	while (parse_info.head_cmd && *parsed_string < end && !ft_strchr("|", **parsed_string))
+	while (parse_info.head_cmd && *parsed_string < end && !ft_strchr("|", \
+	**parsed_string))
 	{
 		if (find_args_and_redirections(parsed_string, end, prog_info, \
 		&parse_info) == ERROR)

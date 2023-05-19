@@ -6,13 +6,17 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:25:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 16:01:28 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:06:42 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Read a string, and return a pointer to it */
+/*
+ * ft_gets() is a static function that reads a line of input from the user
+ * using the readline() function and returns it as a char pointer. The function
+ * also adds the input to the history and frees the memory if needed.
+ */
 static char	*ft_gets(void)
 {
 	char	*line_read;
@@ -29,7 +33,14 @@ static char	*ft_gets(void)
 	return (line_read);
 }
 
-// print_tree(cmd_tree, 0); //
+/*
+ * eggshell() is the main logic of the shell program. It takes a t_eggcarton
+ * pointer as an argument. It initializes the signals, reads a line of input
+ * using ft_gets(), checks for exit conditions, validates the syntax of the
+ * input using validate_syntax(), and if valid, it parses and executes the
+ * input using parse_and_execute(). It frees the memory allocated for the
+ * input if necessary and continues the loop until an exit condition is met.
+ */
 static int	parse_and_execute(char **line, t_eggcarton *prog_info)
 {
 	t_cmd	*cmd_tree;
@@ -44,6 +55,14 @@ static int	parse_and_execute(char **line, t_eggcarton *prog_info)
 	return (0);
 }
 
+/*
+ * eggshell() is the main logic of the shell program. It takes a t_eggcarton
+ * pointer as an argument. It initializes the signals, reads a line of input
+ * using ft_gets(), checks for exit conditions, validates the syntax of the
+ * input using validate_syntax(), and if valid, it parses and executes the
+ * input using parse_and_execute(). It frees the memory allocated for the
+ * input if necessary and continues the loop until an exit condition is met.
+ */
 int	eggshell(t_eggcarton *prog_info)
 {
 	int		status;

@@ -6,13 +6,19 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:36:05 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 15:17:12 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:17:16 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	validate_pipe(char **token, char *str)
+/*
+ * validate_pipe checks if a pipe "|" token is valid in the given context.
+ * It takes a char** token and a char* str as arguments. It checks if the
+ * token is surrounded by valid characters, and if not, it prints an error
+ * and returns FALSE. Otherwise, it returns TRUE.
+ */
+static int	validate_pipe(char **token, char *str)
 {
 	char	*check_before;
 	char	*check_after;
@@ -36,7 +42,13 @@ int	validate_pipe(char **token, char *str)
 	return (TRUE);
 }
 
-int	validate_quotes(char **token)
+/*
+ * validate_quotes checks if quotes are properly closed in the given context.
+ * It takes a char** token as an argument and iterates over the token until
+ * it finds the matching closing quote. If the quotes are not closed, it
+ * prints an error and returns FALSE. Otherwise, it returns TRUE.
+ */
+static int	validate_quotes(char **token)
 {
 	char	quote_to_match;
 
@@ -50,6 +62,13 @@ int	validate_quotes(char **token)
 		return (TRUE);
 }
 
+/*
+ * validate_token validates a specific token in the given context. It takes
+ * a char** token, a char* str, and a char token_id as arguments. It performs
+ * validation based on the token_id, such as checking pipes, quotes, or
+ * different types of redirects. If the token is invalid, it prints an error
+ * and returns FALSE. Otherwise, it returns TRUE.
+ */
 static int	validate_token(char **token, char *str, char token_id)
 {
 	int		valid;
@@ -66,6 +85,13 @@ static int	validate_token(char **token, char *str, char token_id)
 	return (valid);
 }
 
+/*
+ * validate_syntax validates the syntax of a string in the given context.
+ * It takes a char* str and a t_eggcarton* prog_info as arguments. It iterates
+ * over the string, identifies tokens, and performs validation based on the
+ * token type. If any validation fails, it sets the exit status in the
+ * program information struct and returns FALSE. Otherwise, it returns TRUE.
+ */
 int	validate_syntax(char *str, t_eggcarton *prog_info)
 {
 	char	token_id;
