@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 15:11:03 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 13:17:37 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:40:16 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,12 @@ int index)
 	int	pid;
 	int	exit_status;
 	int	fd;
+	char *int_str;
 
 	exit_status = 0;
-	prog_info->children[index]->here_doc = ft_strjoin(HEREDOC_TEMP, \
-	ft_itoa(index));
+	int_str = ft_itoa(index);
+	prog_info->children[index]->here_doc = ft_strjoin(HEREDOC_TEMP, int_str);
+	free(int_str);
 	if (!prog_info->children[index]->here_doc)
 	{
 		print_errno_error();

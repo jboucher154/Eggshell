@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:50:12 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 13:49:53 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:15:49 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	setup_child(t_exec *cmd, t_eggcarton *prog_info, int index)
 	if (cmd->arg_count == 0)
 	{
 		prog_info->children[index]->command_present = FALSE;
+		clean_str_array(cmd->args);
 		return ;
 	}
 	if (prog_info->pipe_count != 0)
