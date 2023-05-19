@@ -46,7 +46,7 @@ static char	*gather_here_doc(t_redirection *redirection)
 	while (line_read != NULL)
 	{
 		if (line_read && line_read[0] && !ft_strncmp(redirection->filename, \
-		line_read, ft_strlen(line_read)))
+		line_read, ft_strlen(redirection->filename) + 1))
 			break ;
 		else if (line_read)
 		{
