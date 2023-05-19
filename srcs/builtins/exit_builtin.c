@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 15:09:18 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:10:23 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 11:04:14 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static unsigned char	exit_cmd_printing(t_eggcarton *prog_info, t_child *cmd)
 	exit_code = ft_atoi(ht_get(prog_info->environment, "?"));
 	if (exit_code == 0 && cmd->pid != 0)
 		ft_putstr_fd("Exit🐥\n", 1);
-	if (exit_code != 0)
+	if (exit_code != 0 && cmd->pid != 0)
 		ft_putstr_fd("Exit🍳\n", 1);
 	return (exit_code);
 }
