@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:14:03 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:46:00 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 10:52:48 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ void	signal_handler(int sig)
 	}
 	else if (sig == SIGTSTP)
 	{
-		printf("%i\n", sig);
-		printf("No Sheree, not that one!!\n");
+		ft_putnbr_fd(sig, 1);
+		ft_putchar_fd('\n', 1);
+		// printf("%i\n", sig);
+		// printf("No Sheree, not that one!!\n");
 	}
 	return ;
 }

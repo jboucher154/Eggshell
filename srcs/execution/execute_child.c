@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:06:28 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 10:46:24 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 10:56:18 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	exit_child(char *error_msg, char *arg, int exit_code)
 {
-	ft_putstr_fd("\033[31mEggShell🥚: ", STDERR_FILENO);
+	ft_putstr_fd("\033[1;31mEggShell🥚: ", STDERR_FILENO);
 	ft_putstr_fd(error_msg, STDERR_FILENO);
 	ft_putendl_fd(arg, STDERR_FILENO);
 	ft_putstr_fd("\x1B[0m", STDERR_FILENO);
