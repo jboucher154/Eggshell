@@ -113,15 +113,12 @@ void	heredoc_parent(t_eggcarton *prog_info, int fd, int pid, int exit_status)
 void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, \
 int index)
 {
-	int	pid;
-	int	exit_status;
-	int	fd;
-	char *int_str;
+	int		pid;
+	int		exit_status;
+	int		fd;
 
 	exit_status = 0;
-	int_str = ft_itoa(index);
-	prog_info->children[index]->here_doc = ft_strjoin(HEREDOC_TEMP, int_str);
-	free(int_str);
+	prog_info->children[index]->here_doc = get_heredoc_name(index);
 	if (!prog_info->children[index]->here_doc)
 	{
 		print_errno_error();

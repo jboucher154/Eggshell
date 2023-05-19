@@ -42,7 +42,8 @@ t_hash_item	*new_hash_item(const char *key, void *value)
  * It finds the last item in the linked list at the index and places the
  * hash_item at the end of the list.
  */
-static void	find_in_table_and_place(t_hash_table *table, int index, t_hash_item *item)
+static void	find_in_table_and_place(t_hash_table *table, \
+int index, t_hash_item *item)
 {
 	t_hash_item	*tmp;
 

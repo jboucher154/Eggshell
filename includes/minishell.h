@@ -264,6 +264,7 @@ void	update_environment_array(t_eggcarton *prog_info);
 char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3);
 void	ft_free_two(char *to_free1, char *to_free2);
 int		print_errno_blame(char *program, char *to_blame);
+char	*get_heredoc_name(int index);
 
 //initialize.c
 int		initialize_eggcarton(t_eggcarton *prog, char **env, \

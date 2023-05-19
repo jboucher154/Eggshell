@@ -90,10 +90,10 @@ static size_t	new_str_len(char *str, char *variable, char *value)
 }
 
 /*
- * expand_env_var takes in pointers to the input string, the start of the variable,
- * the t_eggcarton struct and a pointer to the current index in the input string. 
- * It expands the variable and returns the expanded string. If a variable is not
- * found in the environment, it returns the original string.
+ * expand_env_var takes in pointers to the input string, the start of the
+ * variable, the t_eggcarton struct and a pointer to the current index in
+ * the input string. It expands the variable and returns the expanded string.
+ * If a variable is not found in the environment, it returns the original string.
  */
 char	*expand_env_var(t_eggcarton *prog_info, char *str, char *var_start, \
 int *index)

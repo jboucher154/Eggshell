@@ -13,27 +13,6 @@
 #include "minishell.h"
 
 /*
-*  is_valid_var_name() checks if the key is a valid variable name according to
-*  the POSIX standard. It returns TRUE if the key is valid, and FALSE if it is
-*  not. It does not allow access to the '?' key.
-*/
-int	is_valid_var_name(char *key)
-{
-	size_t	index;
-
-	index = 0;
-	if (ft_isdigit(key[0]) || !key[0])
-		return (FALSE);
-	while (key[index] == '_' || ft_isalpha(key[index]) || \
-	ft_isdigit(key[index]))
-		index++;
-	if (index == ft_strlen(key))
-		return (TRUE);
-	else
-		return (FALSE);
-}
-
-/*
 *  get_key() gets the key from the argument passed and sets the arg_index
 *  pointer to after the key. If valid, the found variable name is returned as
 *  the key. Otherwise, it prints an error and returns NULL.
