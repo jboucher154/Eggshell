@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 19:45:48 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 11:20:35 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	**resize_array(char **array, t_exec_parse_info *parse_info)
 		new[index] = NULL;
 		index++;
 	}
-	free(array);//
+	free(array);
 	return (new);
 }
 
@@ -44,7 +44,6 @@ t_eggcarton *prog_info, t_exec_parse_info *parse_info)
 	if (parse_info->cmd->args[parse_info->cmd->arg_count])
 	{
 		(parse_info->cmd->arg_count)++;
-		// return (print_error("Malloc failed in agument parsing."));
 	}
 	if (parse_info->cmd->arg_count == parse_info->current_size)
 		parse_info->cmd->args = resize_array(parse_info->cmd->args, \
@@ -71,12 +70,14 @@ t_cmd	*handle_exec(char **parsed_string, char *end, t_eggcarton *prog_info)
 	if (**parsed_string == '<' || **parsed_string == '>')
 		parse_info.head_cmd = handle_redirection(parse_info.head_cmd, \
 		parsed_string, end, prog_info);
-	while (*parsed_string < end && !ft_strchr("|", **parsed_string))
+	while (parse_info.head_cmd && *parsed_string < end && !ft_strchr("|", **parsed_string))
 	{
 		if (find_args_and_redirections(parsed_string, end, prog_info, \
 		&parse_info) == ERROR)
 			break ;
 	}
+	if (!parse_info.head_cmd)
+		return (NULL);
 	(prog_info->cmd_count)++;
 	return (parse_info.head_cmd);
 }
