@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 14:42:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 11:18:32 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 11:31:10 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ t_eggcarton *prog_info)
 		else
 			(*parsed_string)++;
 		move_pointer_past_ws(parsed_string);
-		if (identify_token(*parsed_string) != ALPHA)
-			print_error("Error");// whats the correct error here
 		tmp = new_redirection(new_redir, parsed_string, token_id, \
 		prog_info);
 		if (!tmp)
