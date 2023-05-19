@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:44:51 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/05 11:01:02 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:41:55 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void			ht_print_export(t_hash_table *table);
 size_t			ht_update_value(t_hash_table *table, const char *key, \
 				void *new_value);
 char			**ht_export_to_array(t_hash_table *hash_table);
-char			*ft_strjoin_three(char const *s1, char const *s2, char const *s3);
+char			*ft_strjoin_three(char const *s1, char const *s2, \
+				char const *s3);
 
 #endif

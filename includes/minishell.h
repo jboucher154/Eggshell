@@ -6,16 +6,13 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 15:21:23 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:47:42 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 // colours
-# define GREEN "\e[1;92m"
-# define KNRM  "\x1B[0m"
-# define RED     "\033[31m"
 # define PROMPT "\e[1;92m🐣[EggShell] % \x1B[0m"
 # define UNSET	-2
 # define OPEN_ERROR -1
@@ -23,7 +20,7 @@
 # define HEREDOC_TEMP ".heredoc"
 // # define 
 //tokens
-# define TOKENS "|<>" //"|&<>();"
+# define TOKENS "|<>"
 # define WHITESPACE " \t\n\r\a"
 # define QUOTES "'\""
 //boolean
@@ -59,29 +56,11 @@
 //for signal, sigaction, sigemptyset, sigaddset, kill
 # include <signal.h>
 
-//for opendir, stat, lstat, fstat, closedir
-# include <sys/types.h>
-
-//for readdir, opendir, closefir
-# include <dirent.h>
-
-//for stat, lstat, fstat
-# include <sys/stat.h>
-
 //for sterror
 # include <string.h>
 
-//for ioctl
-# include <sys/ioctl.h>
-
 //for tcsetattr, tcgetattr
 # include <termios.h>
-
-//for tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-# include <curses.h>
-
-//for tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-# include <term.h>
 
 //for error codes
 # include <errno.h>
@@ -114,13 +93,13 @@ typedef struct s_cmd
 //this is the struct for the executable command
 //has pointers to beginning and end of the command
 //has a pointer to the arguments for the command
-typedef struct s_executable_cmd
+typedef struct s_exec
 {
 	int		type;
 	char	*cmd_path;
 	char	**args;
 	int		arg_count;
-}	t_executable_cmd;
+}	t_exec;
 
 // pipe = '|'
 typedef struct s_pipe
@@ -182,7 +161,7 @@ typedef struct s_quote_tracker
 typedef struct s_exec_parse_info
 {
 	int						current_size;
-	struct s_executable_cmd	*cmd;
+	struct s_exec			*cmd;
 	struct s_cmd			*head_cmd;
 }	t_exec_parse_info;
 
@@ -191,14 +170,11 @@ void	rl_replace_line(const char *text, int clear_undo);
 
 //validate_syntax.c
 int		validate_syntax(char *str, t_eggcarton *prog_info);
-int		validate_pipe(char **token, char *str);
 int		validate_redirect(char **token_start);
 int		validate_redirect_out_append(char **token);
-int		validate_quotes(char **token);
 
 //parse.c
 t_cmd	*handle_exec(char **parsed_string, char *end, t_eggcarton *prog_info);
-t_cmd	*handle_pipe(char **parsed_string, char *end, t_eggcarton *prog_info);
 
 //tokenize.c
 char	move_to_token(char **parse_string, char *end);
@@ -215,23 +191,16 @@ t_cmd	*new_redirection(t_cmd *cmd, char **file_start, \
 		char token_id, t_eggcarton *prog_info);
 
 //executable_parse.c
-t_executable_cmd	*new_executable_cmd(void);
+t_exec	*new_executable_cmd(void);
 char	*get_arg(char **parsed_string, t_eggcarton *prog_info, int expand);
-
-//PRINT_TREE
-void	print_tree(t_cmd *cmd, int depth);
 
 //pathfinding.c
 char	*get_path(t_eggcarton *prog_info, char *fname);
 int		initalize_command_table(t_eggcarton *prog_info);
-char	*find_correct_path(char *fname, char **paths);
-char	**get_paths(t_eggcarton *prog_info);
 
 //executer.c
 void	executer(t_cmd **cmd, t_eggcarton *prog_info);
-void	do_commands(t_eggcarton *prog_info);
 void	run_builtins(t_child *cmd, t_eggcarton *prog_info);
-void	exit_child(char *error_msg, char *arg, int exit_code);
 void	pipe_child(t_eggcarton *prog_info, int inde);
 void	process_redirections(t_redirection *redir, t_eggcarton *prog_info, \
 		int index);
@@ -239,10 +208,7 @@ void	process_redirections(t_redirection *redir, t_eggcarton *prog_info, \
 //command_tree.c
 int		create_pipes(t_eggcarton *prog_info);
 int		tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index);
-void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index);
 void	setup_pipes(t_eggcarton *prog_info, int index);
-void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, \
-		int index);
 
 //reset.c
 void	clean_str_array(char **array);
@@ -260,24 +226,17 @@ int		cd_command(char	**args, t_eggcarton *prog_info);
 int		unset_command(char **args, t_eggcarton *prog_info);
 int		export_command(char **args, t_eggcarton *prog_info);
 int		print_enviroment(t_hash_table	*ht_env);
-void		exit_command(t_eggcarton *prog_info, t_child *cmd);
+void	exit_command(t_eggcarton *prog_info, t_child *cmd);
 void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, \
 		int index);
 int		is_valid_var_name(char *key);
-
-//print tree helpers
-void	print_children(t_child **childs);
-void	print_tree(t_cmd *cmd, int depth);
-void	print_array(char **array);
-
-//validate_syntax.c
 
 //exit.c
 void	exit_command(t_eggcarton *prog_info, t_child *cmd);
 void	clean_and_restore(t_eggcarton *prog_info);
 
 //signal.c
-void	signal_handler(int sig); //, t_eggcarton *prog_info
+void	signal_handler(int sig);
 void	initialize_signals(void);
 void	initialize_child_signals(void);
 void	initialize_heredoc_signals(void);
@@ -288,7 +247,6 @@ int		eggshell(t_eggcarton *prog_info);
 //children.c
 int		create_child_array(t_eggcarton *prog_info);
 void	free_children(t_child **children);
-t_child	*new_child(void);
 
 //expansions.c
 char	*check_for_expansions(t_eggcarton *prog_info, char *str_to_assess);
