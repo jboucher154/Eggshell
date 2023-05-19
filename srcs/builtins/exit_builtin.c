@@ -39,6 +39,18 @@ void	clean_and_restore(t_eggcarton *prog_info)
 	tcsetattr(STDIN_FILENO, TCSANOW, prog_info->saved_term);
 }
 
+static unsigned char	exit_cmd_printing(t_eggcarton *prog_info, t_child *cmd)
+{
+	unsigned char	exit_code;
+
+	exit_code = ft_atoi(ht_get(prog_info->environment, "?"));
+	if (exit_code == 0 && cmd->pid != 0)
+		ft_putstr_fd("Exit🐥\n", 1);
+	if (exit_code != 0)
+		ft_putstr_fd("Exit🍳\n", 1);
+	return (exit_code);
+}
+
 void	exit_command(t_eggcarton *prog_info, t_child *cmd)
 {
 	unsigned char	exit_code;
@@ -61,17 +73,7 @@ void	exit_command(t_eggcarton *prog_info, t_child *cmd)
 		return ;
 	}
 	else
-		exit_code = ft_atoi(ht_get(prog_info->environment, "?"));
-	if (exit_code == 0 && cmd->pid == UNSET)
-		printf("Exit🐥\n");
-	if (exit_code != 0)
-	{
-		printf("Exit🍳\n");
-		printf("%d\n", exit_code);
-	}
+		exit_code = exit_cmd_printing(prog_info, cmd);
 	clean_and_restore(prog_info);
 	exit (exit_code);
 }
-
-	// while (1)
-	// 	 ;

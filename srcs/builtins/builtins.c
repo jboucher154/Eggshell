@@ -43,12 +43,10 @@ int	echo_command(char **args)
 	{
 		ft_putstr_fd(args[index], 1);
 		ft_putchar_fd(' ', 1);
-		// printf("%s ", args[index]);
 		index++;
 	}
 	if (new_line != 1)
 		ft_putchar_fd('\n', 1);
-		// printf("\n");
 	return (SUCCESS);
 }
 
@@ -57,35 +55,46 @@ int	pwd_command(void)
 	char	*current_wd;
 
 	current_wd = getcwd(NULL, 0);
-	printf("%s\n", current_wd);
+	ft_putstr_fd(current_wd, 1);
+	ft_putchar_fd('\n', 1);
 	free(current_wd);
 	return (SUCCESS);
+}
+
+static char	*find_cd_dest(char	**args, t_eggcarton *prog_info)
+{
+	char	*dest;
+
+	if (args[1] == NULL)
+	{	
+		dest = ht_get(prog_info->environment, "HOME");
+		if (!dest)
+		{
+			print_error("HOME not set");
+			return (NULL);
+		}
+		if (dest[0] == '\0')
+			return (NULL);
+	}
+	else
+		dest = args[1];
+	return (dest);
 }
 
 int	cd_command(char	**args, t_eggcarton *prog_info)
 {
 	char	*current_wd;
-	char	*to;
+	char	*dest;
 	char	*error;
 	int		exit_status;
 
 	exit_status = EXIT_SUCCESS;
 	current_wd = getcwd(NULL, 0);
 	ht_update_value(prog_info->environment, "OLDPWD", current_wd);
-	if (args[1] == NULL)
-	{	
-		to = ht_get(prog_info->environment, "HOME");
-		if (!to)
-		{
-			print_error("HOME not set");
-			return (EXIT_FAILURE);
-		}
-		if (to[0] == '\0')
-			return (EXIT_FAILURE);
-	}
-	else
-		to = args[1];
-	if (chdir(to) == -1)
+	dest = find_cd_dest(args, prog_info);
+	if (dest == NULL)
+		return (EXIT_FAILURE);
+	if (chdir(dest) == -1)
 	{
 		error = strerror(errno);
 		print_error(error);
