@@ -39,8 +39,6 @@ void	signal_handler(int sig)
 	{
 		ft_putnbr_fd(sig, 1);
 		ft_putchar_fd('\n', 1);
-		// printf("%i\n", sig);
-		// printf("No Sheree, not that one!!\n");
 	}
 	return ;
 }

@@ -43,7 +43,6 @@ int	print_errno_error(void)
 	ft_putstr_fd("\033[1;31mEggShell🥚: ", 2);
 	ft_putstr_fd(error, 2);
 	ft_putstr_fd("\x1B[0m\n", 2);
-	// printf("%sEggShell🥚:%s%s\n", RED, error, KNRM);
 	return (ERROR);
 }
 

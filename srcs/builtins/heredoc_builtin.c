@@ -47,7 +47,7 @@ static char	*gather_here_doc(t_redirection *redirection)
 			input = joined;
 		}
 		if (!input)
-			break ;//
+			break ;
 		line_read = heredoc_getline();
 	}
 	return (input);
@@ -73,6 +73,18 @@ int index, int fd)
 	exit (0);
 }
 
+void	heredoc_parent(t_eggcarton *prog_info, int fd, int pid, int exit_status)
+{
+	close(fd);
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, &exit_status, 0);
+	if (WEXITSTATUS(exit_status) > 0)
+	{
+		prog_info->should_execute = FALSE;
+		ht_update_value(prog_info->environment, "?", ft_strdup("1"));
+	}
+}
+
 void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, \
 int index)
 {
@@ -81,13 +93,15 @@ int index)
 	int	fd;
 
 	exit_status = 0;
-	prog_info->children[index]->here_doc = ft_strjoin(HEREDOC_TEMP, ft_itoa(index));
+	prog_info->children[index]->here_doc = ft_strjoin(HEREDOC_TEMP, \
+	ft_itoa(index));
 	if (!prog_info->children[index]->here_doc)
 	{
 		print_errno_error();
 		return ;
 	}
-	fd = open(prog_info->children[index]->here_doc, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open(prog_info->children[index]->here_doc, \
+	O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 		return ;
 	pid = fork();
@@ -98,12 +112,5 @@ int index)
 		initialize_heredoc_signals();
 		run_here_child(prog_info, redirection, index, fd);
 	}
-	close(fd);
-	signal(SIGINT, SIG_IGN);
-	waitpid(pid, &exit_status, 0);
-	if (WEXITSTATUS(exit_status) > 0)
-	{
-		prog_info->should_execute = FALSE;
-		ht_update_value(prog_info->environment, "?", ft_strdup("1"));
-	}
+	heredoc_parent(prog_info, fd, pid, exit_status);
 }

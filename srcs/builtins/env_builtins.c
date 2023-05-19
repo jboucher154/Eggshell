@@ -31,7 +31,6 @@ int	unset_command(char **args, t_eggcarton *prog_info)
 		{
 			print_blame_error("unset", "not a valid identifier", args[index]);
 			exit_status = 1;
-			// ht_update_value(prog_info->environment, "?", ft_itoa(1));
 		}
 		if (!strncmp(args[index], "PWD", 3))
 		{

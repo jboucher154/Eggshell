@@ -33,5 +33,5 @@ int	main(int argc, char **argv, char **envp)
 	terminal_takeover();
 	eggshell(&prog_info);
 	clean_and_restore(&prog_info);
-	return (0); //exit (0);
+	return (0);
 }
