@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:29:27 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 13:47:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:41:59 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,6 @@ void	exit_command(t_eggcarton *prog_info, t_child *cmd);
 void	clean_and_restore(t_eggcarton *prog_info);
 
 //signal.c
-void	signal_handler(int sig);
 void	initialize_signals(void);
 void	initialize_child_signals(void);
 void	initialize_heredoc_signals(void);

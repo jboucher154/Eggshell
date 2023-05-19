@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 14:37:52 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 14:05:51 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:55:03 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ void	update_environment_array(t_eggcarton *prog_info)
 
 /*
  * echoctl_switch toggles the ECHOCTL flag in the terminal settings. It takes
- * an int toggle as an argument. If toggle is OFF, it clears the ECHOCTL flag,
- * disabling the printing of control characters. If toggle is any other value,
- * it sets the ECHOCTL flag, enabling the printing of control characters. It
- * modifies the terminal settings using tcsetattr().
+ * an int toggle as an argument. OFF = turn printing of characters OFF, 
+ * ON = characters will print.
  */
 void	echoctl_switch(int toggle)
 {

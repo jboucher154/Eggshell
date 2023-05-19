@@ -6,12 +6,17 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:16:07 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 13:58:17 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:39:29 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* 
+ * set_shell_level - sets the shell level in the environment hash table
+ * if it doesn't exist, it creates it and sets it to 1. If it exists, it
+ * increments it by 1. If it is greater than 1000, it sets it to 1.
+ */
 int	set_shell_level(t_hash_table *environment)
 {
 	char	*level;
@@ -37,6 +42,10 @@ int	set_shell_level(t_hash_table *environment)
 	return (ht_update_value(environment, "SHLVL", new_level));
 }
 
+/*
+ * initialize_env_table - initializes the environment hash table with the
+ * commmand line envp** passed to the program
+ */
 static void	initialize_env_table(t_hash_table *ht_env, char **envp)
 {
 	int		index;
@@ -64,6 +73,12 @@ static void	initialize_env_table(t_hash_table *ht_env, char **envp)
 		print_error("Shell level not set!");
 }
 
+/*
+ * initialize_eggcarton - initializes the eggcarton structure with the
+ * environment hash table, the command table and the array of environment
+ * variables. If any of these initializations fail, it prints message
+ * and returns ERROR.
+ */
 int	initialize_eggcarton(t_eggcarton *prog, char **env, struct termios *term)
 {
 	prog->environment = ht_create(150);
