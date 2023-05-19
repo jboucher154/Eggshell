@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 12:49:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 14:05:03 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:53:28 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ void	clean_tree(t_cmd *cmd)
 
 /*
  * reset_program resets the state of the program in the t_eggcarton struct
- * after executing a command. It cleans up the command tree using clean_tree(), closes
- * any open pipes using close_pipes(), and resets the relevant variables in
- * the t_eggcarton struct to their initial state.
+ * after executing a command. It cleans up the command tree using clean_tree(),
+ * closes any open pipes using close_pipes(), and resets the relevant variables
+ * in the t_eggcarton struct to their initial state.
  */
 void	reset_program(t_eggcarton *prog_info, t_cmd **cmd)
 {

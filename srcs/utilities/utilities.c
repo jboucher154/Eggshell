@@ -6,12 +6,16 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:20:14 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 14:01:06 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:56:04 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+ * move_pointer_past_ws moves the pointer past any whitespace characters
+ * in the string that is passed.
+ */
 void	move_pointer_past_ws(char **str_to_move)
 {
 	if (!str_to_move || !*str_to_move || **str_to_move == '\0')
@@ -20,6 +24,10 @@ void	move_pointer_past_ws(char **str_to_move)
 		(*str_to_move)++;
 }
 
+/*
+ * move_pointer_backwards_ws moves the pointer backwards past any whitespace
+ * characters in the string that is passed.
+ */
 void	move_pointer_backwards_ws(char **str_to_move, char *dont_go_past)
 {
 	if (!str_to_move || !*str_to_move || **str_to_move == '\0' || !dont_go_past \
@@ -89,6 +97,9 @@ char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3)
 	return (joined);
 }
 
+/*
+ * ft_free_two frees two strings and sets them to NULL
+ */
 void	ft_free_two(char *to_free1, char *to_free2)
 {
 	if (to_free1)
