@@ -44,7 +44,6 @@ static int	parse_and_execute(char **line, t_eggcarton *prog_info)
 	return (0);
 }
 
-//need to add clean exit for ctl-D, etc
 int	eggshell(t_eggcarton *prog_info)
 {
 	int		status;
@@ -58,7 +57,7 @@ int	eggshell(t_eggcarton *prog_info)
 		if (line == NULL)
 		{
 			status = 1;
-			write(1, "Exit\n", 5);
+			ft_putstr_fd("Exit🐥\n", 1);
 		}
 		if (line && *line && validate_syntax(line, prog_info))
 		{

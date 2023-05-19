@@ -30,7 +30,7 @@ int	set_shell_level(t_hash_table *environment)
 		return (SUCCESS);
 	}
 	int_level = ft_atoi(level) + 1;
-	if (int_level > 1000)// do we want an error message here?
+	if (int_level > 1000) //do we need error message here?
 		int_level = 1;
 	new_level = ft_itoa(int_level);
 	if (!new_level)
@@ -72,12 +72,12 @@ int	initialize_eggcarton(t_eggcarton *prog, char **env, struct termios *term)
 		return (ERROR);
 	initialize_env_table(prog->environment, env);
 	if (initalize_command_table(prog) == ERROR)
-		return (EXIT_FAILURE); //clean exit
+		return (EXIT_FAILURE);
 	prog->array_env = ht_export_to_array(prog->environment);
 	if (prog->array_env == NULL)
 	{
-		printf("I FAILED TO OG_ENV!!!\n");//
-		return (EXIT_FAILURE); //clean exit
+		ft_putstr_fd("Enviroment array creation failed!!!\n", 1);
+		return (EXIT_FAILURE);
 	}
 	prog->saved_term = term;
 	prog->cmd_count = 0;

@@ -80,7 +80,7 @@ char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3)
 		len = ft_strlen(s1) + ft_strlen(s2);
 	else
 		len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
-	joined = ft_calloc((len + 1), sizeof(char)); 
+	joined = ft_calloc((len + 1), sizeof(char));
 	if (joined)
 	{
 		joined[len] = '\0';

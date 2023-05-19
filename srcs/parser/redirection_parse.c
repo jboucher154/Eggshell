@@ -30,7 +30,7 @@ t_eggcarton *prog_info)
 			(*parsed_string)++;
 		move_pointer_past_ws(parsed_string);
 		if (identify_token(*parsed_string) != ALPHA)
-			print_error("Error");//
+			print_error("Error");// whats the correct error here
 		new_redir = new_redirection(new_redir, parsed_string, token_id, \
 		prog_info);
 		move_pointer_past_ws(parsed_string);
