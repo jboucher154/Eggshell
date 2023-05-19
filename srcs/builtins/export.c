@@ -29,21 +29,36 @@ int	is_valid_var_name(char *key)
 		return (FALSE);
 }
 
+static char	*get_key(char *arg, int *arg_index)
+{
+	char	*key;
+
+	while (arg[*arg_index] != '\0' && arg[*arg_index] != '=')
+		(*arg_index)++;
+	key = ft_substr(arg, 0, *arg_index);
+	if (is_valid_var_name(key) == FALSE)
+	{
+		if (arg[0] == '=')
+			print_blame_error("export", "not a valid identifier", arg);
+		else
+			print_blame_error("export", "not a valid identifier", key);
+		free(key);
+		return (NULL);
+	}
+	return (key);
+}
+
 void	set_new_env_variable(char *arg, t_hash_table *environment, \
-int *error_occured)
+int	*error_occured)
 {
 	int		arg_index;
 	char	*key;
 	char	*value;
 
 	arg_index = 0;
-	while (arg[arg_index] != '\0' && arg[arg_index] != '=')
-		arg_index++;
-	key = ft_substr(arg, 0, arg_index);
-	if (is_valid_var_name(key) == FALSE)
+	key = get_key(arg, &arg_index);
+	if (key == NULL)
 	{
-		print_blame_error("export", "not a valid identifier", key);
-		free(key);
 		(*error_occured) = 1;
 		return ;
 	}
