@@ -6,12 +6,17 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:07:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 12:39:50 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:26:06 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+ * parse_quote takes in pointers to the quoteless string, the t_quote_tracker
+ * struct, the string to assess and the current index in the string. It copies
+ * the string to assess into the quoteless string, removing any quotes.
+ */
 static void	parse_quote(char *quoteless, t_quote_tracker *quote_info, \
 char *expanded_string, int index)
 {
@@ -40,6 +45,10 @@ char *expanded_string, int index)
 	}
 }
 
+/*
+ * remove_quotes takes in a pointer to the string to assess. It removes any
+ * quotes from the string and returns the new string.
+ */
 char	*remove_quotes(char *expanded_string)
 {
 	char			*quoteless;
@@ -60,6 +69,10 @@ char	*remove_quotes(char *expanded_string)
 	return (quoteless);
 }
 
+/*
+ * find_end takes in a pointer to the input string. It returns a pointer to the
+ * end of the next argument in the input string.
+ */
 char	*find_end(char **parsed_string)
 {
 	int		in_quote;
@@ -88,7 +101,11 @@ char	*find_end(char **parsed_string)
 	return (end);
 }	
 
-//returns allocated char * that is stored in arg array
+/*
+ * get_arg takes in pointers to the input string, the t_eggcarton struct and an
+ * int representing whether or not to expand the argument. It returns the next
+ * argument in the input string with any expansions performed.
+ */
 char	*get_arg(char **parsed_string, t_eggcarton *prog_info, int expand)
 {
 	char	*arg;

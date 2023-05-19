@@ -6,12 +6,18 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:46:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 14:17:54 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:23:00 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+ * update_quote_info takes in a pointer to a t_quote_tracker struct, an int
+ * representing whether or not the current character is in a quote, and a char
+ * representing the type of quote. It updates the t_quote_tracker struct with
+ * the new information.
+ */
 static void	update_quote_info(t_quote_tracker *quote_info, int in_quote_value, \
 char quote_type_value)
 {
@@ -19,6 +25,11 @@ char quote_type_value)
 	quote_info->quote_type = quote_type_value;
 }
 
+/*
+ * yes_expand takes in a pointer to a t_quote_tracker struct, a pointer to the
+ * string to assess, and an int representing the current index in the string.
+ * It returns TRUE expansion criteria is met and FALSE if it is not. 
+ */
 static int	yes_expand(t_quote_tracker *q_info, char *to_assess, int index)
 {
 	if (((q_info->in_quote == TRUE && q_info->quote_type != '\'') || \
@@ -34,7 +45,11 @@ static int	yes_expand(t_quote_tracker *q_info, char *to_assess, int index)
 	return (FALSE);
 }
 
-//search for needed expansions
+/*
+ * expand_env_var takes in pointers to the t_eggcarton struct, the string to
+ * assess, the current index in the string, and a pointer to the end of the
+ * string. It expands any environment variable and returns the new string.
+ */
 char	*check_for_expansions(t_eggcarton *prog_info, char *to_assess)
 {
 	int				i;

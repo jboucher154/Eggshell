@@ -6,15 +6,16 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:54:23 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 13:38:23 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:28:35 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** setup new pipe node
-*/
+ *  new_pipe takes in pointers to the left and right commands. It creates a new
+ *  pipe struct and returns a pointer to it. If malloc fails, it returns NULL.
+ */
 t_cmd	*new_pipe(t_cmd *left, t_cmd *right)
 {
 	t_pipe	*new;
@@ -28,6 +29,10 @@ t_cmd	*new_pipe(t_cmd *left, t_cmd *right)
 	return ((t_cmd *) new);
 }
 
+/*
+ *  new_executable_cmd creates a new executable command struct and returns a
+ *  pointer to it. If malloc fails, it returns NULL.
+ */
 t_exec	*new_executable_cmd(void)
 {
 	t_exec	*new;
@@ -54,6 +59,10 @@ t_exec	*new_executable_cmd(void)
 	return (new);
 }
 
+/*
+ * set_fd takes in a pointer to a redirection struct and a char representing
+ * the token id. It sets the fd in the redirection struct based on the token id.
+ */
 static void	set_fd(t_redirection *new, char token_id)
 {
 	if (token_id == REDIRECT_IN)
@@ -64,6 +73,12 @@ static void	set_fd(t_redirection *new, char token_id)
 		new->fd = STDOUT_FILENO;
 }
 
+/*
+ * new_redirection takes in pointers to the current command, the start of the
+ * file name, a char representing the token id, and a pointer to the
+ * t_eggcarton struct. It creates a new redirection struct and returns a pointer
+ * to it. If malloc fails, it returns NULL.
+ */
 t_cmd	*new_redirection(t_cmd *cmd, char **file_start, char token_id, \
 t_eggcarton *prog_info)
 {

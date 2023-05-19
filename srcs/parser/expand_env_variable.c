@@ -6,12 +6,16 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:10:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 18:48:02 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:21:23 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+ * copy_from_value takes in pointers to the new string, the current index in the
+ * new string and the value. It copies the value into the new string.
+ */
 static void	copy_from_value(char *new_str, int *new_index, char *value)
 {
 	int	value_index;
@@ -25,6 +29,11 @@ static void	copy_from_value(char *new_str, int *new_index, char *value)
 	}
 }
 
+/*
+ * insert_new_value takes in pointers to the input string, the new string, the
+ * variable and the value. It inserts the value into the new string and returns
+ * the new string.
+ */
 static void	insert_new_value(char *str, char *new_str, char *variable, \
 char *value)
 {
@@ -51,6 +60,10 @@ char *value)
 	new_str[new_index] = '\0';
 }
 
+/*
+ * find_end_of_var takes in a pointer to the start of a variable. It returns
+ * the index of the end of the variable.
+ */
 int	find_end_of_var(char *varaible_start)
 {
 	int	index;
@@ -64,6 +77,10 @@ int	find_end_of_var(char *varaible_start)
 	return (index);
 }
 
+/*
+ * new_str_len takes in pointers to the input string, the variable and the value.
+ * It returns the length of the new string after the variable has been expanded.
+ */
 static size_t	new_str_len(char *str, char *variable, char *value)
 {
 	if (value == NULL)
@@ -72,7 +89,12 @@ static size_t	new_str_len(char *str, char *variable, char *value)
 		return (ft_strlen(str) - ft_strlen(variable) + ft_strlen(value));
 }
 
-//expands the variable
+/*
+ * expand_env_var takes in pointers to the input string, the start of the variable,
+ * the t_eggcarton struct and a pointer to the current index in the input string. 
+ * It expands the variable and returns the expanded string. If a variable is not
+ * found in the environment, it returns the original string.
+ */
 char	*expand_env_var(t_eggcarton *prog_info, char *str, char *var_start, \
 int *index)
 {

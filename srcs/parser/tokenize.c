@@ -6,15 +6,16 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 10:51:35 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:44:36 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:34:37 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-**	Identify the token type and return the token id assigned in the enum
-*/
+ * id_token takes in a pointer to the token start and returns the token id
+ * associated with the token.
+ */
 char	identify_token(char *token_start)
 {
 	char	token_id;
@@ -43,7 +44,11 @@ char	identify_token(char *token_start)
 	return (token_id);
 }
 
-//return the next non-whitespace character's identity
+/*
+ * move_to_token takes in a pointer to the parsed string and a pointer to the
+ * end of the string. It moves the parsed string past any whitespace and returns
+ * the token id of the next token.
+ */
 char	move_to_token(char **parsed_string, char *end)
 {
 	char	token_id;

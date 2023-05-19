@@ -6,12 +6,18 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:05:47 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 12:39:10 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:18:35 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+ * resize_array takes in a string array and a t_exec_parse_info struct. It
+ * resizes the string array to twice its current size, and returns the new
+ * string array. It also updates the current_size variable in the
+ * t_exec_parse_info struct.
+ */
 char	**resize_array(char **array, t_exec_parse_info *parse_info)
 {
 	int		index;
@@ -36,6 +42,13 @@ char	**resize_array(char **array, t_exec_parse_info *parse_info)
 	return (new);
 }
 
+/*
+ * find_args_and_redirections takes in a pointers to the input string,
+ * the end of the input string, the t_eggcarton struct and the t_exec_parse_info 
+ * struct. It finds and adds arguments and redirections to the current command.
+ * It returns SUCCESS if it successfully nfinds and adds an argument or 
+ * redirection, and ERROR if it fails to do so. 
+ */
 static int	find_args_and_redirections(char **parsed_string, char *end, \
 t_eggcarton *prog_info, t_exec_parse_info *parse_info)
 {
@@ -57,6 +70,12 @@ t_eggcarton *prog_info, t_exec_parse_info *parse_info)
 	return (SUCCESS);
 }
 
+/*
+ * handle_exec takes in a pointer to the input string, the end of the input
+ * string and the t_eggcarton struct. It creates a new command and adds it to
+ * the linked list of commands. It returns a pointer to the head of the linked
+ * list of commands including any redirections parsed.
+ */
 t_cmd	*handle_exec(char **parsed_string, char *end, t_eggcarton *prog_info)
 {
 	t_exec_parse_info	parse_info;

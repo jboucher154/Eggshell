@@ -6,12 +6,16 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 14:42:17 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 12:47:00 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:33:31 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+ * postion_string takes in an int representing the token id and a pointer to the
+ * parsed string. It moves the parsed string past the token and any whitespace.
+ */
 static void	postion_string(int token_id, char **parsed_string)
 {
 	if (token_id == REDIRECT_OUT_APPEND || token_id == REDIRECT_HERE)
@@ -21,6 +25,12 @@ static void	postion_string(int token_id, char **parsed_string)
 	move_pointer_past_ws(parsed_string);
 }
 
+/*
+ * handle_redirection takes in pointers to the command tree, the parsed string,
+ * the end of the string, and the t_eggcarton struct. It creates a new
+ * redirection struct and adds it to the command tree. If malloc fails, it
+ * frees the tree and returns NULL.
+ */
 t_cmd	*handle_redirection(t_cmd *cmd, char **parsed_string, char *end, \
 t_eggcarton *prog_info)
 {
