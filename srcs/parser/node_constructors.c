@@ -54,6 +54,16 @@ t_executable_cmd	*new_executable_cmd(void)
 	return (new);
 }
 
+static void	set_fd(t_redirection *new, char token_id)
+{
+	if (token_id == REDIRECT_IN)
+		new->fd = STDIN_FILENO;
+	else if (token_id == REDIRECT_OUT)
+		new->fd = STDOUT_FILENO;
+	else if (token_id == REDIRECT_OUT_APPEND)
+		new->fd = STDOUT_FILENO;
+}
+
 t_cmd	*new_redirection(t_cmd *cmd, char **file_start, char token_id, \
 t_eggcarton *prog_info)
 {
@@ -77,11 +87,6 @@ t_eggcarton *prog_info)
 	}
 	move_pointer_past_ws(file_start);
 	new->token_id = token_id;
-	if (token_id == REDIRECT_IN)
-		new->fd = STDIN_FILENO;
-	else if (token_id == REDIRECT_OUT)
-		new->fd = STDOUT_FILENO;
-	else if (token_id == REDIRECT_OUT_APPEND)
-		new->fd = STDOUT_FILENO;
+	set_fd(new, token_id);
 	return ((t_cmd *) new);
 }

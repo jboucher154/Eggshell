@@ -31,7 +31,7 @@ static void	bail_on_child(char *cmd)
 		if (access(cmd, F_OK) != 0)
 			exit_child("no such file or directory: ", cmd, CMD_ERROR);
 		else if (access(cmd, X_OK) != 0)
-			exit_child("Permission denied: ", cmd, 126); //permision denied, make macro?
+			exit_child("Permission denied: ", cmd, 126);
 	}
 	if (cmd == NULL)
 		exit_child("command not found: ", " ", CMD_ERROR);

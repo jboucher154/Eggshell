@@ -70,6 +70,8 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 	if (!fname || !*fname)
 		return (NULL);
 	path = ht_get(prog_info->command_table, fname);
+	if (ht_get(prog_info->environment, "PATH") == NULL && (path && path[0] != ':'))
+		return (NULL);
 	if (!path)
 	{
 		if (access(fname, X_OK) == 0)
