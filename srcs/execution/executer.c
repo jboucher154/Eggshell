@@ -6,13 +6,17 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:44:20 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 15:38:36 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:39:23 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//line count will be okay once print statements gone
+/*
+*  run_builtins() will direct the builtin command to the correct function.
+*  If the command was run in a child process, the exit status will be used 
+* 	to exit(). Otherwise, the exit status is updated in the '?' environment var.
+*/
 void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 {
 	int	exit_status;
@@ -40,7 +44,12 @@ void	run_builtins(t_child *cmd, t_eggcarton *prog_info)
 		ht_update_value(prog_info->environment, "?", ft_itoa(exit_status));
 }
 
-//may need to update env variable based on exit status of last child
+/*
+*  wait_for_children() will wait for all child processes to finish and update
+* the '?' environment variable with the exit status of the child processes.
+* After all child processes have finished, echoctl_switch() is called 
+* to restore the echo terminal settings.
+*/
 void	wait_for_children(t_eggcarton *prog_info)
 {
 	int	exit_status;
@@ -61,6 +70,10 @@ void	wait_for_children(t_eggcarton *prog_info)
 	echoctl_switch(OFF);
 }
 
+/*
+*  should_run_in_parent() will return TRUE if the builtin command should be 
+*  run in the parent process and FALSE if it should be run in a child process.
+*/
 int	should_run_in_parent(t_eggcarton *prog_info, int index)
 {
 	if (prog_info->children[index]->path && \
@@ -80,6 +93,12 @@ int	should_run_in_parent(t_eggcarton *prog_info, int index)
 	return (FALSE);
 }
 
+/*
+*  do_commands() determines if the command should be run in the parent process or
+*  in a child process. The PIDs of the child processes are stored in the t_child
+*  struct. Terminal echo settings are turned on for the child processes.
+*  The parent closes all pipes and waits for all child processes to finish.
+*/
 void	do_commands(t_eggcarton *prog_info)
 {
 	int	index;
@@ -108,6 +127,13 @@ void	do_commands(t_eggcarton *prog_info)
 	wait_for_children(prog_info);
 }
 
+/*
+*  executer() is called by eggshell(). It creates the 
+*  pipes and an array of child processes. The children are setup iwth the 
+*  tree_iterator(). The command tree is freed after iterated. If a process 
+*  ended by a signal, commands do not execute. All children are freed 
+*  after execution.
+*/
 void	executer(t_cmd **cmd, t_eggcarton *prog_info)
 {
 	int	index;

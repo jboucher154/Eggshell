@@ -6,12 +6,18 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:46:40 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:33:03 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:55:00 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_hash.h"
 
+/*
+ * add_joined_key_values takes in a hash_item and adds the key and value to the
+ * export_array and a char* that is the key, "=", and value joined together.
+ * Keys with a "?" as the first character or NULL values
+ * are not added to the export_array.
+ */
 static void	add_joined_key_values(t_hash_item *to_join, int *export_index, \
 char **export_array)
 {
@@ -36,6 +42,11 @@ char **export_array)
 	}
 }
 
+/*
+ * ht_export_to_array takes in a hash_table and returns an array of strings
+ * that are the key, "=", and value joined together. The array is NULL
+ * terminated.
+ */
 char	**ht_export_to_array(t_hash_table *hash_table)
 {
 	char	**export_array;

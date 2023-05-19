@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:03:01 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/17 15:33:39 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:04:14 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ static void	rehash_add(t_hash_table *table, t_hash_item *to_add)
 	}
 }
 
+/*
+ * add_items_from_index takes in an index, a hash_table, and a dbl pointer to
+ * a hash_item. It adds all the items from the old hash_table index to the new
+ * hash_table.
+ */
 static void	add_items_from_index(int index, t_hash_table *table, \
 t_hash_item **old_table)
 {
@@ -52,6 +57,12 @@ t_hash_item **old_table)
 	}
 }
 
+/*
+ * ht_rehash takes in a hash_table and resizes the hash_table to double the
+ * previous size. All items from the old table are reassigned in the newtable
+ * It returns SUCCESS if the table was resized and ERROR if an error
+ * occured.
+ */
 size_t	ht_rehash(t_hash_table *table)
 {
 	t_hash_item	**new;

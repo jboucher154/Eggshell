@@ -6,12 +6,16 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:43:15 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 14:53:21 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:44:59 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+ * open_file opens a file and returns the file descriptor.
+ * If the file cannot be opened, it prints an error message.
+ */
 int	open_file(t_redirection *redirection)
 {
 	int	fd;
@@ -34,6 +38,9 @@ int	open_file(t_redirection *redirection)
 	return (fd);
 }
 
+/*
+ * close_file closes a file descriptor if it is not UNSET.
+ */
 void	close_file(t_eggcarton *prog_info, int index, int redir_type)
 {
 	if (redir_type == REDIRECT_IN)
@@ -48,6 +55,12 @@ void	close_file(t_eggcarton *prog_info, int index, int redir_type)
 	}
 }
 
+/*
+ * setup_redirection sets up the redirections for a child process.
+ * If the redirection is a heredoc, it calls the heredoc_builtin function.
+ * Otherwise, it opens the file and closes the file descriptor. The opened
+ * file descriptor is then assigned to the child process.
+ */
 void	setup_redirection(t_redirection *redirection, t_eggcarton *prog_info, \
 int index)
 {
@@ -74,6 +87,10 @@ int index)
 		prog_info->children[index]->redir_out = fd;
 }
 
+/*
+ * process_redirections iterates n redirections recursively. If the file
+ * cannot be opened, it returns and stops processing redirections.
+ */
 void	process_redirections(t_redirection *redir, t_eggcarton *prog_info, \
 int index)
 {

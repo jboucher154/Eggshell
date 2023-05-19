@@ -6,13 +6,17 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:02:18 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 10:47:31 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:59:40 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_hash.h"
 
-//print hash table for enviroment
+/*
+ * ht_print_env takes in a hash_table and prints the key value pairs in the
+ * hash_table to stdout. Keys with a "?" as the first character or NULL
+ * values are not printed.
+ */
 void	ht_print_env(t_hash_table *table)
 {
 	t_hash_item	*to_print;
@@ -39,8 +43,11 @@ void	ht_print_env(t_hash_table *table)
 		index++;
 	}
 }
-				// printf("%s=%s\n", to_print->key, (char *)to_print->value);
 
+/*
+ * print_export_value takes in a hash_item and prints the value of the hash_item
+ * to stdout formated for POSIX standard.
+ */
 static void	print_export_value(t_hash_item *to_print)
 {
 	ft_putstr_fd("=\"", 1);
@@ -48,6 +55,11 @@ static void	print_export_value(t_hash_item *to_print)
 	ft_putchar_fd('\"', 1);
 }
 
+/*
+ * ht_print_export takes in a hash_table and prints the key value pairs in the
+ * hash_table to stdout formated for POSIX standard. Keys with a "?" as the
+ * first character are not printed.
+ */
 void	ht_print_export(t_hash_table *table)
 {
 	t_hash_item	*to_print;
@@ -75,7 +87,3 @@ void	ht_print_export(t_hash_table *table)
 		index++;
 	}
 }
-
-				// printf("declare -x %s\n", to_print->key);
-				// printf("declare -x %s=\"%s\"\n", to_print->key, \
-				// (char *)to_print->value);

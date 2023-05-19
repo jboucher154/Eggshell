@@ -6,17 +6,18 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 10:35:22 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 11:06:35 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:40:31 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "ft_hash.h"
 
-/*get_paths takes in the environment variable array and returns an array of 
- *paths from the PATHS variable in the environment
+/*
+ * get_paths takes in the environment variable array and returns an array of 
+ * paths from the PATHS variable in the environment
  */
-char	**get_paths(t_eggcarton *prog_info)
+static char	**get_paths(t_eggcarton *prog_info)
 {
 	int		i;
 	char	*paths;
@@ -30,11 +31,12 @@ char	**get_paths(t_eggcarton *prog_info)
 	return (split_paths);
 }
 
-/*find_correct_path takes in a program name and an array of paths from the 
- *environment and returns the path to the program if it exists in 
- *one of the paths, if it doesn't exist it will return NULL
+/* 
+ * find_correct_path takes in a program name and an array of paths from the 
+ * environment and returns the path to the program if it exists in 
+ * one of the paths, if it doesn't exist it will return NULL
  */
-char	*find_correct_path(char *fname, char **paths)
+static char	*find_correct_path(char *fname, char **paths)
 {
 	int		i;
 	char	*path;
@@ -62,6 +64,11 @@ char	*find_correct_path(char *fname, char **paths)
 	return (NULL);
 }
 
+/*
+ * get_path takes in a program name and returns the path to the program if it 
+ * exists in the PATHS variable in the environment or in the command
+ * hashtable. If it doesn't exist or there was an error it will return NULL.
+ */
 char	*get_path(t_eggcarton *prog_info, char *fname)
 {
 	char	*path;
@@ -70,7 +77,8 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 	if (!fname || !*fname)
 		return (NULL);
 	path = ht_get(prog_info->command_table, fname);
-	if (ht_get(prog_info->environment, "PATH") == NULL && (path && path[0] != ':'))
+	if (ht_get(prog_info->environment, "PATH") == NULL && \
+	(path && path[0] != ':'))
 		return (NULL);
 	if (!path || (path[0] != ':' && access(path, X_OK) != 0))
 	{
@@ -90,7 +98,11 @@ char	*get_path(t_eggcarton *prog_info, char *fname)
 	return (path);
 }
 
-//may need to destroy the table in event of error
+/*
+ * initalize_command_table takes in the program info struct and initalizes the
+ * command hashtable with the builtins and their paths. If there is an error
+ * it will return ERROR, otherwise it will return SUCCESS.
+ */
 int	initalize_command_table(t_eggcarton *prog_info)
 {
 	prog_info->command_table = ht_create(30);

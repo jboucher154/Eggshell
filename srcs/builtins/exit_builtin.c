@@ -6,13 +6,17 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 15:09:18 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 11:04:14 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:01:53 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "ft_hash.h"
 
+/*
+*  Only digits takes and string to_ check and returns TRUE if the string is 
+*  only digits and FALSE if it isn't.
+*/
 static int	only_digits(char *to_check)
 {
 	int	i;
@@ -27,6 +31,10 @@ static int	only_digits(char *to_check)
 	return (TRUE);
 }
 
+/*
+* clean_and_restore frees all the memory allocated by the program and restores
+* the terminal to its original state.
+*/
 void	clean_and_restore(t_eggcarton *prog_info)
 {
 	if (prog_info->children)
@@ -39,6 +47,9 @@ void	clean_and_restore(t_eggcarton *prog_info)
 	tcsetattr(STDIN_FILENO, TCSANOW, prog_info->saved_term);
 }
 
+/*
+* exit_cmd_printing prints the exit message to stdout and returns the exit code.
+*/
 static unsigned char	exit_cmd_printing(t_eggcarton *prog_info, t_child *cmd)
 {
 	unsigned char	exit_code;
@@ -51,6 +62,12 @@ static unsigned char	exit_cmd_printing(t_eggcarton *prog_info, t_child *cmd)
 	return (exit_code);
 }
 
+/*
+* exit_command takes a t_eggcarton pointer and a t_child pointer as arguments.
+* It checks if the argument is a valid exit code and exits the program with the
+* exit code. If the argument is not a valid exit code it prints an error and sets
+* the exit code to 1.
+*/
 void	exit_command(t_eggcarton *prog_info, t_child *cmd)
 {
 	unsigned char	exit_code;

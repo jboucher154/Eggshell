@@ -6,13 +6,18 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:44:45 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 19:22:49 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:19:56 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_child	*new_child(void)
+/*
+* new_child() - Allocates a new child struct and initializes it to NULL or
+* UNSET values. Returns a pointer to the new child struct or NULL if malloc
+* fails.
+*/
+static t_child	*new_child(void)
 {
 	t_child	*child;
 
@@ -30,6 +35,11 @@ t_child	*new_child(void)
 	return (child);
 }
 
+/*
+* free_children() - Frees all children structs in the children array and
+* frees the array itself. Also closes any open file descriptors and unlinks
+* any here_doc files.
+*/
 void	free_children(t_child **children)
 {
 	int	index;
@@ -53,6 +63,10 @@ void	free_children(t_child **children)
 	children = NULL;
 }
 
+/*
+* create_child_array() - Allocates an array of child structs with new_child().
+* Returns SUCCESS or ERROR if malloc fails. 
+*/
 int	create_child_array(t_eggcarton *prog_info)
 {
 	t_child	**children;

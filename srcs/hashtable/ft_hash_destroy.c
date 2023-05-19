@@ -6,12 +6,16 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:01:58 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/02 16:02:12 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:57:22 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_hash.h"
 
+/*
+ * free_hashtable takes in a dbl pointer to a hash_table and frees the memory
+ * used by the hash_table and sets the pointer to the hash_table to NULL.
+ */
 static void	free_hashtable(t_hash_table **hash_table)
 {
 	free((*hash_table)->table);

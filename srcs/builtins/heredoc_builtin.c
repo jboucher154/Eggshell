@@ -6,12 +6,16 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 15:11:03 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 13:08:42 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:17:37 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+*  heredoc_getline() reads a line from stdin and returns it as a string using
+*  the readline library. It returns NULL if there is an error or if the user
+*/
 static char	*heredoc_getline(void)
 {
 	char	*line_read;
@@ -26,6 +30,11 @@ static char	*heredoc_getline(void)
 	return (line_read);
 }
 
+/*
+*  gather_here_doc() reads lines from stdin until it finds a line that matches
+*  the delimiter given or until the user preses Ctl-D or Ctl-C . It returns the 
+*  lines read as a string.
+*/
 static char	*gather_here_doc(t_redirection *redirection)
 {
 	char	*line_read;
@@ -53,6 +62,11 @@ static char	*gather_here_doc(t_redirection *redirection)
 	return (input);
 }
 
+/*
+*  run_here_child() is the child process of the heredoc builtin. It closes the
+*  pipes and redirections that are not needed, gathers the input from stdin,
+*  checks for expansions, and writes the input to the temporary file.
+*/
 static void	run_here_child(t_eggcarton *prog_info, t_redirection *redirection, \
 int index, int fd)
 {
@@ -73,6 +87,11 @@ int index, int fd)
 	exit (0);
 }
 
+/*
+*  heredoc_parent() is the parent process of the heredoc builtin. It closes the
+*  temporary file, ignores the SIGINT signal, waits for the child process to
+*  finish, and updates the exit status of the program if an error occured.
+*/
 void	heredoc_parent(t_eggcarton *prog_info, int fd, int pid, int exit_status)
 {
 	close(fd);
@@ -85,6 +104,12 @@ void	heredoc_parent(t_eggcarton *prog_info, int fd, int pid, int exit_status)
 	}
 }
 
+/*
+*  heredoc_builtin() is the redirection function that handles '<<'. It takes a 
+*  t_eggcarton pointer, a t_redirection pointer, and an int index as arguments.
+*  It creates a temporary file based on the index, forks a child process, and 
+*  runs the child process.
+*/
 void	heredoc_builtin(t_eggcarton *prog_info, t_redirection *redirection, \
 int index)
 {

@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 16:00:55 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 19:24:06 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:56:50 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,12 @@ t_hash_item	*new_hash_item(const char *key, void *value)
 	return (item);
 }
 
-static void	find_table_place(t_hash_table *table, int index, t_hash_item *item)
+/*
+ * find_in_table_and_place takes in a hash_table, an index, and a hash_item.
+ * It finds the last item in the linked list at the index and places the
+ * hash_item at the end of the list.
+ */
+static void	find_in_table_and_place(t_hash_table *table, int index, t_hash_item *item)
 {
 	t_hash_item	*tmp;
 
@@ -74,7 +79,7 @@ int	ht_add(t_hash_table *table, const char *key, void *value)
 	if (!item)
 		return (ERROR);
 	index = get_hash(key) % table->size;
-	find_table_place(table, index, item);
+	find_in_table_and_place(table, index, item);
 	table->filled++;
 	return (SUCCESS);
 }

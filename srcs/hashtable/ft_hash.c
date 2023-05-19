@@ -6,7 +6,7 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 16:43:42 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 19:26:55 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:02:03 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 #include "libft.h"
 
 /*
-** This function is used to get the hash of a string.
-** It is used to get the index of the hash table.
-** It is based on the djb2 algorithm.
-** https://en.wikipedia.org/wiki/Djb2
-*/
+ * This function is used to get the hash of a string.
+ * It is used to get the index of the hash table.
+ * It is based on the djb2 algorithm.
+ */
 size_t	get_hash(const char *str)
 {
 	size_t	hash;
@@ -35,12 +34,12 @@ size_t	get_hash(const char *str)
 }
 
 /*
-** This function intialize a new hash table
-** It takes the size of the hash table as a parameter
-** It returns a pointer to the new hash table
-** It returns NULL if an error occured
-** It allocates 16 slots for the hash table and 1 for the NULL pointer
-*/
+ * This function intialize a new hash table
+ * It takes the size of the hash table as a parameter
+ * It returns a pointer to the new hash table
+ * It returns NULL if an error occured
+ * It allocates 16 slots for the hash table and 1 for the NULL pointer
+ */
 t_hash_table	*ht_create(int size)
 {
 	t_hash_table	*table;
@@ -63,6 +62,10 @@ t_hash_table	*ht_create(int size)
 	return (table);
 }
 
+/*
+ * ht_internal_get is used to get an item from the hash table and verify
+ * that an item with that key exists.
+*/
 t_hash_item	*ht_internal_get(t_hash_table *table, const char *key)
 {
 	size_t		index;
@@ -82,7 +85,7 @@ t_hash_item	*ht_internal_get(t_hash_table *table, const char *key)
 /*
 ** This function is used to get an item from the hash table
 ** It returns a pointer to the item value if it was found
-** It returns NULL if the item was not found
+** It returns NULL if the item was not found and if the value is NULL
 */
 void	*ht_get(t_hash_table *table, const char *key)
 {
@@ -94,7 +97,11 @@ void	*ht_get(t_hash_table *table, const char *key)
 	return (NULL);
 }
 
-//update value
+/*
+ * ht_update_value is used to update the value of an item in the hash table.
+ * It takes in a hash_table, a key, and a new_value. It returns SUCCESS if
+ * the value was updated and ERROR if the value was not updated.
+ */
 size_t	ht_update_value(t_hash_table *table, const char *key, void *new_value)
 {
 	size_t		index;

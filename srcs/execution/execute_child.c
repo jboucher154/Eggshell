@@ -6,12 +6,15 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:06:28 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/19 10:56:18 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:24:38 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+* exit_child is called by bail_onchild() to print the formatted error.
+*/
 void	exit_child(char *error_msg, char *arg, int exit_code)
 {
 	ft_putstr_fd("\033[1;31mEggShell🥚: ", STDERR_FILENO);
@@ -22,7 +25,7 @@ void	exit_child(char *error_msg, char *arg, int exit_code)
 }
 
 /* bail_on_child is called by the child process if the command is not found.
- * It will exit with an error code.
+ * It will exit with an error code and print an error message to stderr.
  */
 static void	bail_on_child(char *cmd)
 {
@@ -55,6 +58,12 @@ static void	dup_pipes(t_eggcarton *prog_info, int index)
 	close_pipes(prog_info->pipes, prog_info->pipe_count);
 }
 
+/*
+*  dup_redirections is called by the child process in the execution phase.
+*  It will dup2 the appropriate file descriptors for redirections and close 
+*  them after duping. If a file descriptor had an open error, it will write
+*  a null byte to the file descriptor.
+*/
 static void	dup_redirections(t_eggcarton *prog_info, int index)
 {
 	if (prog_info->children[index]->redir_in != UNSET)
@@ -67,7 +76,7 @@ static void	dup_redirections(t_eggcarton *prog_info, int index)
 	if (prog_info->children[index]->redir_out != UNSET)
 	{
 		if (prog_info->children[index]->redir_in == OPEN_ERROR)
-			ft_putstr_fd("OUTFILE OPEN ERROR, investigate proper course\n", 2);
+			write(STDIN_FILENO, "\0", 1);
 		else
 			dup2(prog_info->children[index]->redir_out, STDOUT_FILENO);
 	}
@@ -75,11 +84,14 @@ static void	dup_redirections(t_eggcarton *prog_info, int index)
 	prog_info->children[index]->redir_out);
 }
 
-/* pipe_child is called by child processes. It will dup2 the read and write
- * file descriptors to the correct file descriptors, close the file descriptors
- * that are not needed, and then execve the command. If the command is not
- * found, it will exit with an error code.
- */
+/* 
+*  pipe_child is called by child processes in the execution phase. 
+*  It will dup2 the appropriate file descriptors for pipes and redirectsion
+*  and run the command. If the command is a builtin, it will run the builtin
+*  and exit. If the command is not a builtin, it will execve the command.
+*  If the command is not found or a fd had an open error, it will exit with 
+*  an error code. 
+*/
 void	pipe_child(t_eggcarton *prog_info, int index)
 {
 	dup_pipes(prog_info, index);
@@ -90,7 +102,7 @@ void	pipe_child(t_eggcarton *prog_info, int index)
 		bail_on_child(prog_info->children[index]->args[0]);
 	else if (prog_info->children[index]->redir_in == OPEN_ERROR || \
 		prog_info->children[index]->redir_out == OPEN_ERROR)
-		exit(1);//
+		exit(1);
 	if (prog_info->children[index]->path[0] == ':')
 		run_builtins(prog_info->children[index], prog_info);
 	else

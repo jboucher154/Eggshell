@@ -6,13 +6,17 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 10:54:56 by smorphet          #+#    #+#             */
-/*   Updated: 2023/05/18 20:09:35 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 12:47:10 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "ft_hash.h"
 
+/*
+* check_if_flag checks if the string is a valid -n flag
+* returns TRUE if it is, FALSE if it isn't
+*/
 int	check_if_flag(char *to_check)
 {
 	size_t	index;
@@ -27,6 +31,11 @@ int	check_if_flag(char *to_check)
 	return (TRUE);
 }
 
+/*
+* echo_command is the echo builtin. It take a char** prints each argument
+* to stdout with a space between them. If the first argument is avalid -n flag
+* it does not print '\n' at the end of the argument.
+*/
 int	echo_command(char **args)
 {
 	int		new_line;
@@ -42,7 +51,8 @@ int	echo_command(char **args)
 	while (args[index] != NULL)
 	{
 		ft_putstr_fd(args[index], 1);
-		ft_putchar_fd(' ', 1);
+		if (args[index + 1])
+			ft_putchar_fd(' ', 1);
 		index++;
 	}
 	if (new_line != 1)
@@ -50,6 +60,10 @@ int	echo_command(char **args)
 	return (SUCCESS);
 }
 
+/*
+* pwd_command is the pwd builtin. It prints the current working directory
+* from the getcwd() to stdout.
+*/
 int	pwd_command(void)
 {
 	char	*current_wd;
@@ -61,6 +75,11 @@ int	pwd_command(void)
 	return (SUCCESS);
 }
 
+/*
+* find_cd_dest takes the arguments passed to cd and returns the destination
+* directory. If no arguments are passed, it returns the HOME directory.
+* If the HOME directory is not set, it returns NULL.
+*/
 static char	*find_cd_dest(char	**args, t_eggcarton *prog_info)
 {
 	char	*dest;
@@ -81,6 +100,13 @@ static char	*find_cd_dest(char	**args, t_eggcarton *prog_info)
 	return (dest);
 }
 
+/*
+* cd_command is the cd builtin. It takes a char** of arguments and a pointer
+* to the program info struct. It changes the current working directory to the
+* directory passed as an argument. If no argument is passed, it changes the
+* current working directory to the HOME directory. If the HOME directory is
+* not set, it prints an error and returns EXIT_FAILURE.
+*/
 int	cd_command(char	**args, t_eggcarton *prog_info)
 {
 	char	*current_wd;

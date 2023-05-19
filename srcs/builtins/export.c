@@ -6,13 +6,17 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:38:37 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 19:13:30 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:40:11 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//no access to ?
+/*
+*  is_valid_var_name() checks if the key is a valid variable name according to
+*  the POSIX standard. It returns TRUE if the key is valid, and FALSE if it is
+*  not. It does not allow access to the '?' key.
+*/
 int	is_valid_var_name(char *key)
 {
 	size_t	index;
@@ -29,6 +33,11 @@ int	is_valid_var_name(char *key)
 		return (FALSE);
 }
 
+/*
+*  get_key() gets the key from the argument passed and sets the arg_index
+*  pointer to after the key. If valid, the found variable name is returned as
+*  the key. Otherwise, it prints an error and returns NULL.
+*/
 static char	*get_key(char *arg, int *arg_index)
 {
 	char	*key;
@@ -48,6 +57,12 @@ static char	*get_key(char *arg, int *arg_index)
 	return (key);
 }
 
+/*
+*  set_new_env_variable() takes an argument and adds it to the environment
+*  hashtable. If the argument is not a valid variable name it prints an error
+*  and sets the error_occured pointer to ERROR(1).
+*  Otherwise, it adds the variable to the environment hashtable.
+*/
 void	set_new_env_variable(char *arg, t_hash_table *environment, \
 int	*error_occured)
 {
@@ -59,7 +74,7 @@ int	*error_occured)
 	key = get_key(arg, &arg_index);
 	if (key == NULL)
 	{
-		(*error_occured) = 1;
+		(*error_occured) = ERROR;
 		return ;
 	}
 	if (arg[arg_index] == '\0')
@@ -78,6 +93,12 @@ int	*error_occured)
 	free(key);
 }
 
+/*
+*  export_command takes a char** of arguments and adds them to the 
+*  environment hashtable. If the argument is no arguments are passed,
+*  it prints the environment variables in the format required by POSIX.
+*  It returns SUCCESS if no errors occured, and 1 if an error occured.
+*/
 int	export_command(char **args, t_eggcarton *prog_info)
 {
 	int	index;
@@ -86,7 +107,7 @@ int	export_command(char **args, t_eggcarton *prog_info)
 
 	added = 0;
 	index = 1;
-	error = 0;
+	error = SUCCESS;
 	while (args[index])
 	{
 		set_new_env_variable(args[index], prog_info->environment, &error);

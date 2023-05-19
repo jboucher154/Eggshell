@@ -6,13 +6,19 @@
 /*   By: jebouche <jebouche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:50:12 by jebouche          #+#    #+#             */
-/*   Updated: 2023/05/18 19:23:22 by jebouche         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:49:53 by jebouche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index)
+/*
+ * setup_child sets up the child of the eggcarton struct.
+ * It checks if the command is empty and if it is, it sets the command_present
+ * flag to FALSE. If the command is not empty, it sets the args and path and
+ * calls setup_pipes if there are pipes present.
+ */
+void	setup_child(t_exec *cmd, t_eggcarton *prog_info, int index)
 {
 	if (cmd->arg_count == 0)
 	{
@@ -27,6 +33,10 @@ void	setup_child(t_executable_cmd *cmd, t_eggcarton *prog_info, int index)
 	prog_info->children[index]->path = get_path(prog_info, cmd->args[0]);
 }
 
+/*
+ * setup_pipes sets up the pipes for the children of the eggcarton struct.
+ * It assigns the correct pipe_in and pipe_out values to each child.
+ */
 void	setup_pipes(t_eggcarton *prog_info, int index)
 {
 	int	read_index;
@@ -51,6 +61,10 @@ void	setup_pipes(t_eggcarton *prog_info, int index)
 	}
 }
 
+/*
+ * create_pipes creates the pipes for the children of the eggcarton struct.
+ * It returns ERROR if malloc fails or if pipe fails.
+ */
 int	create_pipes(t_eggcarton *prog_info)
 {
 	char	*error;
@@ -78,6 +92,10 @@ int	create_pipes(t_eggcarton *prog_info)
 	return (SUCCESS);
 }
 
+/*
+ * tree_iterator is called recursively to iterate through the tree of commands
+ * and set up the children of the eggcarton struct.
+ */
 int	tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index)
 {
 	if (*index == prog_info->cmd_count)
@@ -102,7 +120,7 @@ int	tree_iterator(t_cmd *cmd, t_eggcarton *prog_info, int *index)
 	}
 	else if (cmd->type == EXECUTABLE_CMD)
 	{
-		setup_child((t_executable_cmd *)cmd, prog_info, *index);
+		setup_child((t_exec *)cmd, prog_info, *index);
 	}
 	return (SUCCESS);
 }
